@@ -20,6 +20,8 @@ module.exports = {
       },
       fontFamily: {
         Montserrat: ["Montserrat", "sans-serif"],
+        Bungee: ["Bungee", "sans-serif"],
+        Dhurjati: ["Dhurjati", "sans-serif"],
       },
     },
   },
