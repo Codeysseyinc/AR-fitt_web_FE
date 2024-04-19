@@ -29,7 +29,7 @@ const FeaturesSection: React.FC<{}> = () => {
               <div className=" text-3xl leading-7 text-center mb-5">
                 Fashion at Your Fingertips: Explore Your Style Now
               </div>
-              <div className=" text-base leading-[1.5]  text-center  ">
+              <div className=" text-base xl:text-base lg:text-sm leading-[1.5]  text-center  ">
                 AR-Fitt brings the future of fashion to your fingertips,
                 offering an immersive virtual try-on experience. From clothing
                 to cosmetics, discover your perfect look with ease. Our
@@ -60,22 +60,33 @@ const FeaturesSection: React.FC<{}> = () => {
             </div>
           </Grid>
           {/*features asset area / table*/}
-          <Grid item className="w-[40%] self-end  ">
+          <Grid item className="w-[40%] xl:w-[40%] lg:w-[45%] self-end ">
             {/* rows */}
             {Array.from({ length: 2 }).map((_, index) => (
               <Grid
                 direction="row"
                 item
                 className="w-[100%] h-[50%] justify-end flex"
+                key={index}
               >
-                {Array.from({ length: 2 }).map((_, ele) => (
-                  <div className="bg-primarySaturated lg:w-40 lg:h-40 xl:w-44 xl:h-44 m-2 flex flex-col justify-center items-start pl-2">
-                    <div className="bg-[#d9d9d9] rounded-full w-[23%] h-[23%]  bg-opacity-15 mb-1" />
+                {Array.from({ length: 2 }).map((_, indexj) => (
+                  <div
+                    className="bg-primarySaturated w-44 h-44 m-2 flex flex-col justify-center items-start pl-2"
+                    key={indexj}
+                  >
+                    <div className="bg-[#d9d9d9] rounded-full w-[23%] h-[23%]  bg-opacity-15 mb-1 flex justify-center items-center">
+                      <img
+                        src={`/assets/images/landingPage/featuresSection/${
+                          features[2 * index + indexj].icon
+                        }`}
+                        className="h-[60%]"
+                      />
+                    </div>
                     <div className=" w-[90%] h-[15%] font-Dhurjati font-normal text-base text-white ">
-                      {features[2 * index + ele].title}
+                      {features[2 * index + indexj].title}
                     </div>
                     <div className=" w-[90%] h-[37%] font-Dhurjati leading-3 text-xs text-white">
-                      {features[2 * index + ele].description}
+                      {features[2 * index + indexj].description}
                     </div>
                   </div>
                 ))}
