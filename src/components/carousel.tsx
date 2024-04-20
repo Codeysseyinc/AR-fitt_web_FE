@@ -65,7 +65,7 @@ export default () => {
             <img
               src={`/assets/images/howItWorks/img_${index + 1}.png`}
               alt="slide_image"
-              className="w-[70%] h-[67%] bg-orange-500"
+              className="w-[70%] h-[67%]"
             />
             {activeIndex === index ? (
               <div className="font-Dhurjati font-normal text-center text-base leading-[1.5] mt-6">

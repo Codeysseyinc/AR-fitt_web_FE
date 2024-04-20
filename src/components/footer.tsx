@@ -8,33 +8,44 @@ const Footer = () => {
       xs={12}
       className="w-screen h-52 bg-primarySaturated"
     >
-      <Grid item className=" w-[50%] h-[100%] flex justify-center">
+      <Grid
+        item
+        className=" w-[40%] lg:w-[60%] xl:w-[50%] h-[100%] flex justify-start "
+      >
         {/* logo */}
         <Grid
           direction="column"
-          className=" w-[30%] h-[100%] flex justify-center items-center"
+          className="w-[40%] lg:w-[25%] xl:w-[30%] h-[100%] flex justify-center items-end "
         >
-          <img className="w-[50%]" src="/assets/images/logoWhite.png" />
-          <div className="font-Dhurjati font-normal text-center text-base text-white leading-[20px] mt-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-          </div>
+          <img
+            className="w-[65%] lg:w-[65%] xl:w-[50%]"
+            src="/assets/images/logoWhite.png"
+          />
         </Grid>
         {/* text */}
         <Grid
           direction="column"
-          className="w-[50%] h-[100%]  flex justify-center px-4 py-8"
+          className="w-[60%] lg:w-[70%] xl:w-[65%]  h-[100%]  flex justify-center px-4 py-8 "
         >
-          <div className="font-Dhurjati font-normal text-center text-base text-white leading-[20px]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco{" "}
+          <div className="font-Dhurjati font-normal text-base  text-white leading-[20px]">
+            Experience the future of fashion with AR-Fitt - the ultimate
+            destination for personalized style. Sign up now to unlock exclusive
+            features, including virtual try-ons and curated recommendations
+            tailored to your unique measurements and skin profile.
           </div>
         </Grid>
       </Grid>
-      <Grid item className=" w-[50%] h-[100%] flex justify-end">
+
+      <Grid
+        item
+        className="w-[50%] lg:w-[40%] xl:w-[50%] h-[100%] flex justify-end"
+      >
         {" "}
         {/* nav */}
-        <Grid direction="column" className=" w-[30%] h-[100%] ">
+        <Grid
+          direction="column"
+          className=" w-[30%] h-[100%]  flex justify-center "
+        >
           <div className="font-Dhurjati font-normal text-base text-white leading-[20px] py-8">
             <div>Home</div>
             <div>About us</div>
@@ -43,9 +54,13 @@ const Footer = () => {
           </div>
         </Grid>
         {/* contact */}
-        <Grid direction="column" className=" w-[40%] h-[100%]">
+        <Grid
+          direction="column"
+          className=" w-[40%] h-[100%] flex justify-center"
+        >
           <div className="font-Dhurjati font-normal text-base text-white leading-[20px] py-8">
-            <div>Contact</div>
+            <div className="text-lg ">Contact:</div>
+
             <div>+92004904-09</div>
             <div>arfitt@gmail.com</div>
           </div>
