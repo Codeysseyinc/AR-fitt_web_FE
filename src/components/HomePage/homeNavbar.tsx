@@ -3,13 +3,13 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 
 const HomeNavbar = () => {
-  const anchorTagStyling = "no-underline text-black m-0 p-0 font-Montserrat font-bold text-sm text-dark-gray";
+  const anchorTagStyling = "no-underline m-0 p-0 font-Montserrat font-bold text-sm text-gray-300";
 
   return (
     <Grid
       item
       container
-      className="bg-light-gray rounded-lg py-4 px-8 flex flex-col gap-5 mb-6"
+      className="bg-gray-100 rounded-lg py-4 px-8 flex flex-col gap-5 mb-6"
     >
       {/* Navbar Top Row */}
       <Grid item container className='flex justify-between items-center'>
@@ -36,7 +36,7 @@ const HomeNavbar = () => {
         </Grid>
       </Grid>
       {/* Horizontal Line */}
-      <div className="bg-line-gray w-full h-[2px] rounded-full"></div>
+      <div className="bg-gray-200 w-full h-[2px] rounded-full"></div>
       {/* Options */}
       <Grid item container className='flex justify-between'>
         <a href="" className={`${anchorTagStyling}`}>Suggested Items</a>
