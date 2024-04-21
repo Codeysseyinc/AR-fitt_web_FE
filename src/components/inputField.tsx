@@ -12,11 +12,16 @@ const InputField: React.FC<InputField> = ({
   className,
 }) => {
   const [isDateInput, setIsDateInput] = useState(false);
+  const getType = () => {
+    if (placeholder.includes("Password")) {
+      return "password";
+    } else return isDateInput ? "date" : "text";
+  };
   return (
     <TextField
       className={` ${className} border-0 border-b border-[#646262] m-2 w-full text-xs font-Montserrat`}
       variant="standard"
-      type={isDateInput ? "date" : "text"}
+      type={getType()}
       onFocus={() =>
         placeholder === "Date of Birth" ? setIsDateInput(true) : ""
       }

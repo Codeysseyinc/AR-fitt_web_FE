@@ -6,6 +6,7 @@ import CONSTANTS from "../../utils/constants";
 import { useState } from "react";
 import { useARfittContext } from "../../context/storeContext";
 import InputPhoneField from "../../components/inputPhoneField";
+import GenderDropDown from "../../components/genderDropdown";
 
 interface BasicInfoProps {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
@@ -30,14 +31,16 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
       {/* content section */}
       <ContentArea title="Create Account" setCurrentForm={setCurrentForm}>
         <Grid direction="column" className="w-[70%] flex justify-center">
+          {/* First Name & Last Name */}
           <Grid
             direction="row"
-            className="flex items-center justify-evenly w-full"
+            className="flex items-center justify-evenly w-full mt-4"
           >
             <InputField placeholder="First Name" />
             <InputField placeholder="Last Name" />
           </Grid>
-          <Grid className="flex items-center justify-evenly w-full">
+          {/* Email */}
+          <Grid className="flex items-center justify-evenly w-full mt-2">
             <InputField
               placeholder="Email"
               onChange={(e) => {
@@ -45,17 +48,21 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
               }}
             />
           </Grid>
-          <Grid className="flex items-center justify-evenly w-full">
+          {/* Password & Confirm Password */}
+          <Grid className="flex items-center justify-evenly w-full mt-2">
             <InputField placeholder="Password" />
             <InputField placeholder="Confirm Password" />
           </Grid>
-          <Grid className="flex items-center justify-evenly w-full">
+          {/* Phone Number*/}
+          <Grid className="flex items-center justify-evenly w-full mt-2">
             <InputPhoneField />
           </Grid>
-          <Grid className="flex items-center justify-evenly w-full">
+          {/* DOB & Gender*/}
+          <Grid className="flex items-center justify-evenly w-full mt-2">
             <InputField placeholder="Date of Birth" />
-            <InputField placeholder="Gender" />
+            <GenderDropDown />
           </Grid>
+          {/* Sign Up Button */}
           <Grid className="flex items-center justify-evenly w-full mt-[4%]">
             <Button
               className="bg-primary text-contrastText drop-shadow-lg"
@@ -74,6 +81,7 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
               Sign Up
             </Button>{" "}
           </Grid>
+          {/* Sign In option */}
           <Grid className="Montserrat-text text-xs flex justify-start w-full m-4">
             Have an account ?&nbsp;
             <Link href="/login" className="text-link font-bold">
