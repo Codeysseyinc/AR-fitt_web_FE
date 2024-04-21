@@ -37,8 +37,8 @@ const LogIn: React.FC<{}> = ({}) => {
               setEmail(e.target.value);
             }}
           />
-          <InputField placeholder="Password" />
-          <div className="font-Montserrat font-medium text-xs leading-40 text-primary self-end">
+          <InputField placeholder="Password" className="mt-6" />
+          <div className="font-Montserrat font-medium text-xs leading-40 text-primary self-end mt-6">
             Forgot Password?
           </div>
           <Grid

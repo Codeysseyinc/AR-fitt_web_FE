@@ -2,10 +2,10 @@ import { Button, Grid, Link, TextField } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
-import ReactPhoneInput from "react-phone-input-material-ui";
 import CONSTANTS from "../../utils/constants";
 import { useState } from "react";
 import { useARfittContext } from "../../context/storeContext";
+import InputPhoneField from "../../components/inputPhoneField";
 
 interface BasicInfoProps {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
@@ -50,11 +50,7 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
             <InputField placeholder="Confirm Password" />
           </Grid>
           <Grid className="flex items-center justify-evenly w-full">
-            <ReactPhoneInput
-              value={""}
-              onChange={() => {}} // passed function receives the phone value
-              component={TextField}
-            />
+            <InputPhoneField />
           </Grid>
           <Grid className="flex items-center justify-evenly w-full">
             <InputField placeholder="Date of Birth" />

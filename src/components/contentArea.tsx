@@ -37,20 +37,20 @@ const ContentArea: React.FC<ContentArea> = ({
       className=" bg-white rounded-tl-[40px] w-[65%] absolute left-[35%] h-screen flex items-center"
     >
       {/* logo and back button */}
-      <Grid direction="row" className=" w-[100%] h-[15%] flex justify-start">
-        <div className=" w-[50%] h-[100%] flex justify-start">
+      <Grid direction="row" className=" w-[100%] h-[17%] flex justify-start">
+        <div className=" w-[50%] h-[100%] flex justify-start ">
           <ArrowBackRoundedIcon
             onClick={() => {
               console.log("clicked");
               getPreviousForm(title, setCurrentForm);
             }}
             sx={{ color: "white" }}
-            className="self-center bg-primary rounded-[50%] scale-150 ml-8"
+            className="self-center bg-primary rounded-[50%] scale-150 ml-8 mt-6"
           />
         </div>
-        <div className=" w-[50%] h-[100%] flex justify-end  ">
+        <div className=" w-[50%] h-[100%] flex justify-end ">
           <img
-            className="self-end flex justify-end m-2 h-[75%]"
+            className="self-end flex justify-end mr-6 h-[75%]"
             style={{ display: `${removeLogo ? "none" : "block"}` }}
             src="./assets/images/logo.png"
           />

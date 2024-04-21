@@ -6,7 +6,7 @@ const MobileAppBanner = () => {
       container
       direction="row"
       xs={12}
-      className="w-screen h-80 bg-white flex justify-center items-center relative pb-10"
+      className="w-screen h-80 bg-white flex justify-center items-center relative pb-10 "
     >
       {/* Text Area */}
       <Grid

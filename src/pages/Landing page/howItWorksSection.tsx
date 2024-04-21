@@ -18,7 +18,7 @@ const HowItWorksSection: React.FC<{}> = () => {
           direction="column"
           className=" h-[90%] w-[100%] flex justify-start items-center "
         >
-          <div className=" font-Dhurjati text-primarySaturated font-normal text-base leading-9">
+          <div className=" font-Dhurjati text-primarySaturated font-normal text-base leading-9 mt-4">
             HOW IT WORKS
           </div>
           {/*Some Description */}
@@ -33,9 +33,9 @@ const HowItWorksSection: React.FC<{}> = () => {
           {/* Carousel */}
           <Grid
             direction="column"
-            className=" lg:w-[80%] lg:h-[90%] xl:w-[80%] xl:h-[100%]  flex items-center "
+            className=" lg:w-[85%] lg:h-[90%] xl:w-[80%] xl:h-[100%]  flex items-center "
           >
-            <div className="w-[100%] h-[100%] m-4  flex">
+            <div className="w-[100%] h-[100%] mt-8  flex">
               <Carousel />
             </div>
           </Grid>

@@ -23,7 +23,7 @@ const HeroSection: React.FC<{}> = () => {
           >
             <img
               src="/assets/images/landingPage/heroSection/landingPageDemoAsset.png"
-              className=" self-center  mt-0 lg:h-[80%] xl:h-[90%]  "
+              className=" self-center  mt-0 h-[80%] lg:h-[80%] xl:h-[90%]  "
             />
             <div className=" lg:w-[80%] xl:w-[60%] font-Dhurjati font-normal text-lg text-gray-500">
               Style Made Simple, virtual Fashion with AR-Fitt. Let's Elevate
