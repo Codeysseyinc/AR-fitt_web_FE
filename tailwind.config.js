@@ -17,6 +17,9 @@ module.exports = {
         pink: "#D66F75",
         purple: "#7F84C2",
         link: "#503ADA",
+        "light-gray": "#F5F6F8",
+        "dark-gray": "#646464",
+        "line-gray": "#DBDBDB",
       },
       fontFamily: {
         Montserrat: ["Montserrat", "sans-serif"],
