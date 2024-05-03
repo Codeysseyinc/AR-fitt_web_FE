@@ -6,10 +6,11 @@ import CONSTANTS from "../../utils/constants";
 import { useRef, useState } from "react";
 import OtpInputField from "../../components/otpInputFields";
 import { useARfittContext } from "../../context/storeContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const LogIn: React.FC<{}> = ({}) => {
   const { email, setEmail } = useARfittContext();
-
+  const navigate = useNavigate();
   return (
     <Grid
       container
@@ -31,13 +32,19 @@ const LogIn: React.FC<{}> = ({}) => {
             Welcome Back!
           </p>
           <InputField
+            type="email"
             placeholder="Email"
             onChange={(e) => {
               setEmail(e.target.value);
             }}
           />
-          <InputField placeholder="Password" className="mt-6" />
-          <div className="font-Montserrat font-medium text-xs leading-40 text-primary self-end mt-6">
+          <InputField type="password" placeholder="Password" className="mt-6" />
+          <div
+            className="font-Montserrat font-medium text-xs leading-40 text-primary self-end mt-6 cursor-pointer"
+            onClick={() => {
+              navigate("/forgotPassword");
+            }}
+          >
             Forgot Password?
           </div>
           <Grid
@@ -55,7 +62,9 @@ const LogIn: React.FC<{}> = ({}) => {
                 borderRadius: "10px",
                 height: "75%",
               }}
-              onClick={() => {}}
+              onClick={() => {
+                navigate("/home");
+              }}
             >
               Login
             </Button>

@@ -3,6 +3,8 @@ import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import { useARfittContext } from "../../context/storeContext";
 import SubscriptionCard from "../../components/subscriptionCard";
+import CONSTANTS from "../../utils/constants";
+import { useEffect } from "react";
 
 interface SubscriptionPlans {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
@@ -10,7 +12,9 @@ interface SubscriptionPlans {
 
 const SubscriptionPlans: React.FC<SubscriptionPlans> = ({ setCurrentForm }) => {
   const { email, setEmail } = useARfittContext();
-
+  useEffect(() => {
+    localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_SUBSCRIPTION);
+  });
   return (
     <Grid
       container

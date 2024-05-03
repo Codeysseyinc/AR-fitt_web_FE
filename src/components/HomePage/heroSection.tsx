@@ -1,16 +1,16 @@
-import { Box, Grid } from '@mui/material'
-import React from 'react'
+import { Box, Grid } from "@mui/material";
+import React from "react";
 
 const HeroSection = () => {
   return (
     <Grid
       item
       container
-      className='w-full h-[70%] rounded-lg bg-primarySaturated mb-6 flex max-sm:[gap-2%] sm:gap-[4%] justify-between'
+      className="w-full h-[70%] min-h-[500px] rounded-lg bg-primarySaturated mb-6 flex max-sm:[gap-2%] sm:gap-[4%] justify-between"
       style={{
         backgroundImage: 'url("/assets/images/homePage/homeHeroBg.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       {/* Image Grid */}
@@ -22,8 +22,8 @@ const HeroSection = () => {
         className="flex items-end overflow-hidden justify-end h-full"
       >
         <img
-          className='max-h-[95%] min-h-[85%]'
-          src='assets/images/landingPage/heroSection/landingPageModels.png'
+          className="max-h-[95%] min-h-[85%]"
+          src="assets/images/landingPage/heroSection/landingPageModels.png"
           alt="hero-img"
         />
       </Grid>
@@ -36,20 +36,27 @@ const HeroSection = () => {
         className="flex flex-col items-center justify-center"
       >
         <Box className="inline-block max-w-[700px]">
-          <h1 className='font-Bungee text-white text-[550%] tracking-[10px] leading-[1] inline-block mb-0'>
+          <h1 className="font-Bungee text-white text-[550%] tracking-[10px] leading-[1] inline-block mb-0">
             AR-FITT
           </h1>
-          <Box className='inline-block w-[85%]'>
-            <h2 className='font-Dhurjati text-[220%] text-white leading-[1]'>Hey! Rafay Rashed</h2>
-            <h2 className='font-Dhurjati text-[220%] text-white leading-[1] mt-0 mb-[10px]'>Elevate Your Style: Explore Our Platform Features.</h2>
-            <p className='font-Dhurjati text-lg text-white inline-block'>
-              Upon sign-up, you'll dive straight into exploring our array of features designed to elevate your style journey. Should you require assistance, our intuitive interface and comprehensive guides ensure a smooth onboarding process.
+          <Box className="inline-block w-[85%]">
+            <h2 className="font-Dhurjati text-[220%] text-white leading-[1]">
+              Hey! Rafay Rashed
+            </h2>
+            <h2 className="font-Dhurjati text-[220%] text-white leading-[1] mt-0 mb-[10px]">
+              Elevate Your Style: Explore Our Platform Features.
+            </h2>
+            <p className="font-Dhurjati text-lg text-white inline-block">
+              Upon sign-up, you'll dive straight into exploring our array of
+              features designed to elevate your style journey. Should you
+              require assistance, our intuitive interface and comprehensive
+              guides ensure a smooth onboarding process.
             </p>
           </Box>
         </Box>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default HeroSection
+export default HeroSection;

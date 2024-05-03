@@ -4,6 +4,8 @@ import ContentArea from "../../components/contentArea";
 import { useARfittContext } from "../../context/storeContext";
 import SubscriptionCard from "../../components/subscriptionCard";
 import SignUpCamera from "../../components/signUpCamera";
+import { useEffect } from "react";
+import CONSTANTS from "../../utils/constants";
 
 interface BodyScan {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
@@ -11,7 +13,9 @@ interface BodyScan {
 
 const BodyScan: React.FC<BodyScan> = ({ setCurrentForm }) => {
   const { email, setEmail } = useARfittContext();
-
+  useEffect(() => {
+    localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_SCANNING);
+  });
   return (
     <Grid
       container
@@ -25,7 +29,7 @@ const BodyScan: React.FC<BodyScan> = ({ setCurrentForm }) => {
         modelsSrc="/assets/images/signUp/scanningModels.png"
       />
       <ContentArea title="Scanning" setCurrentForm={setCurrentForm}>
-        <Grid direction="row" className="w-[100%] h-[60%] mt-6">
+        <Grid direction="row" className="w-[100%] h-[67%] mt-6">
           <SignUpCamera />
         </Grid>
       </ContentArea>

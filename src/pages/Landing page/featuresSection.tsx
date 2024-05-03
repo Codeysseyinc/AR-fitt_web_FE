@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import features from "./features.json";
+import CallToActionButton from "../../components/callToActionButton";
 const FeaturesSection: React.FC<{}> = () => {
   return (
     <>
@@ -57,6 +58,9 @@ const FeaturesSection: React.FC<{}> = () => {
               guides ensure a smooth onboarding process. Get ready to unlock the
               full potential of AR-Fitt and discover a world of virtual fashion
               at your fingertips
+              <div className=" mt-4 w-[50%]">
+                <CallToActionButton nav="/signup" title="Sign Up" />
+              </div>
             </div>
           </Grid>
           {/*features asset area / table*/}

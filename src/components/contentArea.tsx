@@ -38,14 +38,14 @@ const ContentArea: React.FC<ContentArea> = ({
     >
       {/* logo and back button */}
       <Grid direction="row" className=" w-[100%] h-[17%] flex justify-start">
-        <div className=" w-[50%] h-[100%] flex justify-start ">
+        <div className=" w-[50%] h-[100%] flex justify-start">
           <ArrowBackRoundedIcon
             onClick={() => {
               console.log("clicked");
               getPreviousForm(title, setCurrentForm);
             }}
             sx={{ color: "white" }}
-            className="self-center bg-primary rounded-[50%] scale-150 ml-8 mt-6"
+            className="self-center bg-primary rounded-[50%] scale-150 ml-8 mt-6 cursor-pointer"
           />
         </div>
         <div className=" w-[50%] h-[100%] flex justify-end ">

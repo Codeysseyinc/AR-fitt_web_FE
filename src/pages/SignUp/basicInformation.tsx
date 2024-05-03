@@ -1,9 +1,9 @@
-import { Button, Grid, Link, TextField } from "@mui/material";
+import { Alert, Button, Grid, Link, TextField } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
 import CONSTANTS from "../../utils/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useARfittContext } from "../../context/storeContext";
 import InputPhoneField from "../../components/inputPhoneField";
 import GenderDropDown from "../../components/genderDropdown";
@@ -14,6 +14,12 @@ interface BasicInfoProps {
 
 const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
   const { email, setEmail } = useARfittContext();
+  useEffect(() => {
+    localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_BASIC_INFO);
+  });
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   return (
     // page
@@ -30,19 +36,25 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
       />
       {/* content section */}
       <ContentArea title="Create Account" setCurrentForm={setCurrentForm}>
+        {passwordError ? (
+          <Alert severity="error">Confirm Password doesn't match </Alert>
+        ) : (
+          ""
+        )}
         <Grid direction="column" className="w-[70%] flex justify-center">
           {/* First Name & Last Name */}
           <Grid
             direction="row"
             className="flex items-center justify-evenly w-full mt-4"
           >
-            <InputField placeholder="First Name" />
-            <InputField placeholder="Last Name" />
+            <InputField type="text" placeholder="First Name" />
+            <InputField type="text" placeholder="Last Name" />
           </Grid>
           {/* Email */}
           <Grid className="flex items-center justify-evenly w-full mt-2">
             <InputField
               placeholder="Email"
+              type="email"
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
@@ -50,8 +62,20 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
           </Grid>
           {/* Password & Confirm Password */}
           <Grid className="flex items-center justify-evenly w-full mt-2">
-            <InputField placeholder="Password" />
-            <InputField placeholder="Confirm Password" />
+            <InputField
+              placeholder="Password"
+              type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+            <InputField
+              placeholder="Confirm Password"
+              type="password"
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
+            />
           </Grid>
           {/* Phone Number*/}
           <Grid className="flex items-center justify-evenly w-full mt-2">
@@ -59,7 +83,7 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
           </Grid>
           {/* DOB & Gender*/}
           <Grid className="flex items-center justify-evenly w-full mt-2">
-            <InputField placeholder="Date of Birth" />
+            <InputField type="date" placeholder="Date of Birth" />
             <GenderDropDown />
           </Grid>
           {/* Sign Up Button */}
@@ -75,7 +99,12 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
                 height: "70%",
               }}
               onClick={() => {
-                setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION);
+                console.log(password, "--", confirmPassword);
+                if (password === confirmPassword) {
+                  setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION);
+                } else {
+                  setPasswordError("Confirm Password does not match");
+                }
               }}
             >
               Sign Up

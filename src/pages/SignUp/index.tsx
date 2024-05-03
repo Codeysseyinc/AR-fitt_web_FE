@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CONSTANTS from "../../utils/constants";
 import BasicInformation from "./basicInformation";
 import OtpVerification from "./otpVerification";
-import SubscriptionCard from "../../components/subscriptionCard";
 import SubscriptionPlans from "./subscriptionPlans";
 import BodyScan from "./bodyScan";
 
 const SignUp = () => {
-  const [currentForm, setCurrentForm] = useState(CONSTANTS.SIGN_UP_BASIC_INFO);
+  const [currentForm, setCurrentForm] = useState(
+    localStorage.getItem("currentForm") ?? CONSTANTS.SIGN_UP_BASIC_INFO
+  );
+
   return (
     <>
       {currentForm === CONSTANTS.SIGN_UP_BASIC_INFO ? (
