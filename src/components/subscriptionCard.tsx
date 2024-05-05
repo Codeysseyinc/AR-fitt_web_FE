@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-redeclare */
 import { Button, Grid } from "@mui/material";
 import "./index.css";
-import { useState } from "react";
-import CONSTANTS from "../utils/constants";
+import CONSTANTS from "../utils/constants/CONSTANTS";
 interface SubscriptionCard {
   title: string;
   color: string;

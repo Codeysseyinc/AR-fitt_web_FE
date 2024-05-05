@@ -1,11 +1,10 @@
-import { Button, Grid, Link, TextField } from "@mui/material";
+import { Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import { useARfittContext } from "../../context/storeContext";
-import SubscriptionCard from "../../components/subscriptionCard";
 import SignUpCamera from "../../components/signUpCamera";
 import { useEffect } from "react";
-import CONSTANTS from "../../utils/constants";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 interface BodyScan {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;

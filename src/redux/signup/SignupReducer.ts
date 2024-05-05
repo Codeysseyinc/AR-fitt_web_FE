@@ -1,0 +1,152 @@
+import { Reducer } from 'redux';
+import CONSTANTS from '../../utils/constants/CONSTANTS';
+import SignupActionTypes from './SignupActionTypes';
+
+type SignupAction = {
+  type: string;
+  payload?: any;
+};
+
+interface SignupState {
+  isSigningUp: boolean;
+  errorMessage: string | null;
+  currentUser: any;
+  userDetails: any;
+  userEmail: string | null;
+  currentForm: string;
+  isFetching: boolean;
+  forgotPassword: boolean;
+  isSendingEmail: boolean;
+  changePassword: boolean;
+  isChangingPassword: boolean;
+  isVerifying: boolean;
+}
+
+const INITIAL_STATE: SignupState = {
+  isSigningUp: false,
+  errorMessage: null,
+  currentUser: null,
+  userDetails: {},
+  userEmail: null,
+  currentForm: CONSTANTS.SIGN_UP_BASIC_INFO,
+  isFetching: false,
+  forgotPassword: false,
+  isSendingEmail: false,
+  changePassword: false,
+  isChangingPassword: false,
+  isVerifying: false,
+};
+
+const signupReducer: Reducer<SignupState, SignupAction> = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    case SignupActionTypes.REGISTER_USER_START:
+      return {
+        ...state,
+        isSigningUp: true,
+        errorMessage: null,
+      };
+    case SignupActionTypes.REGISTER_USER_SUCCESS:
+      return {
+        ...state,
+        isSigningUp: false,
+        errorMessage: null,
+        currentUser: action.payload,
+      };
+    case SignupActionTypes.REGISTER_USER_FAILURE:
+      return {
+        ...state,
+        isSigningUp: false,
+        errorMessage: action.payload,
+      };
+    case SignupActionTypes.FORGOT_PASSWORD_START:
+      return {
+        ...state,
+        isSendingEmail: true,
+        errorMessage: null,
+      };
+    case SignupActionTypes.FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isSendingEmail: false,
+        errorMessage: null,
+        forgotPassword: action.payload,
+      };
+    case SignupActionTypes.FORGOT_PASSWORD_FAILURE:
+      return {
+        ...state,
+        isSendingEmail: false,
+        errorMessage: action.payload,
+      };
+    case SignupActionTypes.CHANGE_PASSWORD_START:
+      return {
+        ...state,
+        isChangingPassword: true,
+        errorMessage: null,
+      };
+    case SignupActionTypes.CHANGE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isChangingPassword: false,
+        errorMessage: null,
+        changePassword: action.payload,
+      };
+    case SignupActionTypes.CHANGE_PASSWORD_FAILURE:
+      return {
+        ...state,
+        isChangingPassword: false,
+        errorMessage: action.payload,
+      };
+    case SignupActionTypes.FETCH_USER_START:
+      return {
+        ...state,
+        isFetching: true,
+        errorMessage: null,
+      };
+    case SignupActionTypes.FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: null,
+        currentUser: action.payload,
+      };
+    case SignupActionTypes.FETCH_USER_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: action.payload,
+      };
+    case SignupActionTypes.SET_USER_DETAILS:
+      return {
+        ...state,
+        userDetails: action.payload,
+      };
+    case SignupActionTypes.SET_USER_EMAIL:
+      return {
+        ...state,
+        userEmail: action.payload,
+      };
+    case SignupActionTypes.SET_IS_SIGNING_UP:
+      return {
+        ...state,
+        isSigningUp: action.payload,
+      };
+    case SignupActionTypes.SET_ERROR_MESSAGE:
+      return {
+        ...state,
+        errorMessage: action.payload,
+      };
+    case SignupActionTypes.SET_CURRENT_FORM:
+      return {
+        ...state,
+        currentForm: action.payload,
+      };
+    case SignupActionTypes.INITIALIZE_SIGNUP_STATE:
+      return {
+        ...INITIAL_STATE,
+      };
+    default:
+      return state;
+  }
+};
+
+export default signupReducer;

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import CONSTANTS from "../../utils/constants";
+import { useState } from "react";
 import BasicInformation from "./basicInformation";
 import OtpVerification from "./otpVerification";
 import SubscriptionPlans from "./subscriptionPlans";
 import BodyScan from "./bodyScan";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const SignUp = () => {
   const [currentForm, setCurrentForm] = useState(

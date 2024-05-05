@@ -1,9 +1,10 @@
-import { Grid, IconButton } from "@mui/material";
+import { Grid } from "@mui/material";
 import "./index.css";
 import React, { ReactNode } from "react";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import CONSTANTS from "../utils/constants";
 import { useNavigate } from "react-router-dom";
+import CONSTANTS from "../utils/constants/CONSTANTS";
+
 interface ContentArea {
   children: ReactNode; // Explicitly define children as ReactNode type
   title?: string;

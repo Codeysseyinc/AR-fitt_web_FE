@@ -1,10 +1,10 @@
-import { Button, Grid, Link, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
-import CONSTANTS from "../../utils/constants";
 import OtpInputField from "../../components/otpInputFields";
 import { useARfittContext } from "../../context/storeContext";
 import { useEffect } from "react";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 interface OtpVerificationProps {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;

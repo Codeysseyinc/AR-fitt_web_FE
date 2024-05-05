@@ -1,12 +1,13 @@
-import { Alert, Button, Grid, Link, TextField } from "@mui/material";
+import { Alert, Button, Grid, Link } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useARfittContext } from "../../context/storeContext";
+import { RootState } from '../../redux/rootReducer';
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
-import CONSTANTS from "../../utils/constants";
-import { useEffect, useState } from "react";
-import { useARfittContext } from "../../context/storeContext";
 import InputPhoneField from "../../components/inputPhoneField";
 import GenderDropDown from "../../components/genderDropdown";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 interface BasicInfoProps {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
@@ -14,9 +15,13 @@ interface BasicInfoProps {
 
 const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
   const { email, setEmail } = useARfittContext();
+  // TODO: Remove this comment, reference for Redux state variables usage
+  // const something = useSelector((state: RootState) => state.signup.isSigningUp);
+
   useEffect(() => {
     localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_BASIC_INFO);
   });
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");

@@ -1,10 +1,10 @@
-import { Button, Grid } from "@mui/material";
+import { useEffect } from "react";
+import { Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import { useARfittContext } from "../../context/storeContext";
 import SubscriptionCard from "../../components/subscriptionCard";
-import CONSTANTS from "../../utils/constants";
-import { useEffect } from "react";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 interface SubscriptionPlans {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
