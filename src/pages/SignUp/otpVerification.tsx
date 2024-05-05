@@ -1,22 +1,26 @@
-import { Button, Grid } from "@mui/material";
-import AssetSection from "../../components/assetSection";
-import ContentArea from "../../components/contentArea";
-import OtpInputField from "../../components/otpInputFields";
-import { useARfittContext } from "../../context/storeContext";
 import { useEffect } from "react";
+import { Button, Grid } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import ContentArea from "../../components/contentArea";
+import AssetSection from "../../components/assetSection";
+import OtpInputField from "../../components/otpInputFields";
+import { setCurrentForm, practiceTest } from '../../redux/signup/SignupActions';
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 
-interface OtpVerificationProps {
-  setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
-}
+const OtpVerification: React.FC = () => {
 
-const OtpVerification: React.FC<OtpVerificationProps> = ({
-  setCurrentForm,
-}) => {
-  const { email, setEmail } = useARfittContext();
+  const dispatch = useDispatch();
+  const email = useSelector((state: any) => state.signup.userDetails.email);
+
   useEffect(() => {
     localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_OTP_VERIFICATION);
-  });
+    dispatch(practiceTest());
+  }, []);
+
+  const handleNextPage = () => {
+    dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+  }
+
   return (
     <Grid
       container
@@ -30,7 +34,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
         modelsSrc="/assets/images/signUp/otpVerificationModels.png"
       />
       {/* Content Area */}
-      <ContentArea title="OTP Verification" setCurrentForm={setCurrentForm}>
+      <ContentArea title="OTP Verification">
         <Grid direction="column" className="w-[70%] flex justify-center">
           <p className="font-Montserrat text-sm flex justify-center text-center">
             Please enter the One-Time Password to verify your account <br /> A
@@ -50,9 +54,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
                 borderRadius: "15px",
                 height: "70%",
               }}
-              onClick={() => {
-                setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION);
-              }}
+              onClick={() => handleNextPage()}
             >
               Verify
             </Button>{" "}

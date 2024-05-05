@@ -12,7 +12,6 @@ interface SignupState {
   errorMessage: string | null;
   currentUser: any;
   userDetails: any;
-  userEmail: string | null;
   currentForm: string;
   isFetching: boolean;
   forgotPassword: boolean;
@@ -20,14 +19,20 @@ interface SignupState {
   changePassword: boolean;
   isChangingPassword: boolean;
   isVerifying: boolean;
+
+  test: string;
 }
 
 const INITIAL_STATE: SignupState = {
   isSigningUp: false,
   errorMessage: null,
   currentUser: null,
-  userDetails: {},
-  userEmail: null,
+  userDetails: {
+    email: '',
+    fullName: '',
+    phone: '',
+    password: '',
+  },
   currentForm: CONSTANTS.SIGN_UP_BASIC_INFO,
   isFetching: false,
   forgotPassword: false,
@@ -35,10 +40,17 @@ const INITIAL_STATE: SignupState = {
   changePassword: false,
   isChangingPassword: false,
   isVerifying: false,
+
+  test: '',
 };
 
 const signupReducer: Reducer<SignupState, SignupAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SignupActionTypes.DUMMY_TEST:
+      return {
+        ...state,
+        test: 'For Refrence'
+      }
     case SignupActionTypes.REGISTER_USER_START:
       return {
         ...state,
@@ -119,11 +131,6 @@ const signupReducer: Reducer<SignupState, SignupAction> = (state = INITIAL_STATE
       return {
         ...state,
         userDetails: action.payload,
-      };
-    case SignupActionTypes.SET_USER_EMAIL:
-      return {
-        ...state,
-        userEmail: action.payload,
       };
     case SignupActionTypes.SET_IS_SIGNING_UP:
       return {

@@ -1,35 +1,35 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { Grid } from "@mui/material";
-import "./index.css";
 import React, { ReactNode } from "react";
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
+import { setCurrentForm } from '../redux/signup/SignupActions';
 import CONSTANTS from "../utils/constants/CONSTANTS";
+import "./index.css";
 
-interface ContentArea {
-  children: ReactNode; // Explicitly define children as ReactNode type
+interface ContentAreaProps {
+  children: ReactNode;
   title?: string;
   removeLogo?: boolean;
-  setCurrentForm?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ContentArea: React.FC<ContentArea> = ({
+const ContentArea: React.FC<ContentAreaProps> = ({
   children,
   title,
   removeLogo,
-  setCurrentForm,
 }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  function getPreviousForm(title?: string, setCurrentForm?: any) {
+
+  const getPreviousForm = (title?: string, setCurrentForm?: any) => {
     if (title === "OTP Verification") {
-      setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO);
+      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
     } else if (title === "Subscription Plans") {
-      setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION);
+      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
     } else if (title === "Scanning") {
-      setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION);
-    } //basic Info page
-    else {
-      navigate(-1);
-    }
+      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+    } else navigate(-1);
   }
   return (
     <Grid

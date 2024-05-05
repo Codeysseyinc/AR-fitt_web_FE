@@ -6,27 +6,41 @@ import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
 import GenderDropDown from "../../components/genderDropdown";
 import InputPhoneField from "../../components/inputPhoneField";
-import { useARfittContext } from "../../context/storeContext";
 import { registerUserStartAsync } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const BasicInformation: React.FC<any> = () => {
   const dispatch: any = useDispatch();
-  const { email, setEmail } = useARfittContext();
-  const { phone } = useARfittContext();
-  const [firstName, setFirstName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
   const [lastName, setLastName] = useState("");
-  // TODO: Remove this comment, reference for Redux state variables usage
-  // const something = useSelector((state: RootState) => state.signup.isSigningUp);
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_BASIC_INFO);
   });
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [error, setError] = useState("");
+  const handleSubmit = () => {
+    if (password === confirmPassword) {
+      dispatch(
+        registerUserStartAsync(
+          {
+            email: email,
+            fullName: firstName.concat(" ", lastName),
+            phone: phone,
+            password: password,
+          },
+          setError
+        )
+      );
+    } else {
+      setPasswordError("Confirm Password does not match");
+    }
+  }
 
   return (
     // page
@@ -56,8 +70,20 @@ const BasicInformation: React.FC<any> = () => {
             direction="row"
             className="flex items-center justify-evenly w-full mt-4"
           >
-            <InputField type="text" placeholder="First Name" />
-            <InputField type="text" placeholder="Last Name" />
+            <InputField
+              type="text"
+              placeholder="First Name"
+              onChange={(e) => {
+                setFirstName(e.target.value);
+              }}
+            />
+            <InputField
+              type="text"
+              placeholder="Last Name"
+              onChange={(e) => {
+                setLastName(e.target.value);
+              }}
+            />
           </Grid>
           {/* Email */}
           <Grid className="flex items-center justify-evenly w-full mt-2">
@@ -88,7 +114,7 @@ const BasicInformation: React.FC<any> = () => {
           </Grid>
           {/* Phone Number*/}
           <Grid className="flex items-center justify-evenly w-full mt-2">
-            <InputPhoneField />
+            <InputPhoneField setPhone={setPhone}/>
           </Grid>
           {/* DOB & Gender*/}
           <Grid className="flex items-center justify-evenly w-full mt-2">
@@ -107,23 +133,7 @@ const BasicInformation: React.FC<any> = () => {
                 borderRadius: "15px",
                 height: "70%",
               }}
-              onClick={() => {
-                if (password === confirmPassword) {
-                  dispatch(
-                    registerUserStartAsync(
-                      {
-                        email: email,
-                        fullName: firstName.concat(" ", lastName),
-                        phone: phone,
-                        password: password,
-                      },
-                      setError
-                    )
-                  );
-                } else {
-                  setPasswordError("Confirm Password does not match");
-                }
-              }}
+              onClick={() => handleSubmit()}
             >
               Sign Up
             </Button>{" "}

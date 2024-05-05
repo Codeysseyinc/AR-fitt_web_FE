@@ -1,12 +1,15 @@
 // TODO: Refactor types in this file to remove usage of 'any' and provide explicit type definitions
 import axios, { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
-import CONSTANTS from "../../utils/constants/CONSTANTS";
-import URLS from "../../utils/constants/URLS";
-import SignupActionTypes from "./SignupActionTypes";
 import { Dispatch as reduxDispatch, AnyAction } from "redux";
+import SignupActionTypes from "./SignupActionTypes";
+import URLS from "../../utils/constants/URLS";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 // * ============== Redux Reducer Action Triggers =================
+export const practiceTest = () => ({
+  type: SignupActionTypes.DUMMY_TEST,
+});
 export const registerUserStart = () => ({
   type: SignupActionTypes.REGISTER_USER_START,
 });
@@ -62,10 +65,6 @@ export const setUserDetails = (user: any) => ({
   type: SignupActionTypes.SET_USER_DETAILS,
   payload: user,
 });
-export const setUserEmail = (email: string) => ({
-  type: SignupActionTypes.SET_USER_EMAIL,
-  payload: email,
-});
 export const setCurrentForm = (form: string) => ({
   type: SignupActionTypes.SET_CURRENT_FORM,
   payload: form,
@@ -96,8 +95,7 @@ export const registerUserStartAsync = (
     axios
       .post(`${URLS.registerUser}`, payload)
       .then((response) => {
-        console.log("in then");
-        dispatch(registerUserStart()); // Dispatching action after API call succeeds
+        dispatch(registerUserStart());
         dispatch(setUserDetails(payload));
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
       })

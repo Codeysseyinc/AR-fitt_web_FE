@@ -1,20 +1,23 @@
 import { useEffect } from "react";
 import { Grid } from "@mui/material";
-import AssetSection from "../../components/assetSection";
+import { useDispatch } from "react-redux";
 import ContentArea from "../../components/contentArea";
-import { useARfittContext } from "../../context/storeContext";
+import AssetSection from "../../components/assetSection";
 import SubscriptionCard from "../../components/subscriptionCard";
+import { setCurrentForm } from '../../redux/signup/SignupActions';
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 
-interface SubscriptionPlans {
-  setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
-}
+const SubscriptionPlans = () => {
+  const dispatch = useDispatch();
 
-const SubscriptionPlans: React.FC<SubscriptionPlans> = ({ setCurrentForm }) => {
-  const { email, setEmail } = useARfittContext();
   useEffect(() => {
     localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_SUBSCRIPTION);
   });
+
+  const handleNextPage = (nextPage: string) => {
+    dispatch(setCurrentForm(nextPage));
+  }
+
   return (
     <Grid
       container
@@ -27,7 +30,7 @@ const SubscriptionPlans: React.FC<SubscriptionPlans> = ({ setCurrentForm }) => {
         backgroundSrc="/assets/images/signUp/subscriptionPlansBg.png"
         modelsSrc="/assets/images/signUp/subscriptionPlansModels.png"
       />
-      <ContentArea title="Subscription Plans" setCurrentForm={setCurrentForm}>
+      <ContentArea title="Subscription Plans">
         <Grid
           direction="row"
           className="w-[100%] h-[60%] flex justify-center mt-6"
@@ -38,7 +41,7 @@ const SubscriptionPlans: React.FC<SubscriptionPlans> = ({ setCurrentForm }) => {
             color="pink"
             icon="./assets/images/signUp/subscriptionPlan1.png"
             price="1"
-            setCurrentForm={setCurrentForm}
+            handleNextPage={handleNextPage}
           />
           {/* Monthly */}
 
@@ -47,7 +50,7 @@ const SubscriptionPlans: React.FC<SubscriptionPlans> = ({ setCurrentForm }) => {
             color="purple"
             icon="./assets/images/signUp/subscriptionPlan2.png"
             price="5"
-            setCurrentForm={setCurrentForm}
+            handleNextPage={handleNextPage}
           />
           {/* Yearly */}
 
@@ -56,7 +59,7 @@ const SubscriptionPlans: React.FC<SubscriptionPlans> = ({ setCurrentForm }) => {
             color="primaryLight"
             icon="./assets/images/signUp/subscriptionPlan3.png"
             price="50"
-            setCurrentForm={setCurrentForm}
+            handleNextPage={handleNextPage}
           />
         </Grid>
       </ContentArea>

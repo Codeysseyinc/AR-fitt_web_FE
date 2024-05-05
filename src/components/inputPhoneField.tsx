@@ -1,13 +1,22 @@
+import { Dispatch, SetStateAction } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/high-res.css";
-const InputPhoneField: React.FC<{}> = ({}) => {
+
+interface InputPhoneFieldProps {
+  setPhone: Dispatch<SetStateAction<number | string | any>> | any;
+}
+
+const InputPhoneField: React.FC<InputPhoneFieldProps> = ({ setPhone }) => {
+
   return (
     <PhoneInput
       specialLabel=""
       placeholder={"Phone Number"}
       country={"gb"}
       value={""}
-      onChange={() => {}}
+      onChange={(e) => {
+        setPhone(e);
+      }}
       containerStyle={{
         borderBottom: "1px solid rgb(148 148 148)",
         width: "97%",

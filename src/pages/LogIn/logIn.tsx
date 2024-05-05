@@ -1,14 +1,14 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Grid, Link } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
-import { useARfittContext } from "../../context/storeContext";
-import { useNavigate } from "react-router-dom";
-import CONSTANTS from "../../utils/constants/CONSTANTS";
 
-const LogIn: React.FC<{}> = ({}) => {
-  const { email, setEmail } = useARfittContext();
+const LogIn: React.FC = () => {
   const navigate = useNavigate();
+  const [_, setEmail] = useState("");
+
   return (
     <Grid
       container

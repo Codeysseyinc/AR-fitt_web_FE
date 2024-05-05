@@ -1,21 +1,23 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
 import { Button, Grid } from "@mui/material";
-import "./index.css";
 import CONSTANTS from "../utils/constants/CONSTANTS";
+import "./index.css";
 interface SubscriptionCard {
   title: string;
   color: string;
   icon: string;
   price: string;
-  setCurrentForm: any;
+  handleNextPage: any;
 }
+
 const SubscriptionCard: React.FC<SubscriptionCard> = ({
   color,
   icon,
   title,
   price,
-  setCurrentForm,
+  handleNextPage,
 }) => {
+
   const colorVariants = {
     pink: " bg-pink",
     purple: "bg-purple",
@@ -26,11 +28,13 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
     purple: "text-purple",
     primaryLight: "text-primaryLight",
   };
-  function getUnitPrice(title: string) {
+
+  const getUnitPrice = (title: string) => {
     if (title === "One Time") return "/Session";
     else if (title === "Monthly") return "/Month";
     else if (title === "Yearly") return "/Year";
   }
+
   return (
     <Grid
       direction="column"
@@ -70,9 +74,7 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
           margin: "5%",
           borderRadius: "10px",
         }}
-        onClick={() => {
-          setCurrentForm(CONSTANTS.SIGN_UP_SCANNING);
-        }}
+        onClick={handleNextPage(CONSTANTS.SIGN_UP_SCANNING)}
       >
         Subscribe
       </Button>{" "}

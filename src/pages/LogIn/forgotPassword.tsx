@@ -6,9 +6,10 @@ import { useARfittContext } from "../../context/storeContext";
 import { useNavigate } from "react-router-dom";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 
-const ForgotPassword: React.FC<{}> = ({}) => {
-  const { email, setEmail } = useARfittContext();
+const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
+  const { email, setEmail } = useARfittContext();
+
   return (
     <Grid
       container
