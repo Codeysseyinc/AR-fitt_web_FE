@@ -1,9 +1,9 @@
 // TODO: Refactor types in this file to remove usage of 'any' and provide explicit type definitions
-import axios from 'axios';
-import { Dispatch, SetStateAction } from 'react';
-import CONSTANTS from '../../utils/constants/CONSTANTS';
-import URLS from '../../utils/constants/URLS';
-import SignupActionTypes from './SignupActionTypes';
+import axios from "axios";
+import { Dispatch, SetStateAction } from "react";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
+import URLS from "../../utils/constants/URLS";
+import SignupActionTypes from "./SignupActionTypes";
 
 // * ============== Redux Reducer Action Triggers =================
 export const registerUserStart = () => ({
@@ -63,8 +63,8 @@ export const setUserDetails = (user: any) => ({
 });
 export const setUserEmail = (email: string) => ({
   type: SignupActionTypes.SET_USER_EMAIL,
-  payload: email
-})
+  payload: email,
+});
 export const setCurrentForm = (form: string) => ({
   type: SignupActionTypes.SET_CURRENT_FORM,
   payload: form,
@@ -85,22 +85,32 @@ export const verifyEmailFailure = (errorMessage: string) => ({
 });
 
 // * ============== API Calls =================
-export const registerUserStartAsync = (account: any, setErrorMessage: Dispatch<SetStateAction<string | null>> | any) => {
+export const registerUserStartAsync = (
+  email: string,
+  setErrorMessage: Dispatch<SetStateAction<string | null>> | any
+) => {
+  console.log("heloo!!");
+
   return (dispatch: Dispatch<any>) => {
     setErrorMessage(null);
     dispatch(registerUserStart());
 
     axios
-      .post(URLS.registerUser, account)
+      .get(`${URLS.verifyEmail}/?email=${email}`)
       .then((response) => {
-        dispatch(registerUserSuccess(response.data));
-        dispatch(setUserDetails({ date_of_birth: account.date_of_birth }));
-        dispatch(setUserEmail(account.email));
-        dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
+        console.log("success!!");
+        if (response.status !== 200) {
+          dispatch(setUserEmail(email));
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
+        } else {
+          throw new Error(response.data);
+        }
       })
       .catch((error: string | any) => {
-        const errorMessage = error?.response?.data ? Object.values(error.response.data) : null;
-        setErrorMessage(errorMessage || 'Signup Failed. ');
+        const errorMessage = error?.response?.data
+          ? Object.values(error.response.data)
+          : null;
+        setErrorMessage(errorMessage || "Signup Failed. ");
         dispatch(registerUserFailure(error.message));
       });
   };

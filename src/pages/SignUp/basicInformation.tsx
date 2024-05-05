@@ -1,19 +1,21 @@
 import { Alert, Button, Grid, Link } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 import { useARfittContext } from "../../context/storeContext";
-import { RootState } from '../../redux/rootReducer';
+import { RootState } from "../../redux/rootReducer";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
 import InputPhoneField from "../../components/inputPhoneField";
 import GenderDropDown from "../../components/genderDropdown";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
-
+import { useDispatch } from "react-redux";
+import { registerUserStartAsync } from "../../redux/signup/SignupActions";
 interface BasicInfoProps {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
+  const dispatch: any = useDispatch();
   const { email, setEmail } = useARfittContext();
   // TODO: Remove this comment, reference for Redux state variables usage
   // const something = useSelector((state: RootState) => state.signup.isSigningUp);
@@ -25,6 +27,7 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
 
   return (
     // page
@@ -106,6 +109,7 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
               onClick={() => {
                 console.log(password, "--", confirmPassword);
                 if (password === confirmPassword) {
+                  dispatch(registerUserStartAsync(email, setError));
                   setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION);
                 } else {
                   setPasswordError("Confirm Password does not match");
