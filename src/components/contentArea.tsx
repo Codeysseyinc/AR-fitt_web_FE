@@ -42,7 +42,6 @@ const ContentArea: React.FC<ContentArea> = ({
         <div className=" w-[50%] h-[100%] flex justify-start">
           <ArrowBackRoundedIcon
             onClick={() => {
-              console.log("clicked");
               getPreviousForm(title, setCurrentForm);
             }}
             sx={{ color: "white" }}

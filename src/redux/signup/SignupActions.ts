@@ -1,9 +1,10 @@
 // TODO: Refactor types in this file to remove usage of 'any' and provide explicit type definitions
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import URLS from "../../utils/constants/URLS";
 import SignupActionTypes from "./SignupActionTypes";
+import { Dispatch as reduxDispatch, AnyAction } from "redux";
 
 // * ============== Redux Reducer Action Triggers =================
 export const registerUserStart = () => ({
@@ -89,24 +90,24 @@ export const registerUserStartAsync = (
   email: string,
   setErrorMessage: Dispatch<SetStateAction<string | null>> | any
 ) => {
-  console.log("heloo!!");
-
-  return (dispatch: Dispatch<any>) => {
+  return (dispatch: reduxDispatch<AnyAction>) => {
     setErrorMessage(null);
-    dispatch(registerUserStart());
-
+    console.log('Calling Endpoint')
+    console.log('Sending Req to: ', `${URLS.verifyEmail}/?email=${email}`);
     axios
       .get(`${URLS.verifyEmail}/?email=${email}`)
       .then((response) => {
-        console.log("success!!");
+        console.log("The response from the BE is: ", response);
         if (response.status !== 200) {
+          console.log('The Api Call has been made successfully')
+          dispatch(registerUserStart()); // Dispatching action after API call succeeds
           dispatch(setUserEmail(email));
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
         } else {
           throw new Error(response.data);
         }
       })
-      .catch((error: string | any) => {
+      .catch((error: AxiosError | any) => {
         const errorMessage = error?.response?.data
           ? Object.values(error.response.data)
           : null;

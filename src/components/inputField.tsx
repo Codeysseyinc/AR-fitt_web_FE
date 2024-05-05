@@ -40,7 +40,6 @@ const InputField: React.FC<InputField> = ({
       else setError("Wrong Entry");
     }
   };
-  console.log("error");
   return (
     <>
       <TextField

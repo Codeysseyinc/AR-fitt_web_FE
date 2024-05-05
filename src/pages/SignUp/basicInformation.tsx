@@ -1,15 +1,14 @@
-import { Alert, Button, Grid, Link } from "@mui/material";
-import { useDebugValue, useEffect, useState } from "react";
-import { useARfittContext } from "../../context/storeContext";
-import { RootState } from "../../redux/rootReducer";
-import AssetSection from "../../components/assetSection";
-import ContentArea from "../../components/contentArea";
-import InputField from "../../components/inputField";
-import InputPhoneField from "../../components/inputPhoneField";
-import GenderDropDown from "../../components/genderDropdown";
-import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { Alert, Button, Grid, Link } from "@mui/material";
+import InputField from "../../components/inputField";
+import ContentArea from "../../components/contentArea";
+import AssetSection from "../../components/assetSection";
+import GenderDropDown from "../../components/genderDropdown";
+import InputPhoneField from "../../components/inputPhoneField";
+import { useARfittContext } from "../../context/storeContext";
 import { registerUserStartAsync } from "../../redux/signup/SignupActions";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 interface BasicInfoProps {
   setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -107,10 +106,8 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
                 height: "70%",
               }}
               onClick={() => {
-                console.log(password, "--", confirmPassword);
                 if (password === confirmPassword) {
                   dispatch(registerUserStartAsync(email, setError));
-                  setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION);
                 } else {
                   setPasswordError("Confirm Password does not match");
                 }

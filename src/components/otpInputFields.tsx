@@ -15,7 +15,6 @@ const OtpInputField: React.FC = () => {
   let countdownInterval: string | number | NodeJS.Timer | undefined;
 
   function handleChange(value: any, index: number) {
-    console.log("handle change", value);
     let newArr = [...otp];
     newArr[index] = value;
     setOtp(newArr);
