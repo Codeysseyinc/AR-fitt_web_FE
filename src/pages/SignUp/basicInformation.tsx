@@ -9,13 +9,13 @@ import InputPhoneField from "../../components/inputPhoneField";
 import { useARfittContext } from "../../context/storeContext";
 import { registerUserStartAsync } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
-interface BasicInfoProps {
-  setCurrentForm: React.Dispatch<React.SetStateAction<string>>;
-}
 
-const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
+const BasicInformation: React.FC<any> = () => {
   const dispatch: any = useDispatch();
   const { email, setEmail } = useARfittContext();
+  const { phone } = useARfittContext();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   // TODO: Remove this comment, reference for Redux state variables usage
   // const something = useSelector((state: RootState) => state.signup.isSigningUp);
 
@@ -42,9 +42,11 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
         modelsSrc="/assets/images/signUp/basicInfoModels.png"
       />
       {/* content section */}
-      <ContentArea title="Create Account" setCurrentForm={setCurrentForm}>
-        {passwordError ? (
-          <Alert severity="error">Confirm Password doesn't match </Alert>
+      <ContentArea title="Create Account">
+        {error ? (
+          <Alert severity="error" className="absolute">
+            {error}{" "}
+          </Alert>
         ) : (
           ""
         )}
@@ -107,7 +109,17 @@ const BasicInformation: React.FC<BasicInfoProps> = ({ setCurrentForm }) => {
               }}
               onClick={() => {
                 if (password === confirmPassword) {
-                  dispatch(registerUserStartAsync(email, setError));
+                  dispatch(
+                    registerUserStartAsync(
+                      {
+                        email: email,
+                        fullName: firstName.concat(" ", lastName),
+                        phone: phone,
+                        password: password,
+                      },
+                      setError
+                    )
+                  );
                 } else {
                   setPasswordError("Confirm Password does not match");
                 }

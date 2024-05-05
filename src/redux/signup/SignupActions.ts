@@ -87,25 +87,19 @@ export const verifyEmailFailure = (errorMessage: string) => ({
 
 // * ============== API Calls =================
 export const registerUserStartAsync = (
-  email: string,
+  payload: any,
   setErrorMessage: Dispatch<SetStateAction<string | null>> | any
 ) => {
   return (dispatch: reduxDispatch<AnyAction>) => {
     setErrorMessage(null);
-    console.log('Calling Endpoint')
-    console.log('Sending Req to: ', `${URLS.verifyEmail}/?email=${email}`);
+
     axios
-      .get(`${URLS.verifyEmail}/?email=${email}`)
+      .post(`${URLS.registerUser}`, payload)
       .then((response) => {
-        console.log("The response from the BE is: ", response);
-        if (response.status !== 200) {
-          console.log('The Api Call has been made successfully')
-          dispatch(registerUserStart()); // Dispatching action after API call succeeds
-          dispatch(setUserEmail(email));
-          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
-        } else {
-          throw new Error(response.data);
-        }
+        console.log("in then");
+        dispatch(registerUserStart()); // Dispatching action after API call succeeds
+        dispatch(setUserDetails(payload));
+        dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
       })
       .catch((error: AxiosError | any) => {
         const errorMessage = error?.response?.data
