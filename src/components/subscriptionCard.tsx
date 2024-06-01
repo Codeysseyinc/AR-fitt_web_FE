@@ -2,12 +2,14 @@
 import { Button, Grid } from "@mui/material";
 import CONSTANTS from "../utils/constants/CONSTANTS";
 import "./index.css";
+import { useDispatch } from "react-redux";
+import { setCurrentForm } from "../redux/signup/SignupActions";
+import { loadStripe } from "@stripe/stripe-js";
 interface SubscriptionCard {
   title: string;
   color: string;
   icon: string;
   price: string;
-  handleNextPage: any;
 }
 
 const SubscriptionCard: React.FC<SubscriptionCard> = ({
@@ -15,9 +17,8 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
   icon,
   title,
   price,
-  handleNextPage,
 }) => {
-
+  const dispatch = useDispatch();
   const colorVariants = {
     pink: " bg-pink",
     purple: "bg-purple",
@@ -33,8 +34,41 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
     if (title === "One Time") return "/Session";
     else if (title === "Monthly") return "/Month";
     else if (title === "Yearly") return "/Year";
-  }
+  };
+  const handleNextPage = (nextPage: string) => {
+    dispatch(setCurrentForm(nextPage));
+    return "http://localhost:3000/signup";
+  };
 
+  const stripePromise = loadStripe(
+    process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY as string
+  );
+  const getPriceId = () => {
+    if (title === "One Time")
+      return process.env.REACT_APP_ONE_TIME_PLAN_PRICE_ID;
+    else if (title === "Monthly")
+      return process.env.REACT_APP_MONTHLY_PLAN_PRICE_ID;
+    else if (title === "Yearly")
+      return process.env.REACT_APP_YEARLY_PLAN_PRICE_ID;
+  };
+  const handleClick = async (event: any) => {
+    // When the customer clicks on the button, redirect them to Checkout.
+    const stripe = await stripePromise;
+    if (stripe) {
+      const temp = stripe.redirectToCheckout({
+        lineItems: [
+          {
+            price: getPriceId() as string,
+            quantity: 1,
+          },
+        ],
+        mode: "subscription",
+        successUrl: handleNextPage(CONSTANTS.SIGN_UP_SCANNING),
+        cancelUrl: "https://example.com/cancel",
+        clientReferenceId: "1999",
+      });
+    }
+  };
   return (
     <Grid
       direction="column"
@@ -74,7 +108,7 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
           margin: "5%",
           borderRadius: "10px",
         }}
-        onClick={handleNextPage(CONSTANTS.SIGN_UP_SCANNING)}
+        onClick={handleClick}
       >
         Subscribe
       </Button>{" "}

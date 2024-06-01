@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import { setCurrentForm } from '../redux/signup/SignupActions';
+import { setCurrentForm } from "../redux/signup/SignupActions";
 import CONSTANTS from "../utils/constants/CONSTANTS";
 import "./index.css";
 
@@ -30,7 +30,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     } else if (title === "Scanning") {
       dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
     } else navigate(-1);
-  }
+  };
   return (
     <Grid
       item

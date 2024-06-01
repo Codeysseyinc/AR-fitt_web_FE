@@ -4,22 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
 import OtpInputField from "../../components/otpInputFields";
-import { setCurrentForm, practiceTest } from '../../redux/signup/SignupActions';
+import { setCurrentForm, practiceTest } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const OtpVerification: React.FC = () => {
-
   const dispatch = useDispatch();
   const email = useSelector((state: any) => state.signup.userDetails.email);
+  const otpVerificationStatus = useSelector(
+    (state: any) => state.signup.isVerified
+  );
 
   useEffect(() => {
-    localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_OTP_VERIFICATION);
+    dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
     dispatch(practiceTest());
   }, []);
 
   const handleNextPage = () => {
-    dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
-  }
+    if (otpVerificationStatus)
+      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+  };
 
   return (
     <Grid

@@ -1,6 +1,6 @@
-import { Reducer } from 'redux';
-import CONSTANTS from '../../utils/constants/CONSTANTS';
-import SignupActionTypes from './SignupActionTypes';
+import { Reducer } from "redux";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
+import SignupActionTypes from "./SignupActionTypes";
 
 type SignupAction = {
   type: string;
@@ -18,7 +18,7 @@ interface SignupState {
   isSendingEmail: boolean;
   changePassword: boolean;
   isChangingPassword: boolean;
-  isVerifying: boolean;
+  isVerified: boolean;
 
   test: string;
 }
@@ -28,10 +28,10 @@ const INITIAL_STATE: SignupState = {
   errorMessage: null,
   currentUser: null,
   userDetails: {
-    email: '',
-    fullName: '',
-    phone: '',
-    password: '',
+    email: "",
+    fullName: "",
+    phone: "",
+    password: "",
   },
   currentForm: CONSTANTS.SIGN_UP_BASIC_INFO,
   isFetching: false,
@@ -39,18 +39,21 @@ const INITIAL_STATE: SignupState = {
   isSendingEmail: false,
   changePassword: false,
   isChangingPassword: false,
-  isVerifying: false,
+  isVerified: false,
 
-  test: '',
+  test: "",
 };
 
-const signupReducer: Reducer<SignupState, SignupAction> = (state = INITIAL_STATE, action) => {
+const signupReducer: Reducer<SignupState, SignupAction> = (
+  state = INITIAL_STATE,
+  action
+) => {
   switch (action.type) {
     case SignupActionTypes.DUMMY_TEST:
       return {
         ...state,
-        test: 'For Refrence'
-      }
+        test: "For Refrence",
+      };
     case SignupActionTypes.REGISTER_USER_START:
       return {
         ...state,
@@ -150,6 +153,16 @@ const signupReducer: Reducer<SignupState, SignupAction> = (state = INITIAL_STATE
     case SignupActionTypes.INITIALIZE_SIGNUP_STATE:
       return {
         ...INITIAL_STATE,
+      };
+    case SignupActionTypes.VERIFY_EMAIL_SUCCESS:
+      return {
+        ...state,
+        isVerified: true,
+      };
+    case SignupActionTypes.VERIFY_EMAIL_FAILURE:
+      return {
+        ...state,
+        isVerified: false,
       };
     default:
       return state;

@@ -1,9 +1,16 @@
 import { Grid, Link, TextField } from "@mui/material";
 import "./index.css";
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import {
+  verifyEmailFailure,
+  verifyEmailSuccess,
+} from "../redux/signup/SignupActions";
+import { useDispatch } from "react-redux";
 
 const OtpInputField: React.FC = () => {
-  const secondsCountDown = 6; // time in seconds
+  const secondsCountDown = 60 * 3; // time in seconds
   const numberOfDigits = 5;
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState("");
@@ -12,8 +19,12 @@ const OtpInputField: React.FC = () => {
   // countdown settings
   const [countdown, setCountdown] = useState<number>(secondsCountDown);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
+  const [error, setError] = useState("");
   let countdownInterval: string | number | NodeJS.Timer | undefined;
 
+  const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const email = userDetails.email;
+  const dispatch = useDispatch();
   function handleChange(value: any, index: number) {
     let newArr = [...otp];
     newArr[index] = value;
@@ -33,9 +44,61 @@ const OtpInputField: React.FC = () => {
     }
     return;
   }
+  function sendOTP(): any {
+    const resp = axios({
+      // Endpoint
+      url: `http://localhost:3001/user/requestOTP?email=${email}`,
+      method: "GET",
+      headers: {
+        // Add any auth token here
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    })
+      // Handle the response from backend here
+      .then((res) => {
+        console.log("email sent");
+      })
+
+      // Catch errors if any
+      .catch((err: any) => {
+        console.log("auth error", err);
+        setError(err?.response.data.message);
+      });
+  }
+
+  function verifyOTP(otp: string): any {
+    const resp = axios({
+      // Endpoint
+      url: `http://localhost:3001/user/verifyOTP`,
+      method: "POST",
+      headers: {
+        // Add any auth token here
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+      data: {
+        email: email,
+        otp: otp,
+      },
+    })
+      // Handle the response from backend here
+      .then((res) => {
+        console.log("otp verfied", otp);
+        dispatch(verifyEmailSuccess());
+        setOtpError("Correct OTP");
+      })
+
+      // Catch errors if any
+      .catch((err: any) => {
+        console.log("otp not verified ", otp, err);
+        dispatch(verifyEmailFailure("You have entered an incorrect OTP"));
+        setOtpError("You have entered an incorrect OTP");
+        setError(err?.response.data.message);
+      });
+  }
   const handleResend = () => {
     setCountdown(secondsCountDown);
     setTriggerCountDown(true);
+    sendOTP();
   };
   useEffect(() => {
     setTriggerCountDown(true);
@@ -55,17 +118,24 @@ const OtpInputField: React.FC = () => {
   }, [countdown, triggerCountDown]);
 
   useEffect(() => {
-    if (otp.join("").length === numberOfDigits && otp.join("") !== correctOTP) {
-      setOtpError("You entered an incorrect OTP");
-    } else if (
-      otp.join("").length === numberOfDigits &&
-      otp.join("") === correctOTP
-    ) {
-      setOtpError("Correct OTP");
+    if (otp.join("").length === numberOfDigits) {
+      verifyOTP(otp.join(""));
     } else {
       setOtpError("");
     }
+    // verifyOTP(otp.join(""))
   }, [otp]);
+
+  const isMounted = useRef(false);
+  useEffect(() => {
+    // Skip the effect on the initial render
+    if (!isMounted.current) {
+      isMounted.current = true;
+      return;
+    }
+    setTriggerCountDown(true);
+    sendOTP();
+  }, []);
   return (
     <>
       <Grid
@@ -82,11 +152,11 @@ const OtpInputField: React.FC = () => {
             onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
             ref={(reference) => (otpBoxReference.current[index] = reference)}
             className={`${
-              otpError === "You entered an incorrect OTP"
+              otpError === "You have entered an incorrect OTP"
                 ? "bg-red-500"
                 : "bg-primary"
             } ${
-              otpError === "You entered an incorrect OTP"
+              otpError === "You have entered an incorrect OTP"
                 ? "focus:bg-red-600 "
                 : "focus:bg-teal-500 "
             }  w-[5%] h-[80%] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none`}
@@ -96,7 +166,7 @@ const OtpInputField: React.FC = () => {
       {/* Resend OTP */}
       <Grid className="Montserrat-text text-xs flex justify-between w-full m-4">
         <div>
-          Didn’t Receive the OTP yet?
+          Didn’t Receive the OTP yet?{" "}
           <Link
             href="#"
             className={`${
@@ -106,7 +176,6 @@ const OtpInputField: React.FC = () => {
               if (countdown === 0) handleResend();
             }}
           >
-            {" "}
             Resend
           </Link>
         </div>
@@ -118,7 +187,7 @@ const OtpInputField: React.FC = () => {
       {/* Error on wrong OTP */}
       <p
         className={`font-Montserrat text-xs ${
-          otpError === "You entered an incorrect OTP"
+          otpError === "You have entered an incorrect OTP"
             ? "text-red-500"
             : "text-green-500"
         } ${otpError ? "error-show" : ""}`}

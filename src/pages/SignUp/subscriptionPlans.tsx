@@ -4,19 +4,16 @@ import { useDispatch } from "react-redux";
 import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
 import SubscriptionCard from "../../components/subscriptionCard";
-import { setCurrentForm } from '../../redux/signup/SignupActions';
+import { setCurrentForm } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
+import { loadStripe } from "@stripe/stripe-js";
 
 const SubscriptionPlans = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_SUBSCRIPTION);
+    dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
   });
-
-  const handleNextPage = (nextPage: string) => {
-    dispatch(setCurrentForm(nextPage));
-  }
 
   return (
     <Grid
@@ -41,7 +38,6 @@ const SubscriptionPlans = () => {
             color="pink"
             icon="./assets/images/signUp/subscriptionPlan1.png"
             price="1"
-            handleNextPage={handleNextPage}
           />
           {/* Monthly */}
 
@@ -50,7 +46,6 @@ const SubscriptionPlans = () => {
             color="purple"
             icon="./assets/images/signUp/subscriptionPlan2.png"
             price="5"
-            handleNextPage={handleNextPage}
           />
           {/* Yearly */}
 
@@ -59,7 +54,6 @@ const SubscriptionPlans = () => {
             color="primaryLight"
             icon="./assets/images/signUp/subscriptionPlan3.png"
             price="50"
-            handleNextPage={handleNextPage}
           />
         </Grid>
       </ContentArea>

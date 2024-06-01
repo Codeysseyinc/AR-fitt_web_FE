@@ -7,9 +7,50 @@ import { useRef, useState } from "react";
 import OtpInputField from "../../components/otpInputFields";
 import { useARfittContext } from "../../context/storeContext";
 import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ResetPassword: React.FC<{}> = ({}) => {
-  //   const { email, setEmail } = useARfittContext();
+  // /user/resetPassword
+  const email = useSelector((state: any) => state.signup.userDetails);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  function handlePasswordReset(): any {
+    console.log("in reset");
+    if (!password) {
+      setError("Please fill in the required fields");
+      return;
+    }
+    if (confirmPassword !== password) {
+      setError("Passwords do not match");
+      return;
+    }
+    axios({
+      // Endpoint
+      url: `http://localhost:3001/user/resetPassword`,
+      method: "POST",
+      headers: {
+        // Add any auth token here
+        authorization: "your token comes here",
+      },
+      data: {
+        email: email,
+        password: password,
+      },
+    })
+      // Handle the response from backend here
+      .then((res) => {
+        console.log("reset done");
+
+        navigate("/login");
+      })
+
+      // Catch errors if any
+      .catch((err: any) => {
+        setError(err?.response.data);
+      });
+  }
   const navigate = useNavigate();
   return (
     <Grid
@@ -32,11 +73,21 @@ const ResetPassword: React.FC<{}> = ({}) => {
             Please enter a new password below. For security reasons, ensure that
             your new password is not similar to your previous one
           </p>
-          <InputField type="password" placeholder="Password" className="" />
+          <InputField
+            type="password"
+            placeholder="Password"
+            className=""
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
           <InputField
             type="password"
             placeholder="Confirm Password"
             className=""
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+            }}
           />
 
           <Grid
@@ -55,7 +106,7 @@ const ResetPassword: React.FC<{}> = ({}) => {
                 // height: "30%",
               }}
               onClick={() => {
-                navigate("/home");
+                handlePasswordReset();
               }}
             >
               Reset Password

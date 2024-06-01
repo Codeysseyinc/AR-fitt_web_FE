@@ -5,6 +5,9 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { ClassNames } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCurrentForm } from "../redux/signup/SignupActions";
+import CONSTANTS from "../utils/constants/CONSTANTS";
 const SignUpCamera: React.FC<{}> = () => {
   const videoConstraints = {
     width: 137,
@@ -13,6 +16,7 @@ const SignUpCamera: React.FC<{}> = () => {
   };
   const webcamRef = useRef<Webcam>(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [imgSrc, setImgSrc] = useState("");
   const [countdown, setCountdown] = useState<number>(0);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
@@ -135,7 +139,11 @@ const SignUpCamera: React.FC<{}> = () => {
           <CheckCircleIcon
             sx={{ color: "white" }}
             onClick={() => {
-              if (imgSrc) navigate("/home");
+              if (imgSrc) {
+                dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+
+                navigate("/home");
+              }
             }}
           />
         </div>

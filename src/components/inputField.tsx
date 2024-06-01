@@ -7,19 +7,22 @@ import {
   TextField,
 } from "@mui/material";
 import "./index.css";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Dispatch } from "redux";
 interface InputField {
   placeholder: string;
   type: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
+  setValue?: Dispatch<SetStateAction<number | string | any>> | any;
 }
 const InputField: React.FC<InputField> = ({
   onChange,
   placeholder,
   type,
   className,
+  setValue,
 }) => {
   const [isDateInput, setIsDateInput] = useState(false);
 
@@ -30,6 +33,9 @@ const InputField: React.FC<InputField> = ({
   const handleNameChange = (e: any) => {
     if (onChange) {
       onChange(e);
+    }
+    if (setValue) {
+      setValue(e.target.value);
     }
     if (e.target.validity.valid) {
       setNameError(false);

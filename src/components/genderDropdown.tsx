@@ -4,9 +4,12 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-
-const GenderDropDown = () => {
-  const [gender, setGender] = React.useState("");
+import { Dispatch } from "redux";
+interface GenderDropDownFieldProps {
+  setGender: Dispatch<React.SetStateAction<string | any>> | any;
+}
+const GenderDropDown = ({ setGender }: GenderDropDownFieldProps) => {
+  // const [gender, setGender] = React.useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     setGender(event.target.value);
@@ -17,7 +20,6 @@ const GenderDropDown = () => {
       <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
         <Select
           labelId="gender-label"
-          value={gender}
           onChange={handleChange}
           displayEmpty
           renderValue={(selected) => (selected ? selected : "Gender")}

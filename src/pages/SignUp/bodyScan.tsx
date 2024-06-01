@@ -4,11 +4,13 @@ import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import SignUpCamera from "../../components/signUpCamera";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
+import { setCurrentForm } from "../../redux/signup/SignupActions";
+import { useDispatch } from "react-redux";
 
 const BodyScan: React.FC = () => {
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    localStorage.setItem("currentForm", CONSTANTS.SIGN_UP_SCANNING);
+    dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SCANNING));
   });
 
   return (

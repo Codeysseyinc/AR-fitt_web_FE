@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import BasicInformation from "./basicInformation";
 import OtpVerification from "./otpVerification";
 import SubscriptionPlans from "./subscriptionPlans";
@@ -10,19 +10,20 @@ import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const currentForm = useSelector((state: any) => state.signup.currentForm);
-
+  let currentForm = useSelector((state: any) => state.signup.currentForm);
+  console.log("current form", currentForm);
+  console.log(
+    "email",
+    useSelector((state: any) => state.signup.userDetails.email)
+  );
   useEffect(() => {
-    dispatch(initializeSignUpState());
+    currentForm = currentForm || dispatch(initializeSignUpState());
+    console.log("sign up mounting", currentForm);
   }, []);
 
   return (
     <>
-      {currentForm === CONSTANTS.SIGN_UP_BASIC_INFO ? (
-        <BasicInformation />
-      ) : (
-        ""
-      )}
+      {currentForm === CONSTANTS.SIGN_UP_BASIC_INFO ? <BasicInformation /> : ""}
       {currentForm === CONSTANTS.SIGN_UP_OTP_VERIFICATION ? (
         <OtpVerification />
       ) : (
@@ -33,11 +34,7 @@ const SignUp = () => {
       ) : (
         ""
       )}
-      {currentForm === CONSTANTS.SIGN_UP_SCANNING ? (
-        <BodyScan />
-      ) : (
-        ""
-      )}
+      {currentForm === CONSTANTS.SIGN_UP_SCANNING ? <BodyScan /> : ""}
     </>
   );
 };

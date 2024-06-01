@@ -1,7 +1,10 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const HeroSection = () => {
+  const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const fullname = userDetails.fullName;
   return (
     <Grid
       item
@@ -41,7 +44,7 @@ const HeroSection = () => {
           </h1>
           <Box className="inline-block w-[85%]">
             <h2 className="font-Dhurjati text-[220%] text-white leading-[1]">
-              Hey! Rafay Rashed
+              Hey! {fullname}
             </h2>
             <h2 className="font-Dhurjati text-[220%] text-white leading-[1] mt-0 mb-[10px]">
               Elevate Your Style: Explore Our Platform Features.
