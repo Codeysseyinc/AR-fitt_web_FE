@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Grid, Link } from "@mui/material";
 import AssetSection from "../../components/assetSection";
@@ -8,6 +8,7 @@ import axios from "axios";
 import {
   registerUserStart,
   setCurrentForm,
+  setErrorMsg,
   setUserDetails,
 } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
@@ -31,7 +32,7 @@ const LogIn: React.FC = () => {
       method: "POST",
       headers: {
         // Add any auth token here
-        authorization: "your token comes here",
+        Authorization: "your token comes here",
         "Content-Type": "application/json",
       },
 
@@ -50,8 +51,13 @@ const LogIn: React.FC = () => {
         if (token) {
           localStorage.setItem("access_token", token);
         }
+
         if (!res.data.message.isVerified) {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
+
+          navigate("/signup");
+        } else if (!res.data.message.isSubscribed) {
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
 
           navigate("/signup");
         } else {
@@ -65,6 +71,9 @@ const LogIn: React.FC = () => {
         setError(err?.response.data.message);
       });
   }
+  useEffect(() => {
+    dispatch(setErrorMsg(null));
+  }, []);
   return (
     <Grid
       container

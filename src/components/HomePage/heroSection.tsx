@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const HeroSection = () => {
   const userDetails = useSelector((state: any) => state.signup.userDetails);
-  const fullname = userDetails.fullName;
+  const fullname = userDetails.firstName + " " + userDetails.lastName;
   return (
     <Grid
       item

@@ -84,17 +84,29 @@ export const verifyEmailFailure = (errorMessage: string) => ({
   payload: errorMessage,
 });
 
+export const setSubscriptionSuccess = () => ({
+  type: SignupActionTypes.SUBSCRIBED_SUCCESS,
+});
+export const setSubscriptionFailure = (errorMessage: string) => ({
+  type: SignupActionTypes.SUBSCRIBED_FAILURE,
+  payload: errorMessage,
+});
+
 // * ============== API Calls =================
 export const registerUserStartAsync = (
   payload: any,
   setErrorMessage: Dispatch<SetStateAction<string | null>> | any
 ) => {
   return (dispatch: reduxDispatch<AnyAction>) => {
-    setErrorMessage(null);
+    dispatch(setErrorMessage(null));
 
     axios
       .post(`${URLS.registerUser}`, payload)
       .then((response) => {
+        const token = response.headers.access_token;
+        if (token) {
+          localStorage.setItem("access_token", token);
+        }
         dispatch(registerUserStart());
         dispatch(setUserDetails(payload));
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
@@ -103,7 +115,7 @@ export const registerUserStartAsync = (
         const errorMessage = error?.response?.data
           ? Object.values(error.response.data)
           : null;
-        setErrorMessage(errorMessage || "Signup Failed. ");
+        dispatch(setErrorMessage(errorMessage || "Signup Failed. "));
         dispatch(registerUserFailure(error.message));
       });
   };

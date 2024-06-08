@@ -19,6 +19,7 @@ interface SignupState {
   changePassword: boolean;
   isChangingPassword: boolean;
   isVerified: boolean;
+  isSubscribed: boolean;
 
   test: string;
 }
@@ -29,7 +30,8 @@ const INITIAL_STATE: SignupState = {
   currentUser: null,
   userDetails: {
     email: "",
-    fullName: "",
+    firstName: "",
+    lastName: "",
     phone: "",
     password: "",
   },
@@ -40,6 +42,7 @@ const INITIAL_STATE: SignupState = {
   changePassword: false,
   isChangingPassword: false,
   isVerified: false,
+  isSubscribed: false,
 
   test: "",
 };
@@ -163,6 +166,16 @@ const signupReducer: Reducer<SignupState, SignupAction> = (
       return {
         ...state,
         isVerified: false,
+      };
+    case SignupActionTypes.SUBSCRIBED_SUCCESS:
+      return {
+        ...state,
+        isSubscribed: true,
+      };
+    case SignupActionTypes.SUBSCRIBED_FAILURE:
+      return {
+        ...state,
+        isSubscribed: false,
       };
     default:
       return state;

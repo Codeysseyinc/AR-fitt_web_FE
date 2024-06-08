@@ -32,10 +32,6 @@ const ForgotPassword: React.FC = () => {
       // Endpoint
       url: `http://localhost:3001/user/forgetPassword?email=${email}`,
       method: "GET",
-      headers: {
-        // Add any auth token here
-        authorization: "your token comes here",
-      },
     })
       // Handle the response from backend here
       .then((res) => {

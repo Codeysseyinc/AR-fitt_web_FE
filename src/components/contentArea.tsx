@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { Grid } from "@mui/material";
+import { Alert, Grid } from "@mui/material";
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { setCurrentForm } from "../redux/signup/SignupActions";
 import CONSTANTS from "../utils/constants/CONSTANTS";
@@ -21,14 +21,11 @@ const ContentArea: React.FC<ContentAreaProps> = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const error = useSelector((state: any) => state.signup.errorMessage);
 
   const getPreviousForm = (title?: string, setCurrentForm?: any) => {
-    if (title === "OTP Verification") {
-      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
-    } else if (title === "Subscription Plans") {
-      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
-    } else if (title === "Scanning") {
-      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+    if (title === "Scanning") {
+      navigate("/");
     } else navigate(-1);
   };
   return (
@@ -59,6 +56,11 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       <Grid className="font-Montserrat font-bold text-3xl text-[#408589] flex justify-center ">
         {title}
       </Grid>
+      {error && (
+        <Alert severity="error" className="absolute">
+          {error}{" "}
+        </Alert>
+      )}
       {children}
     </Grid>
   );

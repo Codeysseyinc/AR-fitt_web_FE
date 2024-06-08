@@ -2,9 +2,11 @@
 import { Button, Grid } from "@mui/material";
 import CONSTANTS from "../utils/constants/CONSTANTS";
 import "./index.css";
-import { useDispatch } from "react-redux";
-import { setCurrentForm } from "../redux/signup/SignupActions";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentForm, setErrorMsg } from "../redux/signup/SignupActions";
 import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 interface SubscriptionCard {
   title: string;
   color: string;
@@ -19,6 +21,10 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
   price,
 }) => {
   const dispatch = useDispatch();
+  const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const email = userDetails.email;
+  const navigate = useNavigate();
+
   const colorVariants = {
     pink: " bg-pink",
     purple: "bg-purple",
@@ -53,21 +59,34 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
   };
   const handleClick = async (event: any) => {
     // When the customer clicks on the button, redirect them to Checkout.
-    const stripe = await stripePromise;
-    if (stripe) {
-      const temp = stripe.redirectToCheckout({
-        lineItems: [
-          {
-            price: getPriceId() as string,
-            quantity: 1,
-          },
-        ],
-        mode: "subscription",
-        successUrl: handleNextPage(CONSTANTS.SIGN_UP_SCANNING),
-        cancelUrl: "https://example.com/cancel",
-        clientReferenceId: "1999",
+    // /payment/createSubscription
+    const resp = axios({
+      // Endpoint
+      url: `http://localhost:3001/payment/createSubscription`,
+      method: "POST",
+      headers: {
+        // Add any auth token here
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+      data: {
+        userEmail: email,
+        priceID: getPriceId(),
+      },
+    })
+      // Handle the response from backend here
+      .then((res) => {
+        console.log("redirecting to payment", res);
+        handleNextPage(CONSTANTS.SIGN_UP_SCANNING);
+        window.location.href = res.data.message.checkout_session_url;
+      })
+
+      // Catch errors if any
+      .catch((err: any) => {
+        console.log("payment error", err);
+        if (err?.response.data.message === "Unauthorized access") navigate("/");
+
+        dispatch(setErrorMsg(err?.response.data.message));
       });
-    }
   };
   return (
     <Grid

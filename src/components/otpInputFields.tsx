@@ -6,8 +6,12 @@ import { useSelector } from "react-redux";
 import {
   verifyEmailFailure,
   verifyEmailSuccess,
+  setErrorMsg,
+  setCurrentForm,
 } from "../redux/signup/SignupActions";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import CONSTANTS from "../utils/constants/CONSTANTS";
 
 const OtpInputField: React.FC = () => {
   const secondsCountDown = 60 * 3; // time in seconds
@@ -15,11 +19,9 @@ const OtpInputField: React.FC = () => {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState("");
   const otpBoxReference = useRef<any>([]);
-  const correctOTP = "12345"; // validate from the server
-  // countdown settings
+  const navigate = useNavigate();
   const [countdown, setCountdown] = useState<number>(secondsCountDown);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
-  const [error, setError] = useState("");
   let countdownInterval: string | number | NodeJS.Timer | undefined;
 
   const userDetails = useSelector((state: any) => state.signup.userDetails);
@@ -61,8 +63,12 @@ const OtpInputField: React.FC = () => {
 
       // Catch errors if any
       .catch((err: any) => {
-        console.log("auth error", err);
-        setError(err?.response.data.message);
+        console.log("auth error", err?.response.data.message);
+        if (err?.response.data.message === "Unauthorized access") {
+          navigate("/");
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+        }
+        // dispatch(setErrorMsg(err?.response.data.message));
       });
   }
 
@@ -92,7 +98,7 @@ const OtpInputField: React.FC = () => {
         console.log("otp not verified ", otp, err);
         dispatch(verifyEmailFailure("You have entered an incorrect OTP"));
         setOtpError("You have entered an incorrect OTP");
-        setError(err?.response.data.message);
+        dispatch(setErrorMsg(err?.response.data.message));
       });
   }
   const handleResend = () => {
@@ -133,8 +139,10 @@ const OtpInputField: React.FC = () => {
       isMounted.current = true;
       return;
     }
-    setTriggerCountDown(true);
-    sendOTP();
+    setTimeout(() => {
+      setTriggerCountDown(true);
+      sendOTP();
+    }, 2000);
   }, []);
   return (
     <>

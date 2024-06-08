@@ -6,16 +6,19 @@ import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useRef, useState } from "react";
 import OtpInputField from "../../components/otpInputFields";
 import { useARfittContext } from "../../context/storeContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
 const ResetPassword: React.FC<{}> = ({}) => {
-  // /user/resetPassword
-  const email = useSelector((state: any) => state.signup.userDetails);
+  const email = useSelector((state: any) => state.signup.userDetails).email;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token") ?? "";
+  localStorage.setItem("access_token", token);
+
   function handlePasswordReset(): any {
     console.log("in reset");
     if (!password) {
@@ -32,7 +35,7 @@ const ResetPassword: React.FC<{}> = ({}) => {
       method: "POST",
       headers: {
         // Add any auth token here
-        authorization: "your token comes here",
+        Authorization: "Bearer " + token,
       },
       data: {
         email: email,

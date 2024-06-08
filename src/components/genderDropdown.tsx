@@ -9,8 +9,6 @@ interface GenderDropDownFieldProps {
   setGender: Dispatch<React.SetStateAction<string | any>> | any;
 }
 const GenderDropDown = ({ setGender }: GenderDropDownFieldProps) => {
-  // const [gender, setGender] = React.useState("");
-
   const handleChange = (event: SelectChangeEvent) => {
     setGender(event.target.value);
   };

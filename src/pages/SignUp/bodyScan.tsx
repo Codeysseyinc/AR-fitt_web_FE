@@ -5,14 +5,16 @@ import ContentArea from "../../components/contentArea";
 import SignUpCamera from "../../components/signUpCamera";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { setCurrentForm } from "../../redux/signup/SignupActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const BodyScan: React.FC = () => {
   const dispatch = useDispatch();
+  const isSubscribed = useSelector((state: any) => state.signup.isSubscribed);
+
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SCANNING));
+    // if (!isSubscribed) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
   });
-
   return (
     <Grid
       container

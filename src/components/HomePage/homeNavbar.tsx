@@ -22,6 +22,7 @@ const HomeNavbar = () => {
 
   const handleLogout = () => {
     dispatch(initializeSignUpState());
+    localStorage.clear();
     navigate("/");
     console.log("Logout clicked");
     handleClose();

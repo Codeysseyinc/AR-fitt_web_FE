@@ -1,18 +1,35 @@
 import { useEffect } from "react";
 import { Grid } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
 import SubscriptionCard from "../../components/subscriptionCard";
 import { setCurrentForm } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
-import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const SubscriptionPlans = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const isSubscribed = useSelector((state: any) => state.signup.isSubscribed);
+  const [searchParams] = useSearchParams();
+  const session_id = searchParams.get("session_id") ?? "";
+  const token = localStorage.getItem("access_token");
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (!decodedToken.exp || decodedToken?.exp < currentTime) {
+        navigate("/");
+        dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+      }
+    } else {
+      navigate("/");
+      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+    }
+    if (session_id) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SCANNING));
   });
 
   return (

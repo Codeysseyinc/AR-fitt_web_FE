@@ -3,10 +3,17 @@ import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import { useARfittContext } from "../../context/storeContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setErrorMsg } from "../../redux/signup/SignupActions";
+import { useEffect } from "react";
 
 const GetStarted: React.FC<{}> = ({}) => {
   const { email, setEmail } = useARfittContext();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(setErrorMsg(null));
+  }, []);
   return (
     <Grid
       container

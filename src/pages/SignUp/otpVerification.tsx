@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Button, Grid } from "@mui/material";
+import { Alert, Button, Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
@@ -13,7 +13,6 @@ const OtpVerification: React.FC = () => {
   const otpVerificationStatus = useSelector(
     (state: any) => state.signup.isVerified
   );
-
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
     dispatch(practiceTest());

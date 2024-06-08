@@ -9,13 +9,13 @@ import InputPhoneField from "../../components/inputPhoneField";
 import {
   registerUserStartAsync,
   setCurrentForm,
+  setErrorMsg,
 } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const BasicInformation: React.FC<any> = () => {
   const dispatch: any = useDispatch();
   const [phone, setPhone] = useState("");
-  const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
@@ -27,24 +27,7 @@ const BasicInformation: React.FC<any> = () => {
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
   });
-
-  // const handleSubmit = () => {
-  //   if (password === confirmPassword && password) {
-  //     dispatch(
-  //       registerUserStartAsync(
-  //         {
-  //           email: email,
-  //           fullName: firstName.concat(" ", lastName),
-  //           phone: phone,
-  //           password: password,
-  //         },
-  //         setError
-  //       )
-  //     );
-  //   } else {
-  //     setError("Confirm Password does not match");
-  //   }
-  // };
+  const errorMessage = useSelector((state: any) => state.signup.errorMessage);
 
   return (
     // page
@@ -61,13 +44,6 @@ const BasicInformation: React.FC<any> = () => {
       />
       {/* content section */}
       <ContentArea title="Create Account">
-        {error ? (
-          <Alert severity="error" className="absolute">
-            {error}{" "}
-          </Alert>
-        ) : (
-          ""
-        )}
         <Grid direction="column" className="w-[70%] flex justify-center">
           {/* First Name & Last Name */}
           <Grid
@@ -132,7 +108,10 @@ const BasicInformation: React.FC<any> = () => {
           {/* Sign Up Button */}
           <Grid className="flex items-center justify-evenly w-full mt-[4%]">
             <Button
-              className="bg-primary text-contrastText drop-shadow-lg"
+              disabled={errorMessage ? true : false}
+              className={`${
+                errorMessage ? "bg-gray-500" : "bg-primary"
+              } text-contrastText drop-shadow-lg`}
               variant="contained"
               style={{
                 width: "100%",
@@ -143,23 +122,24 @@ const BasicInformation: React.FC<any> = () => {
               }}
               onClick={() => {
                 if (!(password && email && firstName && lastName)) {
-                  setError("Please fill required fields");
+                  dispatch(setErrorMsg("Please fill required fields"));
                 } else if (password === confirmPassword && password) {
                   dispatch(
                     registerUserStartAsync(
                       {
                         email: email,
-                        fullName: firstName.concat(" ", lastName),
+                        firstName: firstName,
+                        lastName: lastName,
                         phone: phone,
                         password: password,
                         gender: gender,
                         dob: dob,
                       },
-                      setError
+                      setErrorMsg
                     )
                   );
                 } else {
-                  setError("Confirm Password does not match");
+                  dispatch(setErrorMsg("Confirm Password does not match"));
                 }
               }}
             >
