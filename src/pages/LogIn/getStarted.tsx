@@ -5,10 +5,11 @@ import { useARfittContext } from "../../context/storeContext";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setErrorMsg } from "../../redux/signup/SignupActions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import GuestLoginCard from "../../components/guestLoginCard";
 
 const GetStarted: React.FC<{}> = ({}) => {
-  const { email, setEmail } = useARfittContext();
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -77,10 +78,13 @@ const GetStarted: React.FC<{}> = ({}) => {
                 borderRadius: "10px",
                 height: "75%",
               }}
-              onClick={() => {}}
+              onClick={() => {
+                setOpen(true);
+              }}
             >
               Continue As Guest
             </Button>
+            <GuestLoginCard open={open} setOpen={setOpen} />
             {/* SIGN UP TEXT */}
             <Grid className="Montserrat-text text-xs flex justify-center w-full m-4">
               Don't have an account ?&nbsp;

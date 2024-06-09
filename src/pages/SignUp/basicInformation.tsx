@@ -103,7 +103,7 @@ const BasicInformation: React.FC<any> = () => {
               placeholder="Date of Birth"
               setValue={setDob}
             />
-            <GenderDropDown setGender={setGender} />
+            <GenderDropDown className="w-[30%]" setGender={setGender} />
           </Grid>
           {/* Sign Up Button */}
           <Grid className="flex items-center justify-evenly w-full mt-[4%]">

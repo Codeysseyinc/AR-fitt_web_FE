@@ -20,7 +20,7 @@ interface SignupState {
   isChangingPassword: boolean;
   isVerified: boolean;
   isSubscribed: boolean;
-
+  guestDetails: any;
   test: string;
 }
 
@@ -34,6 +34,8 @@ const INITIAL_STATE: SignupState = {
     lastName: "",
     phone: "",
     password: "",
+    dob: "",
+    gender: "",
   },
   currentForm: CONSTANTS.SIGN_UP_BASIC_INFO,
   isFetching: false,
@@ -43,7 +45,13 @@ const INITIAL_STATE: SignupState = {
   isChangingPassword: false,
   isVerified: false,
   isSubscribed: false,
-
+  guestDetails: {
+    email: "",
+    firstName: "",
+    lastName: "",
+    dob: "",
+    gender: "",
+  },
   test: "",
 };
 
@@ -176,6 +184,11 @@ const signupReducer: Reducer<SignupState, SignupAction> = (
       return {
         ...state,
         isSubscribed: false,
+      };
+    case SignupActionTypes.SET_GUEST_DETAILS:
+      return {
+        ...state,
+        guestDetails: action.payload,
       };
     default:
       return state;

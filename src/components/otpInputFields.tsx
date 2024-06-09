@@ -90,6 +90,7 @@ const OtpInputField: React.FC = () => {
       .then((res) => {
         console.log("otp verfied", otp);
         dispatch(verifyEmailSuccess());
+        dispatch(setErrorMsg(null));
         setOtpError("Correct OTP");
       })
 

@@ -7,32 +7,31 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Dispatch } from "redux";
 interface GenderDropDownFieldProps {
   setGender: Dispatch<React.SetStateAction<string | any>> | any;
+  className?: string;
 }
-const GenderDropDown = ({ setGender }: GenderDropDownFieldProps) => {
+const GenderDropDown = ({ setGender, className }: GenderDropDownFieldProps) => {
   const handleChange = (event: SelectChangeEvent) => {
     setGender(event.target.value);
   };
 
   return (
-    <div>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-        <Select
-          labelId="gender-label"
-          onChange={handleChange}
-          displayEmpty
-          renderValue={(selected) => (selected ? selected : "Gender")}
-          sx={{
-            color: "rgb(148 148 148)",
-          }}
-        >
-          <MenuItem value="" disabled>
-            Gender
-          </MenuItem>
-          <MenuItem value="Female">Female</MenuItem>
-          <MenuItem value="Male">Male</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl variant="standard" sx={{ m: 1 }} className={`${className}`}>
+      <Select
+        labelId="gender-label"
+        onChange={handleChange}
+        displayEmpty
+        renderValue={(selected) => (selected ? selected : "Gender")}
+        sx={{
+          color: "rgb(148 148 148)",
+        }}
+      >
+        <MenuItem value="" disabled>
+          Gender
+        </MenuItem>
+        <MenuItem value="Female">Female</MenuItem>
+        <MenuItem value="Male">Male</MenuItem>
+      </Select>
+    </FormControl>
   );
 };
 

@@ -91,6 +91,10 @@ export const setSubscriptionFailure = (errorMessage: string) => ({
   type: SignupActionTypes.SUBSCRIBED_FAILURE,
   payload: errorMessage,
 });
+export const setGuestDetails = (guest: any) => ({
+  type: SignupActionTypes.SET_GUEST_DETAILS,
+  payload: guest,
+});
 
 // * ============== API Calls =================
 export const registerUserStartAsync = (
