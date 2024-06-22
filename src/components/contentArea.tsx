@@ -5,19 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { setCurrentForm } from "../redux/signup/SignupActions";
-import CONSTANTS from "../utils/constants/CONSTANTS";
 import "./index.css";
 
 interface ContentAreaProps {
   children: ReactNode;
   title?: string;
   removeLogo?: boolean;
+  className?: string;
 }
 
 const ContentArea: React.FC<ContentAreaProps> = ({
   children,
   title,
   removeLogo,
+  className,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     <Grid
       item
       direction="column"
-      className=" bg-white rounded-tl-[40px] w-[65%] absolute left-[35%] h-screen flex items-center"
+      className={`${className} bg-white rounded-tl-[40px] w-[65%] absolute left-[35%] h-screen flex items-center`}
     >
       {/* logo and back button */}
       <Grid direction="row" className=" w-[100%] h-[17%] flex justify-start">

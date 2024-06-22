@@ -44,10 +44,6 @@ const InputField: React.FC<InputField> = ({
         if (today.getFullYear() - birthDate.getFullYear() >= 10) {
           setValue(e.target.value);
         } else {
-          console.log(
-            "error in dob",
-            today.getFullYear() - birthDate.getFullYear()
-          );
           setNameError(true);
           setError("Invalid Date of Birth entered");
 

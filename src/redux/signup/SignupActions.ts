@@ -95,6 +95,10 @@ export const setGuestDetails = (guest: any) => ({
   type: SignupActionTypes.SET_GUEST_DETAILS,
   payload: guest,
 });
+export const setInterestCategory = (interest: any) => ({
+  type: SignupActionTypes.SET_INTEREST_CATEGORIES,
+  payload: interest,
+});
 
 // * ============== API Calls =================
 export const registerUserStartAsync = (

@@ -76,7 +76,8 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
       // Handle the response from backend here
       .then((res) => {
         console.log("redirecting to payment", res);
-        handleNextPage(CONSTANTS.SIGN_UP_SCANNING);
+        // set the page that will come after payment
+        handleNextPage(CONSTANTS.SIGN_UP_SUCCESS);
         window.location.href = res.data.message.checkout_session_url;
       })
 

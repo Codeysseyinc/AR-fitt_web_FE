@@ -21,6 +21,7 @@ interface SignupState {
   isVerified: boolean;
   isSubscribed: boolean;
   guestDetails: any;
+  interestCategories: Array<string>;
   test: string;
 }
 
@@ -53,6 +54,7 @@ const INITIAL_STATE: SignupState = {
     gender: "",
   },
   test: "",
+  interestCategories: [],
 };
 
 const signupReducer: Reducer<SignupState, SignupAction> = (
@@ -189,6 +191,11 @@ const signupReducer: Reducer<SignupState, SignupAction> = (
       return {
         ...state,
         guestDetails: action.payload,
+      };
+    case SignupActionTypes.SET_INTEREST_CATEGORIES:
+      return {
+        ...state,
+        interestCategories: action.payload,
       };
     default:
       return state;

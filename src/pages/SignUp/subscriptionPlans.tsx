@@ -29,7 +29,7 @@ const SubscriptionPlans = () => {
       navigate("/");
       dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
     }
-    if (session_id) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SCANNING));
+    // if (session_id) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BODY_SCANNING));
   });
 
   return (

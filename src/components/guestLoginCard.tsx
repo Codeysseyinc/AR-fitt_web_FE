@@ -27,7 +27,6 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log("open", open);
   return (
     <Dialog
       open={open}

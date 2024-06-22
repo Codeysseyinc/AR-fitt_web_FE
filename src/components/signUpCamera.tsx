@@ -5,10 +5,14 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { ClassNames } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentForm } from "../redux/signup/SignupActions";
 import CONSTANTS from "../utils/constants/CONSTANTS";
-const SignUpCamera: React.FC<{}> = () => {
+interface SignUpCameraProps {
+  type: string;
+}
+
+const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   const videoConstraints = {
     width: 137,
     height: 162,
@@ -20,7 +24,11 @@ const SignUpCamera: React.FC<{}> = () => {
   const [imgSrc, setImgSrc] = useState("");
   const [countdown, setCountdown] = useState<number>(0);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
+  const [confirmation, setConfirmation] = useState(false);
   let countdownInterval: string | number | NodeJS.Timer | undefined;
+  const isfaceScanRequired = useSelector(
+    (state: any) => state.signup.interestCategories
+  ).some((item: any) => item.includes("cosmetics"));
 
   const handleCapturePhoto = () => {
     const image = webcamRef.current?.getScreenshot();
@@ -68,8 +76,19 @@ const SignUpCamera: React.FC<{}> = () => {
       direction="column"
       className="h-[100%] w-[100%] flex justify-center items-center "
     >
-      <div className="relative h-[80%]  ">
-        {imgSrc ? (
+      <div className="relative h-[80%] ">
+        {!confirmation ? (
+          <div className="rounded-[10%] h-[100%] w-[237px] px-[15px] bg-primary flex flex-col items-center justify-center">
+            <p className="font-Montserrat font-bold text-white">
+              Camera Activation Required
+            </p>
+            <p className="font-Montserrat text-white text-center">
+              To personalize suggestions for apparel and cosmetics, we need a
+              full-body and face picture. Please take these in a comfortable,
+              private setting.
+            </p>
+          </div>
+        ) : imgSrc ? (
           <img
             src={imgSrc}
             alt="webcam"
@@ -87,9 +106,17 @@ const SignUpCamera: React.FC<{}> = () => {
             />
 
             <img
-              src="./assets/images/signUp/scanningSkeleton.png"
+              src={
+                type === "body"
+                  ? "./assets/images/signUp/scanningSkeleton.png"
+                  : "./assets/images/signUp/scanningFaceSkeleton.png"
+              }
               alt="skeleton"
-              className="absolute top-0 left-[25%] w-[50%] h-[100%] scale-25 z-1 "
+              className={
+                type === "body"
+                  ? "absolute top-0 left-[25%] w-[50%] h-[100%] scale-25 z-1 "
+                  : "absolute top-0 left-[0] h-[98%] scale-25 z-1 opacity-[10%] self-center "
+              }
             />
             {countdown !== 0 ? (
               <div className="absolute  top-[41%] right-[41%] font-Bungee font-normal text-7xl leading-10 text-red-600">
@@ -129,7 +156,11 @@ const SignUpCamera: React.FC<{}> = () => {
         <div
           className="h-8 w-28 flex justify-center items-center "
           onClick={() => {
-            handleCapturePhoto();
+            if (!confirmation) {
+              setConfirmation(true);
+            } else {
+              handleCapturePhoto();
+            }
           }}
         >
           <div className="border-4 border-solid border-white bg-red-500 h-[100%] w-[55%] xl:w-[50%] rounded-full flex justify-center items-center"></div>
@@ -140,9 +171,13 @@ const SignUpCamera: React.FC<{}> = () => {
             sx={{ color: "white" }}
             onClick={() => {
               if (imgSrc) {
-                dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
-
-                navigate("/home");
+                console.log("isfaceScanRequired", isfaceScanRequired);
+                if (isfaceScanRequired && type === "body") {
+                  dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));
+                } else {
+                  dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+                  navigate("/home");
+                }
               }
             }}
           />
