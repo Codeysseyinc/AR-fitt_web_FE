@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import AutoFixHighOutlinedIcon from "@mui/icons-material/AutoFixHighOutlined";
 interface LandingPageCard {
   color: string;
   title: string;
@@ -13,7 +12,7 @@ const HeroSectionCard: React.FC<LandingPageCard> = ({ color, title, icon }) => {
   };
 
   return (
-    <Grid className="w-[30%] h-[75%] rounded-xl  mt-4 mr-4 ">
+    <Grid className="w-[200px] h-[75%] mt-4 mr-4 ">
       <div
         className={`${
           (colorVariants as any)[color]

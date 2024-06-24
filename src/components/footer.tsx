@@ -6,19 +6,19 @@ const Footer = () => {
       container
       direction="row"
       xs={12}
-      className="w-screen h-52 bg-primarySaturated"
+      className="w-screen xs:h-full md:h-52 bg-primarySaturated"
     >
       <Grid
         item
-        className=" w-[40%] lg:w-[60%] xl:w-[50%] h-[100%] flex justify-start "
+        className=" w-[40%] xs:w-[100%] md:w-[60%] xl:w-[50%] h-[100%] flex md:justify-start xs:justify-center items-center"
       >
         {/* logo */}
         <Grid
           direction="column"
-          className="w-[40%] lg:w-[25%] xl:w-[30%] h-[100%] flex justify-center items-end "
+          className="xs:w-[25%] xl:w-[30%] h-[100%] flex justify-center xs:items-center md:items-end"
         >
           <img
-            className="w-[65%] lg:w-[65%] xl:w-[50%]"
+            className="xs:w-[70%] lg:w-[65%] xl:w-[50%]"
             src="/assets/images/logoWhite.png"
           />
         </Grid>
@@ -38,25 +38,42 @@ const Footer = () => {
 
       <Grid
         item
-        className="w-[50%] lg:w-[40%] xl:w-[50%] h-[100%] flex justify-end"
+        className="w-[50%] xs:w-[100%] md:w-[40%] xl:w-[50%] h-[100%] flex justify-end"
       >
         {" "}
         {/* nav */}
         <Grid
           direction="column"
-          className=" w-[30%] h-[100%]  flex justify-center "
+          className=" w-[30%] h-[100%] flex justify-center"
         >
           <div className="font-Dhurjati font-normal text-base text-white leading-[20px] py-8">
-            <div>Home</div>
-            <div>About us</div>
-            <div>How it works</div>
-            <div>Features</div>
+            <div>
+              <a href="#home" className="text-white no-underline">
+                Home
+              </a>
+            </div>
+            <div>
+              <a href="#aboutUs" className="text-white no-underline">
+                About us
+              </a>
+            </div>
+            <div>
+              <a href="#howItWorks" className="text-white no-underline">
+                How it works
+              </a>
+            </div>
+            <div>
+              <a href="#features" className="text-white no-underline">
+                Features
+              </a>
+            </div>
           </div>
         </Grid>
         {/* contact */}
         <Grid
           direction="column"
           className=" w-[40%] h-[100%] flex justify-center"
+          id="contact"
         >
           <div className="font-Dhurjati font-normal text-base text-white leading-[20px] py-8">
             <div className="text-lg ">Contact:</div>

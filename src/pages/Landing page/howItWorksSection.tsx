@@ -12,7 +12,8 @@ const HowItWorksSection: React.FC<{}> = () => {
         container
         direction="row"
         xs={12}
-        className="w-screen h-screen relative bg-white"
+        className="w-screen sm:h-screen xs:h-3/4 relative bg-white"
+        id="howItWorks"
       >
         <Grid
           direction="column"
@@ -24,7 +25,7 @@ const HowItWorksSection: React.FC<{}> = () => {
           {/*Some Description */}
           <Grid
             direction="column"
-            className=" lg:w-[40%] lg:h-[100%] xl:w-[40%] xl:h-[100%] mx-4 flex items-center "
+            className=" lg:w-[40%] lg:h-[100%] xl:w-[40%] xl:h-[100%] mx-4 flex items-center xs:hidden md:flex "
           >
             <div className="font-Dhurjati font-normal text-3xl leading-7 text-center">
               Browse, Try, Transform: Elevating Your Style, Step by Step.{" "}
@@ -35,9 +36,18 @@ const HowItWorksSection: React.FC<{}> = () => {
             direction="column"
             className=" lg:w-[85%] lg:h-[90%] xl:w-[80%] xl:h-[100%]  flex items-center "
           >
-            <div className="w-[100%] h-[100%] mt-8  flex">
+            <div className="xs:w-[280px] md:w-[700px] lg:w-[800px] h-[100%] mt-8  flex">
               <Carousel />
             </div>
+            {/*Some Description in mobile view */}
+            <Grid
+              direction="column"
+              className=" lg:w-[40%] lg:h-[100%] xl:w-[40%] xl:h-[100%] mx-4 flex items-center xs:flex md:hidden "
+            >
+              <div className="font-Dhurjati font-normal text-3xl leading-7 text-center">
+                Browse, Try, Transform: Elevating Your Style, Step by Step.{" "}
+              </div>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

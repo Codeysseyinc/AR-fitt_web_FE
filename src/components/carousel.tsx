@@ -6,8 +6,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery } from "@mui/material";
 import { useState } from "react";
+import CONSTANTS from "../utils/constants/CONSTANTS";
 
 export default () => {
   const numberOfSlides = Array.from({ length: 4 });
@@ -26,14 +27,15 @@ export default () => {
   const handlePrev = () => {
     setActiveIndex(activeIndex - 1);
   };
-
+  const isMobileView = useMediaQuery(CONSTANTS.MOBILE_VIEW_MAX_WIDTH);
+  console.log("isMobileView", isMobileView);
   return (
     <Swiper
       effect={"coverflow"}
       allowTouchMove={false}
       centeredSlides={true}
       loop={true}
-      slidesPerView={2}
+      slidesPerView={isMobileView ? 1 : 2}
       coverflowEffect={{
         rotate: 0,
         stretch: 0,
@@ -58,10 +60,10 @@ export default () => {
             <img
               src={`/assets/images/howItWorks/img_step${index + 1}.png`}
               alt="slide_image"
-              className="w-[70%] h-[67%]"
+              className="xs:w-[250px] xs:h-[250px] sm:w-[300px] sm:h-[300px]"
             />
             {activeIndex === index ? (
-              <div className="font-Dhurjati font-normal text-center text-sm lg:text-sm xl:text-base leading-[1.5] mt-6">
+              <div className="font-Dhurjati font-normal text-center text-sm lg:text-sm xl:text-base leading-[1.5] mt-6 xs:hidden md:flex">
                 {slideContent[index]}
               </div>
             ) : (

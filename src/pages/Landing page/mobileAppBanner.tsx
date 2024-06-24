@@ -6,20 +6,20 @@ const MobileAppBanner = () => {
       container
       direction="row"
       xs={12}
-      className="w-screen h-80 bg-white flex justify-center items-center relative pb-10 "
+      className="w-screen h-80 flex md:justify-center xs:justify-start items-center relative pb-10"
     >
       {/* Text Area */}
       <Grid
         item
         direction="column"
-        className=" w-[55%] lg:w-[55%] xl:w-[45%] h-[100%] flex justify-center pl-10  bg-gradient-to-b from-primarySaturated to-[#9DC3C5] rounded-l-3xl"
+        className=" w-[65%] lg:w-[55%] xl:w-[45%] md:h-[100%] sm:h-[80%] xs:h-[70%] flex justify-center xs:pl-4 md:pl-10 bg-gradient-to-b from-primarySaturated to-[#9DC3C5] rounded-l-3xl xs:rounded-l-md"
       >
         {/* Title */}
-        <div className=" w-[85%] lg:w-[85%] xl:w-[80%]  font-Montserrat font-bold text-4xl leading-11 tracking-tight mb-4">
+        <div className=" xs:w-[80%] lg:w-[85%] xl:w-[80%]  font-Montserrat font-bold xs:text-xs md:text-2xl xl:text-4xl leading-11 tracking-tight xs:mb-2 md:mb-4">
           Transform Your Wardrobe with a Swipe!
         </div>
         {/* Description */}
-        <div className=" w-[80%] lg:w-[80%] xl:w-[70%] font-Montserrat font-normal text-base leading-6 mb-4 ">
+        <div className=" w-[80%] lg:w-[80%] xl:w-[70%] font-Montserrat font-normal xs:text-xs md:text-base leading-6 xs:mb-2 md:mb-4">
           Get ready to revolutionize your fashion journey with ARFitt's mobile
           app. Download now from the Play Store and discover endless style
           possibilities!
@@ -43,7 +43,7 @@ const MobileAppBanner = () => {
       >
         <img
           src="/assets/images/landingPage/mobileAppBanner/mobileAppBannerAsset.png"
-          className=" h-[140%]"
+          className=" xs:h-[90%] xsm:h-[100%] sm:h-[120%] md:h-[140%]"
         />
       </Grid>
     </Grid>

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "HOME",
+    "link": "#home",
+    "type": "link"
+  },
+  {
+    "name": "ABOUT US",
+    "link": "#aboutUs",
+    "type": "link"
+  },
+  {
+    "name": "HOW IT WORKS",
+    "link": "#howItWorks",
+    "type": "link"
+  },
+  {
+    "name": "FEATURES",
+    "link": "#features",
+    "type": "link"
+  },
+  {
+    "name": "CONTACT",
+    "link": "#contact",
+    "type": "link"
+  },
+  {
+    "name": "Login",
+    "link": "/login",
+    "type": "button"
+  }
+]

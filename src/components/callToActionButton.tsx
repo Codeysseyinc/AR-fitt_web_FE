@@ -1,14 +1,20 @@
+import { ClassNames } from "@emotion/react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 interface CallToActionButton {
   nav: string;
   title: string;
+  className?: string;
 }
-const CallToActionButton: React.FC<CallToActionButton> = ({ nav, title }) => {
+const CallToActionButton: React.FC<CallToActionButton> = ({
+  nav,
+  title,
+  className,
+}) => {
   const navigate = useNavigate();
   return (
     <Button
-      className={`font-Montserrat font-bold bg-primarySaturated text-contrastText h-[10%] w-[60%] mt-4 text-xs lg:text-xs xl:text-sm`}
+      className={`${className} font-Montserrat font-bold bg-primarySaturated text-contrastText h-[40px] w-[130px] mt-4 text-xs lg:text-xs xl:text-sm`}
       variant="contained"
       style={{
         borderRadius: "7px",

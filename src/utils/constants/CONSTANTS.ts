@@ -6,5 +6,6 @@ const CONSTANTS = {
   SIGN_UP_FACE_SCANNING: "face scan",
   SIGN_UP_SUCCESS: "success",
   SIGN_UP_CATEGORIES: "categories",
+  MOBILE_VIEW_MAX_WIDTH: "(max-width:767px)",
 };
 export default CONSTANTS;
