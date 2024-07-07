@@ -36,7 +36,11 @@ const HeroSection: React.FC<{}> = () => {
               Style Made Simple, virtual Fashion with AR-Fitt. Let's Elevate
               Your Look
             </div>
-            <CallToActionButton nav="/getStarted" title="Get Started" />
+            <CallToActionButton
+              className="z-30"
+              nav="/getStarted"
+              title="Get Started"
+            />
           </Grid>
           {/* AR-FITT dual tone */}
           <img

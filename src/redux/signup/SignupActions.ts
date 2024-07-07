@@ -91,6 +91,20 @@ export const setSubscriptionFailure = (errorMessage: string) => ({
   type: SignupActionTypes.SUBSCRIBED_FAILURE,
   payload: errorMessage,
 });
+export const setBodyScanSuccess = () => ({
+  type: SignupActionTypes.BODY_SCANNED_SUCCESS,
+});
+export const setBodyScanFailure = (errorMessage: string) => ({
+  type: SignupActionTypes.BODY_SCANNED_FAILURE,
+  payload: errorMessage,
+});
+export const setFaceScanSuccess = () => ({
+  type: SignupActionTypes.FACE_SCANNED_SUCCESS,
+});
+export const setFaceScanFailure = (errorMessage: string) => ({
+  type: SignupActionTypes.FACE_SCANNED_FAILURE,
+  payload: errorMessage,
+});
 export const setGuestDetails = (guest: any) => ({
   type: SignupActionTypes.SET_GUEST_DETAILS,
   payload: guest,

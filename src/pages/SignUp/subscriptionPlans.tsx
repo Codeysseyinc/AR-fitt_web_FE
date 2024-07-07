@@ -45,10 +45,7 @@ const SubscriptionPlans = () => {
         modelsSrc="/assets/images/signUp/subscriptionPlansModels.png"
       />
       <ContentArea title="Subscription Plans">
-        <Grid
-          direction="row"
-          className="w-[100%] h-[60%] flex justify-center mt-6"
-        >
+        <Grid className="w-[100%] xs:h-[80%] md:h-[60%] flex justify-center items-center mt-6 xs:flex-col md:flex-row">
           {/* One Time */}
           <SubscriptionCard
             title="One Time"

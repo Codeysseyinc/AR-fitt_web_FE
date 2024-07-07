@@ -40,15 +40,14 @@ const GetStarted: React.FC<{}> = ({}) => {
           >
             {/* Login button */}
             <Button
-              className="bg-primary text-contrastText font-bold"
+              className="bg-primary text-contrastText font-bold xs:w-[200px] md:w-[300px]"
               disableElevation={true}
               variant="contained"
               style={{
-                width: "100%",
                 fontFamily: "Montserrat",
                 margin: "4%",
                 borderRadius: "10px",
-                height: "75%",
+                height: "50px",
               }}
               onClick={() => {
                 navigate("/login");
@@ -68,15 +67,14 @@ const GetStarted: React.FC<{}> = ({}) => {
             </Grid>
             {/* Guest Button */}
             <Button
-              className="bg-white text-primary border-solid border-black border h-[80%] font-bold"
+              className="bg-white text-primary border-solid border-black border font-bold xs:w-[200px] md:w-[300px]"
               variant="contained"
               disableElevation={true}
               style={{
-                width: "100%",
                 fontFamily: "Montserrat",
                 margin: "4%",
                 borderRadius: "10px",
-                height: "75%",
+                height: "50px",
               }}
               onClick={() => {
                 setOpen(true);

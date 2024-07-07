@@ -31,7 +31,7 @@ const Navbar = () => {
     } else {
       return (
         <a
-          className="font-Montserrat font-bold text-black no-underline lg:text-base xs:text-xs xs:pb-[20px] md:pb-auto"
+          className="font-Montserrat font-bold text-black no-underline lg:text-base xs:text-xs xs:pb-[20px] md:pb-0"
           href={item.link}
         >
           {item.name}
@@ -40,7 +40,7 @@ const Navbar = () => {
     }
   });
   return (
-    <Grid className="flex flex-row absolute w-full bg-[#C8C8C8]  bg-opacity-20 h-[8%]">
+    <Grid className="flex flex-row absolute w-full bg-[#C8C8C8]  bg-opacity-20 h-[8%] z-40">
       <div className=" w-[30%] flex">
         <img
           src="/assets/images/logo.png"

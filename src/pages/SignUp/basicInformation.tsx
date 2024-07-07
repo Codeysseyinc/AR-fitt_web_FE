@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Alert, Button, Grid, Link } from "@mui/material";
+import { Button, Grid, Link } from "@mui/material";
 import InputField from "../../components/inputField";
 import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
@@ -23,12 +23,28 @@ const BasicInformation: React.FC<any> = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState("");
+  const [errors, setErrors] = useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+    dateOfBirth: false,
+  });
+  const handleErrorUpdate = (field: any) => (isError: boolean) => {
+    setErrors({
+      ...errors,
+      [field]: isError,
+    });
+  };
 
+  const hasErrors = Object.values(errors).some((error) => error !== false);
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+    dispatch(setErrorMsg(""));
   });
   const errorMessage = useSelector((state: any) => state.signup.errorMessage);
-
+  console.log("errormessage", errorMessage);
   return (
     // page
     <Grid
@@ -48,7 +64,7 @@ const BasicInformation: React.FC<any> = () => {
           {/* First Name & Last Name */}
           <Grid
             direction="row"
-            className="flex items-center justify-evenly w-full mt-4"
+            className="flex h-[55px] justify-evenly w-full mt-4"
           >
             <InputField
               type="text"
@@ -56,6 +72,7 @@ const BasicInformation: React.FC<any> = () => {
               onChange={(e) => {
                 setFirstName(e.target.value);
               }}
+              onErrorUpdate={handleErrorUpdate("firstName")}
             />
             <InputField
               type="text"
@@ -63,26 +80,29 @@ const BasicInformation: React.FC<any> = () => {
               onChange={(e) => {
                 setLastName(e.target.value);
               }}
+              onErrorUpdate={handleErrorUpdate("lasttName")}
             />
           </Grid>
           {/* Email */}
-          <Grid className="flex items-center justify-evenly w-full mt-2">
+          <Grid className="flex h-[55px] justify-evenly w-full ">
             <InputField
               placeholder="Email"
               type="email"
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
+              onErrorUpdate={handleErrorUpdate("email")}
             />
           </Grid>
           {/* Password & Confirm Password */}
-          <Grid className="flex items-center justify-evenly w-full mt-2">
+          <Grid className="flex h-[60px] justify-evenly w-full ">
             <InputField
               placeholder="Password"
               type="password"
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              onErrorUpdate={handleErrorUpdate("password")}
             />
             <InputField
               placeholder="Confirm Password"
@@ -90,27 +110,29 @@ const BasicInformation: React.FC<any> = () => {
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
               }}
+              onErrorUpdate={handleErrorUpdate("confirmPassword")}
             />
           </Grid>
           {/* Phone Number*/}
-          <Grid className="flex items-center justify-evenly w-full mt-2">
+          <Grid className="flex justify-evenly w-full ">
             <InputPhoneField setPhone={setPhone} />
           </Grid>
           {/* DOB & Gender*/}
-          <Grid className="flex items-center justify-evenly w-full mt-2">
+          <Grid className="flex h-[55px] justify-evenly w-full ">
             <InputField
               type="date"
               placeholder="Date of Birth"
               setValue={setDob}
+              onErrorUpdate={handleErrorUpdate("dateOfBirth")}
             />
             <GenderDropDown className="w-[30%]" setGender={setGender} />
           </Grid>
           {/* Sign Up Button */}
           <Grid className="flex items-center justify-evenly w-full mt-[4%]">
             <Button
-              disabled={errorMessage ? true : false}
+              disabled={hasErrors}
               className={`${
-                errorMessage ? "bg-gray-500" : "bg-primary"
+                hasErrors ? "bg-gray-500" : "bg-primary"
               } text-contrastText drop-shadow-lg`}
               variant="contained"
               style={{

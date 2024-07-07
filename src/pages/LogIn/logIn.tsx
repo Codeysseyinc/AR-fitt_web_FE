@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Button, Grid, Link } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Link,
+  TextField,
+} from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
@@ -13,20 +21,38 @@ import {
 } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useDispatch } from "react-redux";
+import GuestLoginCard from "../../components/guestLoginCard";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LogIn: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
+  const [open, setOpen] = useState(false);
 
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+  });
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleErrorUpdate = (field: any) => (isError: boolean) => {
+    setErrors({
+      ...errors,
+      [field]: isError,
+    });
+  };
+  const hasErrors = Object.values(errors).some((error) => error !== false);
   function authenticateUser(): any {
     if (!(email && password)) {
       setError("Please fill in the required fields");
       return;
     }
-    const resp = axios({
+    axios({
       // Endpoint
       url: `http://localhost:3001/user/login`,
       method: "POST",
@@ -73,7 +99,7 @@ const LogIn: React.FC = () => {
   }
   useEffect(() => {
     dispatch(setErrorMsg(null));
-  }, []);
+  }, [dispatch]);
   return (
     <Grid
       container
@@ -94,26 +120,49 @@ const LogIn: React.FC = () => {
         )}
         <Grid
           direction="column"
-          className="w-[70%] h-[75%] flex justify-center items-center "
+          className="w-[70%] h-full flex justify-center items-center"
         >
           <p className="font-Montserrat text-sm flex justify-center text-center">
             Welcome Back!
           </p>
-          <InputField
-            type="email"
-            placeholder="Email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-          <InputField
-            type="password"
-            placeholder="Password"
-            className="mt-6"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
+          <Grid className="flex h-[72px] justify-evenly w-full ">
+            <InputField
+              type="email"
+              placeholder="Email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              onErrorUpdate={handleErrorUpdate("email")}
+            />
+          </Grid>
+
+          {/* password field without validation checks */}
+          <Grid className="flex h-[72px] justify-evenly w-full ">
+            <TextField
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              required
+              className={`border-0 border-b border-[#646262] m-2 w-full text-xs font-Montserrat`}
+              inputProps={{ color: "#00ff00" }}
+              variant="standard"
+              type={showPassword ? "text" : "password"}
+              placeholder={"Password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
           <div
             className="font-Montserrat font-medium text-xs leading-40 text-primary self-end mt-6 cursor-pointer"
             onClick={() => {
@@ -124,18 +173,20 @@ const LogIn: React.FC = () => {
           </div>
           <Grid
             direction="column"
-            className="flex items-center justify-center w-[80%] h-[50%] mt-[3%] "
+            className="flex items-center justify-center w-[80%] mt-[3%] "
           >
             <Button
-              className="bg-primary text-contrastText font-bold"
+              disabled={hasErrors}
+              className={`${
+                hasErrors ? "bg-gray-500" : "bg-primary"
+              } text-contrastText font-bold xs:w-[200px] md:w-[300px]`}
               disableElevation={true}
               variant="contained"
               style={{
-                width: "100%",
                 fontFamily: "Montserrat",
                 margin: "4%",
                 borderRadius: "10px",
-                height: "75%",
+                height: "50px",
               }}
               onClick={() => {
                 authenticateUser();
@@ -144,20 +195,23 @@ const LogIn: React.FC = () => {
               Login
             </Button>
             <Button
-              className="bg-white text-primary border-solid border-black border h-[80%] font-bold"
+              className="bg-white text-primary border-solid border-black border font-bold xs:w-[200px] md:w-[300px]"
               variant="contained"
               disableElevation={true}
               style={{
-                width: "100%",
                 fontFamily: "Montserrat",
-                margin: "4%",
+                margin: "4px",
                 borderRadius: "10px",
-                height: "75%",
+                height: "50px",
               }}
-              onClick={() => {}}
+              onClick={() => {
+                setOpen(true);
+              }}
             >
               Continue As Guest
             </Button>
+            <GuestLoginCard open={open} setOpen={setOpen} />
+
             <Grid className="Montserrat-text text-xs flex justify-center w-full m-4">
               Don't have an account ?&nbsp;
               <Link href="/signup" className="text-link font-bold">

@@ -1,37 +1,33 @@
-import {
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-} from "@mui/material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import "./index.css";
 import { SetStateAction, useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
-import { setErrorMsg } from "../redux/signup/SignupActions";
-interface InputField {
+interface InputFieldProps {
   placeholder: string;
   type: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   setValue?: Dispatch<SetStateAction<number | string | any>> | any;
+  onErrorUpdate: (isError: boolean) => void;
 }
-const InputField: React.FC<InputField> = ({
+const InputField: React.FC<InputFieldProps> = ({
   onChange,
   placeholder,
   type,
   className,
   setValue,
+  onErrorUpdate,
 }) => {
-  const [isDateInput, setIsDateInput] = useState(false);
+  const [passwordErrors, setPasswordErrors] = useState({
+    length: false,
+    specialChar: false,
+  });
 
   const [error, setError] = useState("");
   const [nameError, setNameError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleNameChange = (e: any) => {
     if (onChange) {
@@ -46,8 +42,8 @@ const InputField: React.FC<InputField> = ({
         } else {
           setNameError(true);
           setError("Invalid Date of Birth entered");
-
-          dispatch(setErrorMsg("Invalid Date of Birth entered"));
+          onErrorUpdate(true);
+          // dispatch(setErrorMsg("Invalid Date of Birth entered"));
 
           return;
         }
@@ -55,35 +51,63 @@ const InputField: React.FC<InputField> = ({
     }
     if (e.target.validity.valid) {
       setNameError(false);
+      onErrorUpdate(false);
     } else {
       setNameError(true);
+      onErrorUpdate(true);
 
-      if (placeholder.includes("Email"))
+      if (placeholder.includes("Email")) {
         setError("Should follow the correct email format");
-      else setError("Wrong Entry");
+      } else {
+        setError("Wrong Entry");
+      }
     }
-    console.log("nameError at end", nameError);
-    if (nameError) dispatch(setErrorMsg(error));
-    else dispatch(setErrorMsg(null));
+  };
+
+  const handlePasswordChange = (e: any) => {
+    if (onChange) {
+      onChange(e);
+    }
+
+    // Validate password
+    const lengthValid = e.target.value.length >= 8;
+    const specialCharValid = /[!@#$%^&*(),.?":{}|<>]/.test(e.target.value);
+
+    setPasswordErrors({
+      length: !lengthValid,
+      specialChar: !specialCharValid,
+    });
+    if (!lengthValid || !specialCharValid) {
+      // dispatch(setErrorMsg("Password Error"));
+      onErrorUpdate(true);
+    } else {
+      onErrorUpdate(false);
+      //   dispatch(setErrorMsg(null));
+    }
   };
   useEffect(() => {
-    dispatch(setErrorMsg(null));
+    onErrorUpdate(false);
+    // dispatch(setErrorMsg(null));
   }, []);
   return (
     <>
       <TextField
         // error
-        helperText={nameError ? error : ""}
-        onChange={handleNameChange}
-        error={nameError}
+        helperText={
+          nameError
+            ? error
+            : (passwordErrors.length && "Must have 8 characters") ||
+              (passwordErrors.specialChar && "Must have a special character.")
+        }
+        onChange={(e) => {
+          type === "password" ? handlePasswordChange(e) : handleNameChange(e);
+        }}
+        error={nameError || passwordErrors.length || passwordErrors.specialChar}
         required
         className={` ${className} border-0 border-b border-[#646262] m-2 w-full text-xs font-Montserrat`}
+        inputProps={{ color: "#00ff00" }}
         variant="standard"
         type={showPassword ? "text" : type}
-        onFocus={() =>
-          placeholder === "Date of Birth" ? setIsDateInput(true) : ""
-        }
-        onBlur={() => setIsDateInput(false)}
         placeholder={placeholder}
         InputProps={{
           endAdornment: type === "password" && (

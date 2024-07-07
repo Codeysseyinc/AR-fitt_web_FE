@@ -168,7 +168,7 @@ const OtpInputField: React.FC = () => {
               otpError === "You have entered an incorrect OTP"
                 ? "focus:bg-red-600 "
                 : "focus:bg-teal-500 "
-            }  w-[5%] h-[80%] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none`}
+            }  w-[20px] h-[20px] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none`}
           />
         ))}
       </Grid>

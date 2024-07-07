@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentForm } from "../redux/signup/SignupActions";
 import CONSTANTS from "../utils/constants/CONSTANTS";
+import axios from "axios";
 interface SignUpCameraProps {
   type: string;
 }
@@ -29,7 +30,37 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   const isfaceScanRequired = useSelector(
     (state: any) => state.signup.interestCategories
   ).some((item: any) => item.includes("cosmetics"));
+  const email = useSelector((state: any) => state.signup.userDetails.email);
 
+  function setMatrix(): any {
+    console.log(`http://localhost:3001/${type}Matrix`, "---", email);
+    const resp = axios({
+      // Endpoint
+      url: `http://localhost:3001/${type}Matrix`,
+      method: "POST",
+      headers: {
+        // Add any auth token here
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+      data: {
+        email: email,
+        bodyMatrix: '["inferences": "123"]',
+      },
+    })
+      // Handle the response from backend here
+      .then((res) => {
+        console.log("matrix set for sent ", type);
+      })
+
+      // Catch errors if any
+      .catch((err: any) => {
+        console.log("auth error", err?.response.data.message);
+        if (err?.response.data.message === "Unauthorized access") {
+          navigate("/");
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+        }
+      });
+  }
   const handleCapturePhoto = () => {
     const image = webcamRef.current?.getScreenshot();
     if (image) {
@@ -129,7 +160,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
         )}
       </div>
       {/* Buttons Panel */}
-      <Grid className="bg-primary h-[15%] w-[50%] rounded-xl	mt-4 flex justify-between items-center">
+      <Grid className="bg-primary h-[15%] xs:w-[290px] md:w-[300px] rounded-xl	mt-4 flex justify-between items-center">
         {/* Cancel button */}
         <div className=" h-[73%] w-[35%] flex justify-end items-center">
           <div
@@ -172,6 +203,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
             onClick={() => {
               if (imgSrc) {
                 console.log("isfaceScanRequired", isfaceScanRequired);
+                setMatrix();
                 if (isfaceScanRequired && type === "body") {
                   dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));
                 } else {

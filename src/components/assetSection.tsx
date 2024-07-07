@@ -4,14 +4,19 @@ import { Grid } from "@mui/material";
 interface AssetSectionProps {
   backgroundSrc: string;
   modelsSrc: string;
+  className?: string;
 }
 
 const AssetSection: React.FC<AssetSectionProps> = ({
   backgroundSrc,
   modelsSrc,
+  className,
 }) => {
   return (
-    <Grid item className="w-[40%] h-screen relative">
+    <Grid
+      item
+      className={`${className} xs:hidden sm:flex w-[40%] h-screen relative`}
+    >
       <img
         src={backgroundSrc}
         className="w-full h-full object-cover absolute z-1"
