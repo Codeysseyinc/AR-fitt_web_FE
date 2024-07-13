@@ -37,7 +37,7 @@ const HomeNavbar = () => {
     <Grid
       item
       container
-      className="bg-gray-100 rounded-lg py-4 px-8 flex flex-col gap-5 mb-6"
+      className="bg-gray-100 rounded-lg py-4 px-8 flex flex-col gap-5 mb-6 w-full"
     >
       {/* Navbar Top Row */}
       <Grid item container className="flex justify-between items-center">

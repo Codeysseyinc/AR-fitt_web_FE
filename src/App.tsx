@@ -12,6 +12,9 @@ import ResetPassword from "./pages/LogIn/resetPassword";
 import Payments from "./pages/SignUp/payment";
 import { PersistGate } from "redux-persist/integration/react";
 import CategoryPage from "./pages/SignUp/categoryPage";
+import HomeLayout from "./layouts/homePageLayout";
+import SuggestedItems from "./pages/Home page/suggestedItems";
+import ItemDescription from "./pages/Home page/itemDescription";
 
 const App = () => {
   return (
@@ -24,12 +27,16 @@ const App = () => {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<LogIn />} />
               <Route path="/getStarted" element={<GetStarted />} />
-              <Route path="/home" element={<HomePage />} />
               <Route path="/forgotPassword" element={<ForgotPassword />} />
               <Route path="/resetPassword" element={<ResetPassword />} />
               <Route path="/payments" element={<Payments />} />
               <Route path="/categoryPage" element={<CategoryPage />} />
-              InterestPage
+              {/* <Route path="/home" element={<HomePage />} /> */}
+              <Route path="/home" element={<HomeLayout />}>
+                <Route index element={<HomePage />} />
+                <Route path="suggestion" element={<SuggestedItems />} />
+                <Route path="item" element={<ItemDescription />} />
+              </Route>
             </Routes>
           </Router>
         </ARfittProvider>
