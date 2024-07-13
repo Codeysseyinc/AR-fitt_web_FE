@@ -12,7 +12,6 @@ import { jwtDecode } from "jwt-decode";
 const SubscriptionPlans = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isSubscribed = useSelector((state: any) => state.signup.isSubscribed);
   const [searchParams] = useSearchParams();
   const session_id = searchParams.get("session_id") ?? "";
   const token = localStorage.getItem("access_token");
@@ -45,10 +44,7 @@ const SubscriptionPlans = () => {
         modelsSrc="/assets/images/signUp/subscriptionPlansModels.png"
       />
       <ContentArea title="Subscription Plans">
-        <Grid
-          direction="row"
-          className="w-[100%] h-[60%] flex justify-center mt-6"
-        >
+        <Grid className="w-[100%] xs:h-[80%] md:h-[60%] flex justify-center items-center mt-6 xs:flex-col md:flex-row">
           {/* One Time */}
           <SubscriptionCard
             title="One Time"

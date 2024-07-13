@@ -2,7 +2,7 @@
 import { Alert, Grid } from "@mui/material";
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { setCurrentForm } from "../redux/signup/SignupActions";
 import "./index.css";
@@ -20,7 +20,6 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   removeLogo,
   className,
 }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const error = useSelector((state: any) => state.signup.errorMessage);
 
@@ -33,7 +32,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     <Grid
       item
       direction="column"
-      className={`${className} bg-white rounded-tl-[40px] w-[65%] absolute left-[35%] h-screen flex items-center`}
+      className={`${className} bg-white sm:rounded-tl-[40px] xs:w-[100%] sm:w-[65%] sm:absolute left-[35%] h-screen flex items-center `}
     >
       {/* logo and back button */}
       <Grid direction="row" className=" w-[100%] h-[17%] flex justify-start">
@@ -50,11 +49,11 @@ const ContentArea: React.FC<ContentAreaProps> = ({
           <img
             className="self-end flex justify-end mr-6 h-[75%]"
             style={{ display: `${removeLogo ? "none" : "block"}` }}
-            src="./assets/images/logo.png"
+            src="/assets/images/logo.png"
           />
         </div>
       </Grid>
-      <Grid className="font-Montserrat font-bold text-3xl text-[#408589] flex justify-center ">
+      <Grid className="font-Montserrat font-bold xs:text-2xl md:text-3xl text-primary flex justify-center ">
         {title}
       </Grid>
       {error && (

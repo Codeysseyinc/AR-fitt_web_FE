@@ -9,7 +9,6 @@ import HomePage from "./pages/Home page";
 import { store, persistor } from "./redux/store";
 import { ARfittProvider } from "./context/storeContext";
 import ResetPassword from "./pages/LogIn/resetPassword";
-import Payments from "./pages/SignUp/payment";
 import { PersistGate } from "redux-persist/integration/react";
 import CategoryPage from "./pages/SignUp/categoryPage";
 import HomeLayout from "./layouts/homePageLayout";
@@ -29,7 +28,6 @@ const App = () => {
               <Route path="/getStarted" element={<GetStarted />} />
               <Route path="/forgotPassword" element={<ForgotPassword />} />
               <Route path="/resetPassword" element={<ResetPassword />} />
-              <Route path="/payments" element={<Payments />} />
               <Route path="/categoryPage" element={<CategoryPage />} />
               {/* <Route path="/home" element={<HomePage />} /> */}
               <Route path="/home" element={<HomeLayout />}>

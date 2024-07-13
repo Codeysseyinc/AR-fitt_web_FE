@@ -1,4 +1,4 @@
-import { Grid, Link, TextField } from "@mui/material";
+import { Grid, Link } from "@mui/material";
 import "./index.css";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import CONSTANTS from "../utils/constants/CONSTANTS";
 
 const OtpInputField: React.FC = () => {
-  const secondsCountDown = 60 * 3; // time in seconds
+  const secondsCountDown = 60 * 1; // time in seconds
   const numberOfDigits = 5;
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState("");
@@ -47,7 +47,7 @@ const OtpInputField: React.FC = () => {
     return;
   }
   function sendOTP(): any {
-    const resp = axios({
+    axios({
       // Endpoint
       url: `http://localhost:3001/user/requestOTP?email=${email}`,
       method: "GET",
@@ -63,17 +63,15 @@ const OtpInputField: React.FC = () => {
 
       // Catch errors if any
       .catch((err: any) => {
-        console.log("auth error", err?.response.data.message);
         if (err?.response.data.message === "Unauthorized access") {
           navigate("/");
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
         }
-        // dispatch(setErrorMsg(err?.response.data.message));
       });
   }
 
   function verifyOTP(otp: string): any {
-    const resp = axios({
+    axios({
       // Endpoint
       url: `http://localhost:3001/user/verifyOTP`,
       method: "POST",
@@ -88,7 +86,6 @@ const OtpInputField: React.FC = () => {
     })
       // Handle the response from backend here
       .then((res) => {
-        console.log("otp verfied", otp);
         dispatch(verifyEmailSuccess());
         dispatch(setErrorMsg(null));
         setOtpError("Correct OTP");
@@ -168,13 +165,13 @@ const OtpInputField: React.FC = () => {
               otpError === "You have entered an incorrect OTP"
                 ? "focus:bg-red-600 "
                 : "focus:bg-teal-500 "
-            }  w-[5%] h-[80%] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none`}
+            }  w-[20px] h-[20px] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none`}
           />
         ))}
       </Grid>
       {/* Resend OTP */}
-      <Grid className="Montserrat-text text-xs flex justify-between w-full m-4">
-        <div>
+      <Grid className="Montserrat-text text-xs flex justify-start items-start w-full m-4">
+        <div className="w-[50%]">
           Didn’t Receive the OTP yet?{" "}
           <Link
             href="#"
@@ -189,7 +186,7 @@ const OtpInputField: React.FC = () => {
           </Link>
         </div>
         {/* &nbsp;&nbsp; */}
-        <div className="self-end text-red-500">
+        <div className="text-red-500 w-[50%] flex justify-end">
           Time Remaining:&nbsp; {countdown} seconds
         </div>
       </Grid>

@@ -92,36 +92,39 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
   return (
     <Grid
       direction="column"
-      className="shadow-xl h-[100%] w-[29%] ml-4 rounded-[15px] flex justify-start align-center"
+      className="shadow-xl xs:h-[120px] xs:w-[180px] md:h-[330px] md:w-[180px] ml-4 xs:mb-4 md:mb-0 rounded-[15px] flex justify-start align-center"
     >
       <Grid
         className={`${
           (colorVariants as any)[color]
-        } h-[15%] w-[100%] rounded-t-[15px] text-white font-Montserrat flex justify-center `}
+        } xs:h-[50px] md:h-[50px] w-[100%] rounded-t-[15px] text-white font-Montserrat font-bold flex justify-center items-center `}
       >
-        <h4>{title}</h4>
+        {title}
       </Grid>
-      <Grid item className="flex justify-center h-[37%]">
+      <Grid item className="xs:hidden md:flex justify-center h-[37%]">
         {" "}
         <img src={icon} className="scale-[55%]" />
       </Grid>
-      <p className="flex justify-center m-0 font-Montserrat text-[#747474]">
+      <p className="xs:hidden md:flex  justify-center m-0 font-Montserrat text-[#747474]">
         From
       </p>
       <Grid
         direction="row"
         className={`${
           (colorTextVariants as any)[color]
-        } m-0  font-Montserrat flex justify-center`}
+        } m-0  font-Montserrat flex justify-center items-center`}
       >
-        <p className="font-normal m-0 text-6xl flex"> £{price}</p>
+        <p className="font-normal m-0 xs:text-4xl md:text-6xl flex">
+          {" "}
+          £{price}
+        </p>
 
         <p className="flex self-end">{getUnitPrice(title)}</p>
       </Grid>
       <Button
         className={`${
           (colorVariants as any)[color]
-        } text-contrastText drop-shadow-lg w-[90%] h-[15%]`}
+        } text-contrastText drop-shadow-lg w-[90%] xs:h-[30px] md:h-[15%]`}
         variant="contained"
         style={{
           fontFamily: "Montserrat",

@@ -50,7 +50,7 @@ const CategoryPage: React.FC = () => {
       xs={12}
       className="w-screen h-screen flex flex-row justify-center pt-4 overflow-auto"
     >
-      <Grid className="font-Montserrat font-bold text-3xl text-primary flex justify-center w-[100%]">
+      <Grid className="font-Montserrat font-bold xs:text-2xl md:text-3xl text-primary flex justify-center items-center w-[100%]">
         Choose Your Interests
       </Grid>
       <Grid className="font-Montserrat font-bold text-xl text-primary opacity-50 flex justify-center text-center">
@@ -87,7 +87,7 @@ const CategoryPage: React.FC = () => {
                           isClicked
                             ? "rounded-full border-solid border-primary border-4"
                             : "rounded-full border-solid border-transparent border-4"
-                        } h-[200px]`}
+                        } xs:h-[100px] md:h-[200px]`}
                       />
                     </div>
                   </div>
@@ -97,7 +97,7 @@ const CategoryPage: React.FC = () => {
           )
         )}
       </Grid>
-      <Grid className=" w-[100%] h-[40px] pr-[20px] flex flex-row justify-end font-Montserrat font-bold text-2xl text-[#408589] cursor-pointer">
+      <Grid className=" w-[100%] h-[40px] pr-[20px] flex flex-row justify-end font-Montserrat font-bold xs:text-lg md:text-2xl text-[#408589] cursor-pointer">
         <div
           className=" pr-[50px]"
           onClick={() => {

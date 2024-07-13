@@ -5,12 +5,9 @@ import ContentArea from "../../components/contentArea";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { setCurrentForm } from "../../redux/signup/SignupActions";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 const SignupSuccess: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isSubscribed = useSelector((state: any) => state.signup.isSubscribed);
 
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));

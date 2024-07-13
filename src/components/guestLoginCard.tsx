@@ -2,11 +2,8 @@ import {
   Button,
   Dialog,
   DialogActions,
-  DialogContent,
   DialogContentText,
-  DialogTitle,
   Grid,
-  createTheme,
 } from "@mui/material";
 import InputField from "./inputField";
 import GenderDropDown from "./genderDropdown";
@@ -27,11 +24,21 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [errors, setErrors] = useState({
+    dateOfBirth: false,
+  });
+  const handleErrorUpdate = (field: any) => (isError: boolean) => {
+    setErrors({
+      ...errors,
+      [field]: isError,
+    });
+  };
   return (
     <Dialog
       open={open}
       PaperProps={{
-        className: "bg-[#F3F3F3] flex flex-col pb-24 ",
+        className:
+          "bg-[#F3F3F3] flex flex-col xs:pb-[30px] md:pb-[36px]  h-[450px] ",
       }}
     >
       {" "}
@@ -78,6 +85,7 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
             type="date"
             placeholder="Date of Birth"
             setValue={setDob}
+            onErrorUpdate={handleErrorUpdate("dateOfBirth")}
           />
           {/* Guest Button */}
           <Button

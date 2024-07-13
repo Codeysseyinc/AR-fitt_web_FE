@@ -91,6 +91,20 @@ export const setSubscriptionFailure = (errorMessage: string) => ({
   type: SignupActionTypes.SUBSCRIBED_FAILURE,
   payload: errorMessage,
 });
+export const setBodyScanSuccess = () => ({
+  type: SignupActionTypes.BODY_SCANNED_SUCCESS,
+});
+export const setBodyScanFailure = (errorMessage: string) => ({
+  type: SignupActionTypes.BODY_SCANNED_FAILURE,
+  payload: errorMessage,
+});
+export const setFaceScanSuccess = () => ({
+  type: SignupActionTypes.FACE_SCANNED_SUCCESS,
+});
+export const setFaceScanFailure = (errorMessage: string) => ({
+  type: SignupActionTypes.FACE_SCANNED_FAILURE,
+  payload: errorMessage,
+});
 export const setGuestDetails = (guest: any) => ({
   type: SignupActionTypes.SET_GUEST_DETAILS,
   payload: guest,
@@ -113,16 +127,19 @@ export const registerUserStartAsync = (
       .then((response) => {
         const token = response.headers.access_token;
         if (token) {
+          console.log("token is available", token);
           localStorage.setItem("access_token", token);
         }
         dispatch(registerUserStart());
         dispatch(setUserDetails(payload));
+        console.log("change form");
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
       })
       .catch((error: AxiosError | any) => {
         const errorMessage = error?.response?.data
           ? Object.values(error.response.data)
           : null;
+        dispatch(setErrorMsg(errorMessage));
         dispatch(setErrorMessage(errorMessage || "Signup Failed. "));
         dispatch(registerUserFailure(error.message));
       });

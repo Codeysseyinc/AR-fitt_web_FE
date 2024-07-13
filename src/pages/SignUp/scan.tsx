@@ -3,10 +3,9 @@ import { Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import SignUpCamera from "../../components/signUpCamera";
-import CONSTANTS from "../../utils/constants/CONSTANTS";
-import { setCurrentForm } from "../../redux/signup/SignupActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 interface ScanProps {
   type: string;
 }
@@ -36,7 +35,7 @@ const Scan: React.FC<ScanProps> = ({ type }) => {
           <SignUpCamera type={type} />
         </Grid>
         <Grid
-          className=" w-[100%] h-[40px] pr-[20px] flex flex-row justify-end font-Montserrat font-bold text-2xl text-[#408589] cursor-pointer"
+          className=" w-[100%] h-[40px] pr-[20px] flex flex-row justify-end font-Montserrat font-bold xs:text-lg md:text-2xl text-[#408589] cursor-pointer"
           onClick={() => {
             navigate("/home");
           }}

@@ -10,7 +10,7 @@ import { Grid, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import CONSTANTS from "../utils/constants/CONSTANTS";
 
-export default () => {
+const Carousel = () => {
   const numberOfSlides = Array.from({ length: 4 });
   const slideContent = [
     "Step 1: Begin your style journey by signing up for AR-Fitt. Provide basic information and complete payment to unlock personalized features. Dive into a world of fashion tailored just for you.",
@@ -28,7 +28,6 @@ export default () => {
     setActiveIndex(activeIndex - 1);
   };
   const isMobileView = useMediaQuery(CONSTANTS.MOBILE_VIEW_MAX_WIDTH);
-  console.log("isMobileView", isMobileView);
   return (
     <Swiper
       effect={"coverflow"}
@@ -91,3 +90,4 @@ export default () => {
     </Swiper>
   );
 };
+export default Carousel;

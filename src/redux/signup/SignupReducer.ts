@@ -19,6 +19,8 @@ interface SignupState {
   changePassword: boolean;
   isChangingPassword: boolean;
   isVerified: boolean;
+  isFaceScanned: boolean;
+  isBodyScanned: boolean;
   isSubscribed: boolean;
   guestDetails: any;
   interestCategories: Array<string>;
@@ -45,6 +47,8 @@ const INITIAL_STATE: SignupState = {
   changePassword: false,
   isChangingPassword: false,
   isVerified: false,
+  isFaceScanned: false,
+  isBodyScanned: false,
   isSubscribed: false,
   guestDetails: {
     email: "",
@@ -186,6 +190,26 @@ const signupReducer: Reducer<SignupState, SignupAction> = (
       return {
         ...state,
         isSubscribed: false,
+      };
+    case SignupActionTypes.FACE_SCANNED_SUCCESS:
+      return {
+        ...state,
+        isFaceScanned: true,
+      };
+    case SignupActionTypes.FACE_SCANNED_FAILURE:
+      return {
+        ...state,
+        isFaceScanned: false,
+      };
+    case SignupActionTypes.BODY_SCANNED_SUCCESS:
+      return {
+        ...state,
+        isBodyScanned: true,
+      };
+    case SignupActionTypes.BODY_SCANNED_FAILURE:
+      return {
+        ...state,
+        isBodyScanned: false,
       };
     case SignupActionTypes.SET_GUEST_DETAILS:
       return {

@@ -1,12 +1,11 @@
-import { ClassNames } from "@emotion/react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-interface CallToActionButton {
+interface CallToActionButtonProps {
   nav: string;
   title: string;
   className?: string;
 }
-const CallToActionButton: React.FC<CallToActionButton> = ({
+const CallToActionButton: React.FC<CallToActionButtonProps> = ({
   nav,
   title,
   className,
