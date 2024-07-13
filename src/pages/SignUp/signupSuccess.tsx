@@ -3,16 +3,48 @@ import { Button, Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
-import { setCurrentForm } from "../../redux/signup/SignupActions";
+import { setCurrentForm, setErrorMsg } from "../../redux/signup/SignupActions";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 const SignupSuccess: React.FC = () => {
   const dispatch = useDispatch();
-
+  const [searchParams] = useSearchParams();
+  const session_id = searchParams.get("session_id") ?? "";
+  const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const email = userDetails.email;
+  function getSubscriptionStatus() {
+    console.log("getSubscriptionStatus ");
+    axios({
+      // Endpoint
+      url: `http://localhost:3001/user/subscriptionStatus?email=${email}`,
+      method: "GET",
+      headers: {
+        // Add any auth token here
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    })
+      // Handle the response from backend here
+      .then((res) => {
+        console.log("result", res.data.messageCode);
+        if (res.data.messageCode === "user_not_subscribed" && session_id) {
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+          dispatch(setErrorMsg(res.data.message));
+        }
+      })
+      // Catch errors if any
+      .catch((err: any) => {
+        dispatch(setErrorMsg(err?.response.data));
+      });
+  }
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));
-    // if (!isSubscribed) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
-  });
+    dispatch(setErrorMsg(null));
+
+    getSubscriptionStatus();
+  }, [dispatch]);
+
   return (
     <Grid
       container

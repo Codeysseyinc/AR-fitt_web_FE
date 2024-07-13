@@ -36,7 +36,6 @@ const INITIAL_STATE: SignupState = {
     firstName: "",
     lastName: "",
     phone: "",
-    password: "",
     dob: "",
     gender: "",
   },

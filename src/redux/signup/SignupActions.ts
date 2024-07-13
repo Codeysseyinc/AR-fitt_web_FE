@@ -127,7 +127,6 @@ export const registerUserStartAsync = (
       .then((response) => {
         const token = response.headers.access_token;
         if (token) {
-          console.log("token is available", token);
           localStorage.setItem("access_token", token);
         }
         dispatch(registerUserStart());
