@@ -2,7 +2,7 @@
 import { Alert, Grid } from "@mui/material";
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { setCurrentForm } from "../redux/signup/SignupActions";
 import "./index.css";
@@ -20,7 +20,6 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   removeLogo,
   className,
 }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const error = useSelector((state: any) => state.signup.errorMessage);
 

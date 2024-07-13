@@ -12,7 +12,6 @@ import { jwtDecode } from "jwt-decode";
 const SubscriptionPlans = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isSubscribed = useSelector((state: any) => state.signup.isSubscribed);
   const [searchParams] = useSearchParams();
   const session_id = searchParams.get("session_id") ?? "";
   const token = localStorage.getItem("access_token");

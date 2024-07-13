@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { Button, Grid, Link } from "@mui/material";
 import InputField from "../../components/inputField";
@@ -42,9 +42,7 @@ const BasicInformation: React.FC<any> = () => {
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
     dispatch(setErrorMsg(""));
-  });
-  const errorMessage = useSelector((state: any) => state.signup.errorMessage);
-  console.log("errormessage", errorMessage);
+  }, []);
   return (
     // page
     <Grid

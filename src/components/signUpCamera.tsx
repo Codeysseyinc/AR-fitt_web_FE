@@ -2,7 +2,6 @@ import { Grid } from "@mui/material";
 import Webcam from "react-webcam";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { ClassNames } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +32,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   const email = useSelector((state: any) => state.signup.userDetails.email);
 
   function setMatrix(): any {
-    console.log(`http://localhost:3001/${type}Matrix`, "---", email);
-    const resp = axios({
+    axios({
       // Endpoint
       url: `http://localhost:3001/${type}Matrix`,
       method: "POST",

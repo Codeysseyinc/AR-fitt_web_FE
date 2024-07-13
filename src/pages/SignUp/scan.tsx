@@ -3,11 +3,9 @@ import { Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import SignUpCamera from "../../components/signUpCamera";
-import CONSTANTS from "../../utils/constants/CONSTANTS";
-import { setCurrentForm } from "../../redux/signup/SignupActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
 interface ScanProps {
   type: string;
 }

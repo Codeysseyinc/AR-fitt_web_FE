@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Grid, Menu, MenuItem } from "@mui/material";
 import { initializeSignUpState } from "../../redux/signup/SignupActions";
 import { useDispatch } from "react-redux";

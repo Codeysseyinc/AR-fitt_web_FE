@@ -99,7 +99,7 @@ const LogIn: React.FC = () => {
   }
   useEffect(() => {
     dispatch(setErrorMsg(null));
-  }, [dispatch]);
+  }, []);
   return (
     <Grid
       container

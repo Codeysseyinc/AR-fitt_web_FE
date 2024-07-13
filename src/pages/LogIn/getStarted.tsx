@@ -1,20 +1,26 @@
-import { Button, Grid, Link, TextField } from "@mui/material";
+import { Button, Grid, Link } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
-import { useARfittContext } from "../../context/storeContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setErrorMsg } from "../../redux/signup/SignupActions";
+import { setCurrentForm, setErrorMsg } from "../../redux/signup/SignupActions";
 import { useEffect, useState } from "react";
 import GuestLoginCard from "../../components/guestLoginCard";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
-const GetStarted: React.FC<{}> = ({}) => {
+const GetStarted: React.FC = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const session_id = searchParams.get("session_id") ?? "";
+
   useEffect(() => {
     dispatch(setErrorMsg(null));
-  }, []);
+    if (!session_id) {
+      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+    }
+  }, [dispatch]);
   return (
     <Grid
       container
@@ -32,7 +38,11 @@ const GetStarted: React.FC<{}> = ({}) => {
           direction="column"
           className="w-[70%] h-[90%] flex justify-start items-center "
         >
-          <img src="/assets/images/logo.png" className=" mb-10 h-[20%]" />
+          <img
+            alt="logo"
+            src="/assets/images/logo.png"
+            className=" mb-10 h-[20%]"
+          />
           {/* Login and Guest buttons */}
           <Grid
             direction="column"

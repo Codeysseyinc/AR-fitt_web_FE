@@ -13,11 +13,7 @@ import CategoryPage from "./categoryPage";
 const SignUp = () => {
   const dispatch = useDispatch();
   let currentForm = useSelector((state: any) => state.signup.currentForm);
-  console.log("current form", currentForm);
-  console.log(
-    "email",
-    useSelector((state: any) => state.signup.userDetails.email)
-  );
+
   useEffect(() => {
     currentForm = currentForm || dispatch(initializeSignUpState());
     console.log("sign up mounting", currentForm);

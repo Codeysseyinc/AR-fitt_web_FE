@@ -127,16 +127,19 @@ export const registerUserStartAsync = (
       .then((response) => {
         const token = response.headers.access_token;
         if (token) {
+          console.log("token is available", token);
           localStorage.setItem("access_token", token);
         }
         dispatch(registerUserStart());
         dispatch(setUserDetails(payload));
+        console.log("change form");
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
       })
       .catch((error: AxiosError | any) => {
         const errorMessage = error?.response?.data
           ? Object.values(error.response.data)
           : null;
+        dispatch(setErrorMsg(errorMessage));
         dispatch(setErrorMessage(errorMessage || "Signup Failed. "));
         dispatch(registerUserFailure(error.message));
       });

@@ -1,10 +1,7 @@
-import { Grid, Slider } from "@mui/material";
-import { Slide } from "@mui/material";
+import { Grid } from "@mui/material";
 import Carousel from "../../components/carousel";
 
 const HowItWorksSection: React.FC<{}> = () => {
-  const slideValues = [1, 2, 3, 4, 5];
-
   return (
     <>
       {/* Features section */}

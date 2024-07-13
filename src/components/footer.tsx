@@ -18,6 +18,7 @@ const Footer = () => {
           className="xs:w-[25%] xl:w-[30%] h-[100%] flex justify-center xs:items-center md:items-end"
         >
           <img
+            alt="white logo"
             className="xs:w-[70%] lg:w-[65%] xl:w-[50%]"
             src="/assets/images/logoWhite.png"
           />

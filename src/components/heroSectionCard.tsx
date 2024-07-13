@@ -20,6 +20,7 @@ const HeroSectionCard: React.FC<LandingPageCard> = ({ color, title, icon }) => {
       >
         {
           <img
+            alt="icon"
             className="h-[80%]"
             src={`/assets/images/landingPage/heroSection/${icon}`}
           />

@@ -1,6 +1,6 @@
 // rootReducer.ts
-import { combineReducers } from 'redux';
-import signupReducer from './signup/SignupReducer';
+import { combineReducers } from "redux";
+import signupReducer from "./signup/SignupReducer";
 
 export type RootState = ReturnType<typeof rootReducer>;
 

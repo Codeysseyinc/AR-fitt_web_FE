@@ -44,7 +44,6 @@ const ForgotPassword: React.FC = () => {
     })
       // Handle the response from backend here
       .then((res) => {
-        console.log("reset sent", res);
         setEmailSent(true);
       })
 
