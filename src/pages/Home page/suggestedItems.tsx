@@ -1,3 +1,4 @@
+// Suggested Items Page
 import React from "react";
 import { Grid, Typography } from "@mui/material";
 import ItemCard from "../../components/atomicComponents/ItemCard";
