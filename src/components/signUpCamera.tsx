@@ -26,15 +26,19 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
   const [confirmation, setConfirmation] = useState(false);
   let countdownInterval: string | number | NodeJS.Timer | undefined;
-  const isfaceScanRequired = useSelector(
-    (state: any) => state.signup.interestCategories
-  ).some((item: any) => item.includes("cosmetics"));
+  const isFaceScanExists = useSelector(
+    (state: any) => state.signup.userDetails.isFaceScanned
+  );
+  const isFaceScanRequired =
+    useSelector((state: any) => state.signup.interestCategories).some(
+      (item: any) => item.includes("cosmetics")
+    ) && !isFaceScanExists;
   const email = useSelector((state: any) => state.signup.userDetails.email);
 
   function setMatrix(): any {
     axios({
       // Endpoint
-      url: `http://localhost:3001/${type}Matrix`,
+      url: `${process.env.REACT_APP_BASE_URL}/${type}Matrix`,
       method: "POST",
       headers: {
         // Add any auth token here
@@ -42,7 +46,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
       },
       data: {
         email: email,
-        bodyMatrix: '["inferences": "123"]',
+        [`${type}Matrix`]: '["inferences": "123"]',
       },
     })
       // Handle the response from backend here
@@ -200,9 +204,8 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
             sx={{ color: "white" }}
             onClick={() => {
               if (imgSrc) {
-                console.log("isfaceScanRequired", isfaceScanRequired);
                 setMatrix();
-                if (isfaceScanRequired && type === "body") {
+                if (isFaceScanRequired && type === "body") {
                   dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));
                 } else {
                   dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));

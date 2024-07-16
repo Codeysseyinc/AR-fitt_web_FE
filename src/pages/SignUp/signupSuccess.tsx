@@ -15,10 +15,9 @@ const SignupSuccess: React.FC = () => {
   const userDetails = useSelector((state: any) => state.signup.userDetails);
   const email = userDetails.email;
   function getSubscriptionStatus() {
-    console.log("getSubscriptionStatus ");
     axios({
       // Endpoint
-      url: `http://localhost:3001/user/subscriptionStatus?email=${email}`,
+      url: `${process.env.REACT_APP_BASE_URL}/user/subscriptionStatus?email=${email}`,
       method: "GET",
       headers: {
         // Add any auth token here

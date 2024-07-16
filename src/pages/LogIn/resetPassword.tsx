@@ -41,7 +41,7 @@ const ResetPassword: React.FC = () => {
     }
     axios({
       // Endpoint
-      url: `http://localhost:3001/user/resetPassword`,
+      url: `${process.env.REACT_APP_BASE_URL}/user/resetPassword`,
       method: "POST",
       headers: {
         // Add any auth token here
@@ -54,8 +54,6 @@ const ResetPassword: React.FC = () => {
     })
       // Handle the response from backend here
       .then((res) => {
-        console.log("reset done");
-
         navigate("/login");
       })
 

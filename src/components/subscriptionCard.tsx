@@ -62,7 +62,7 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
     // /payment/createSubscription
     const resp = axios({
       // Endpoint
-      url: `http://localhost:3001/payment/createSubscription`,
+      url: `${process.env.REACT_APP_BASE_URL}/payment/createSubscription`,
       method: "POST",
       headers: {
         // Add any auth token here

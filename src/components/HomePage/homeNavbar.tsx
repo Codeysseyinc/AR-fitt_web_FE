@@ -2,8 +2,10 @@
 import { useState } from "react";
 import { Box, Grid, Menu, MenuItem } from "@mui/material";
 import { initializeSignUpState } from "../../redux/signup/SignupActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import RedirectionModal from "./redirectionModal";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const HomeNavbar = () => {
   const dispatch = useDispatch();
@@ -11,6 +13,11 @@ const HomeNavbar = () => {
   const anchorTagStyling =
     "no-underline m-0 p-0 font-Montserrat font-bold text-sm text-gray-300";
   const [anchorEl, setAnchorEl] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [redirectionLink, setRedirectionLink] = useState("");
+  const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const isFaceMatrixPresent = userDetails.isFaceScanned;
+  const isBodyMatrixPresent = userDetails.isBodyScanned;
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -24,13 +31,11 @@ const HomeNavbar = () => {
     dispatch(initializeSignUpState());
     localStorage.clear();
     navigate("/");
-    console.log("Logout clicked");
     handleClose();
   };
 
   const handleAccountManagement = () => {
     // Add your account management logic here
-    console.log("Account Management clicked");
     handleClose();
   };
   return (
@@ -80,13 +85,34 @@ const HomeNavbar = () => {
       <div className="bg-gray-200 w-full h-[2px] rounded-full"></div>
       {/* Options */}
       <Grid item container className="flex justify-between">
-        <a href="" className={`${anchorTagStyling}`}>
-          Suggested Items
+        <a href="/home" className={`${anchorTagStyling}`}>
+          Dashboard
         </a>
-        <a href="" className={`${anchorTagStyling}`}>
+        <a
+          className={`${anchorTagStyling}`}
+          onClick={() => {
+            if (!isBodyMatrixPresent) {
+              setModalOpen(true);
+              setRedirectionLink(CONSTANTS.SIGN_UP_BODY_SCANNING);
+            } else {
+              navigate("/home/suggestion");
+            }
+          }}
+        >
           Apparels
         </a>
-        <a href="" className={`${anchorTagStyling}`}>
+        <a
+          // href=""
+          className={`${anchorTagStyling}`}
+          onClick={() => {
+            if (!isFaceMatrixPresent) {
+              setModalOpen(true);
+              setRedirectionLink(CONSTANTS.SIGN_UP_FACE_SCANNING);
+            } else {
+              navigate("/home/suggestion");
+            }
+          }}
+        >
           Cosmetics
         </a>
         <a href="" className={`${anchorTagStyling}`}>
@@ -99,6 +125,11 @@ const HomeNavbar = () => {
           Contact Us
         </a>
       </Grid>
+      <RedirectionModal
+        open={modalOpen}
+        setOpen={setModalOpen}
+        redirection={redirectionLink}
+      />
     </Grid>
   );
 };

@@ -11,7 +11,7 @@ const OtpVerification: React.FC = () => {
   const dispatch = useDispatch();
   const email = useSelector((state: any) => state.signup.userDetails.email);
   const otpVerificationStatus = useSelector(
-    (state: any) => state.signup.isVerified
+    (state: any) => state.signup.userDetails.isVerified
   );
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));

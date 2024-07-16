@@ -18,10 +18,6 @@ interface SignupState {
   isSendingEmail: boolean;
   changePassword: boolean;
   isChangingPassword: boolean;
-  isVerified: boolean;
-  isFaceScanned: boolean;
-  isBodyScanned: boolean;
-  isSubscribed: boolean;
   guestDetails: any;
   interestCategories: Array<string>;
   test: string;
@@ -38,6 +34,10 @@ const INITIAL_STATE: SignupState = {
     phone: "",
     dob: "",
     gender: "",
+    isVerified: false,
+    isFaceScanned: false,
+    isBodyScanned: false,
+    isSubscribed: false,
   },
   currentForm: CONSTANTS.SIGN_UP_BASIC_INFO,
   isFetching: false,
@@ -45,10 +45,7 @@ const INITIAL_STATE: SignupState = {
   isSendingEmail: false,
   changePassword: false,
   isChangingPassword: false,
-  isVerified: false,
-  isFaceScanned: false,
-  isBodyScanned: false,
-  isSubscribed: false,
+
   guestDetails: {
     email: "",
     firstName: "",
@@ -173,42 +170,66 @@ const signupReducer: Reducer<SignupState, SignupAction> = (
     case SignupActionTypes.VERIFY_EMAIL_SUCCESS:
       return {
         ...state,
-        isVerified: true,
+        userDetails: {
+          ...state.userDetails,
+          isVerified: true,
+        },
       };
     case SignupActionTypes.VERIFY_EMAIL_FAILURE:
       return {
         ...state,
-        isVerified: false,
+        userDetails: {
+          ...state.userDetails,
+          isVerified: false,
+        },
       };
     case SignupActionTypes.SUBSCRIBED_SUCCESS:
       return {
         ...state,
-        isSubscribed: true,
+        userDetails: {
+          ...state.userDetails,
+          isSubscribed: true,
+        },
       };
     case SignupActionTypes.SUBSCRIBED_FAILURE:
       return {
         ...state,
-        isSubscribed: false,
+        userDetails: {
+          ...state.userDetails,
+          isSubscribed: false,
+        },
       };
     case SignupActionTypes.FACE_SCANNED_SUCCESS:
       return {
         ...state,
-        isFaceScanned: true,
+        userDetails: {
+          ...state.userDetails,
+          isFaceScanned: true,
+        },
       };
     case SignupActionTypes.FACE_SCANNED_FAILURE:
       return {
         ...state,
-        isFaceScanned: false,
+        userDetails: {
+          ...state.userDetails,
+          isFaceScanned: false,
+        },
       };
     case SignupActionTypes.BODY_SCANNED_SUCCESS:
       return {
         ...state,
-        isBodyScanned: true,
+        userDetails: {
+          ...state.userDetails,
+          isBodyScanned: true,
+        },
       };
     case SignupActionTypes.BODY_SCANNED_FAILURE:
       return {
         ...state,
-        isBodyScanned: false,
+        userDetails: {
+          ...state.userDetails,
+          isBodyScanned: false,
+        },
       };
     case SignupActionTypes.SET_GUEST_DETAILS:
       return {

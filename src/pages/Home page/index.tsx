@@ -1,16 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useFetcher, useNavigate } from "react-router-dom";
+import RedirectionModal from "../../components/HomePage/redirectionModal";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import {
+  setBodyScanFailure,
+  setBodyScanSuccess,
+  setFaceScanFailure,
+  setFaceScanSuccess,
+} from "../../redux/signup/SignupActions";
 
 const HomePage = () => {
   const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const isFaceMatrixPresent = userDetails.isFaceScanned;
+  const isBodyMatrixPresent = userDetails.isBodyScanned;
+
   const fullname = userDetails.firstName + " " + userDetails.lastName;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [redirectionLink, setRedirectionLink] = useState("");
+  const email = useSelector((state: any) => state.signup.userDetails.email);
 
   const handleContinueClick = () => {
-    navigate("/home/suggestion");
+    if (isBodyMatrixPresent || isFaceMatrixPresent)
+      navigate("/home/suggestion");
+    else {
+      setRedirectionLink(CONSTANTS.SIGN_UP_CATEGORIES);
+      setModalOpen(true);
+    }
   };
+  function getMatrix(type: string) {
+    return (
+      axios({
+        // Endpoint
+        url: `${process.env.REACT_APP_BASE_URL}/${type}Matrix?email=${email}`,
+        method: "GET",
+        headers: {
+          // Add any auth token here
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      })
+        // Handle the response from backend here
+        .then((res) => {
+          if (type === "face") {
+            console.log("face matrix exist");
+            dispatch(setFaceScanSuccess());
+          } else {
+            console.log("body matrix exist");
+            dispatch(setBodyScanSuccess());
+          }
+        })
+
+        // Catch errors if any
+        .catch((err: any) => {
+          if (type === "face") {
+            dispatch(setFaceScanFailure(""));
+          } else {
+            dispatch(setBodyScanFailure(""));
+          }
+        })
+    );
+  }
+  useEffect(() => {
+    setTimeout(() => {
+      getMatrix("face");
+      getMatrix("body");
+    }, 2000);
+  }, []);
   return (
     <Grid
       item
@@ -64,6 +124,11 @@ const HomePage = () => {
                 Continue
               </Typography>
             </Button>
+            <RedirectionModal
+              open={modalOpen}
+              setOpen={setModalOpen}
+              redirection={redirectionLink}
+            />
           </Box>
         </Box>
       </Grid>

@@ -54,7 +54,7 @@ const LogIn: React.FC = () => {
     }
     axios({
       // Endpoint
-      url: `http://localhost:3001/user/login`,
+      url: `${process.env.REACT_APP_BASE_URL}/user/login`,
       method: "POST",
       headers: {
         // Add any auth token here
@@ -93,7 +93,6 @@ const LogIn: React.FC = () => {
 
       // Catch errors if any
       .catch((err: any) => {
-        console.log("auth error", err);
         setError(err?.response.data.message);
       });
   }

@@ -39,7 +39,7 @@ const ForgotPassword: React.FC = () => {
 
     axios({
       // Endpoint
-      url: `http://localhost:3001/user/forgetPassword?email=${email}`,
+      url: `${process.env.REACT_APP_BASE_URL}/user/forgetPassword?email=${email}`,
       method: "GET",
     })
       // Handle the response from backend here

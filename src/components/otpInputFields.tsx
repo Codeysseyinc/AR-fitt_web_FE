@@ -49,7 +49,7 @@ const OtpInputField: React.FC = () => {
   function sendOTP(): any {
     axios({
       // Endpoint
-      url: `http://localhost:3001/user/requestOTP?email=${email}`,
+      url: `${process.env.REACT_APP_BASE_URL}/user/requestOTP?email=${email}`,
       method: "GET",
       headers: {
         // Add any auth token here
@@ -73,7 +73,7 @@ const OtpInputField: React.FC = () => {
   function verifyOTP(otp: string): any {
     axios({
       // Endpoint
-      url: `http://localhost:3001/user/verifyOTP`,
+      url: `${process.env.REACT_APP_BASE_URL}/user/verifyOTP`,
       method: "POST",
       headers: {
         // Add any auth token here

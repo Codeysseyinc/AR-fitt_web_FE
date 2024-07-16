@@ -13,7 +13,9 @@ interface ScanProps {
 const Scan: React.FC<ScanProps> = ({ type }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isSubscribed = useSelector((state: any) => state.signup.isSubscribed);
+  const isSubscribed = useSelector(
+    (state: any) => state.signup.userDetails.isSubscribed
+  );
 
   useEffect(() => {
     // if (!isSubscribed) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
