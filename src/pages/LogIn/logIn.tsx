@@ -82,11 +82,13 @@ const LogIn: React.FC = () => {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
 
           navigate("/signup");
-        } else if (!res.data.message.isSubscribed) {
-          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+        }
+        // else if (!res.data.message.isSubscribed) {
+        //   dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
 
-          navigate("/signup");
-        } else {
+        //   navigate("/signup");
+        // }
+        else {
           navigate("/home");
         }
       })

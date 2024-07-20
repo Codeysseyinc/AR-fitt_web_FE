@@ -20,7 +20,7 @@ const OtpVerification: React.FC = () => {
 
   const handleNextPage = () => {
     if (otpVerificationStatus)
-      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+      dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));
   };
 
   return (
