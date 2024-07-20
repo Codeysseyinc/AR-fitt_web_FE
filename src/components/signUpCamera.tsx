@@ -56,8 +56,53 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
 
       // Catch errors if any
       .catch((err: any) => {
-        console.log("auth error", err?.response.data.message);
-        if (err?.response.data.message === "Unauthorized access") {
+        console.log("auth error", err);
+        if (err?.response.message === "Unauthorized access") {
+          navigate("/");
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+        }
+      });
+  }
+  function setImage(): any {
+    // Convert base64 string to Blob
+    const byteString = atob(imgSrc.split(",")[1]);
+    const mimeString = imgSrc.split(",")[0].split(":")[1].split(";")[0];
+
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    const blob = new Blob([ab], { type: mimeString });
+
+    // Prepare form data
+    const formData = new FormData();
+    formData.append("image", blob);
+    console.log("blob", blob);
+
+    axios({
+      // Endpoint
+      url: `${process.env.REACT_APP_BASE_URL}/${type}Image?email=${email}`,
+      method: "POST",
+      headers: {
+        // Add any auth token here
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+        "Content-Type": "multipart/form-data;",
+      },
+      data: {
+        [`${type}Image`]: blob,
+      },
+    })
+      // Handle the response from backend here
+      .then((res) => {
+        console.log("image stored ", type);
+      })
+
+      // Catch errors if any
+      .catch((err: any) => {
+        console.log("auth error", err?.response.message);
+        if (err?.response.message === "Unauthorized access") {
           navigate("/");
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
         }
@@ -205,6 +250,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
             onClick={() => {
               if (imgSrc) {
                 setMatrix();
+                setImage();
                 if (isFaceScanRequired && type === "body") {
                   dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));
                 } else {

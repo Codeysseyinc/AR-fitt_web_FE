@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
 import SubscriptionCard from "../../components/subscriptionCard";
-import { setCurrentForm } from "../../redux/signup/SignupActions";
+import { setCurrentForm, setErrorMsg } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -16,6 +16,7 @@ const SubscriptionPlans = () => {
   const session_id = searchParams.get("session_id") ?? "";
   const token = localStorage.getItem("access_token");
   useEffect(() => {
+    dispatch(setErrorMsg(null));
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
     if (token) {
       const decodedToken = jwtDecode(token);
