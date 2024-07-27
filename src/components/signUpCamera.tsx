@@ -212,7 +212,6 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
             }}
           />
         </div>
-
         {/* Timer button */}
         <div className="h-[73%] w-[35%] flex  items-center">
           <div

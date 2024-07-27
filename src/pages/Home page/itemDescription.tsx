@@ -1,9 +1,10 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import ImageSlider from "../../components/atomicComponents/imageSlider";
+import CameraPopUp from "../../components/cameraPopUp";
 
 const ItemDescription = () => {
   const images = [
@@ -20,6 +21,15 @@ const ItemDescription = () => {
       thumbnail: "https://picsum.photos/id/1019/250/150/",
     },
   ];
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    console.log("In Handle Open, Try On Button Clicked");
+    setOpen(true);
+  };
 
   return (
     <Grid container className="flex flex-col gap-1 items-center px-6">
@@ -84,6 +94,7 @@ const ItemDescription = () => {
               <Button
                 variant="contained"
                 className="px-2 py-1 bg-primaryDark w-[50%]"
+                onClick={handleOpen}
               >
                 <Typography className="text-white font-bold">
                   TRY ON!
@@ -112,6 +123,7 @@ const ItemDescription = () => {
           </Box>
         </Grid>
       </Grid>
+      <CameraPopUp open={open} onClose={handleClose} />
     </Grid>
   );
 };

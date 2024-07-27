@@ -1,0 +1,239 @@
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Modal,
+  Backdrop,
+  Fade,
+  Box,
+  Typography,
+  IconButton,
+  Grid,
+} from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { Camera } from "react-camera-pro";
+import Webcam from "react-webcam";
+
+const CameraPopUp = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) => {
+  // TODO: Remove This
+  const colors = [
+    { hexa: "#5C0029", name: "Tyrian Purple" },
+    { hexa: "#61304B", name: "Violet (JTC)" },
+    { hexa: "#857C8D", name: "Taupe gray" },
+    { hexa: "#94BFBE", name: "Tiffany Blue" },
+  ];
+  const camera = useRef(null);
+  const [image, setImage] = useState(null);
+  const [selectedColor, setSelectedColor] = useState({ hexa: "", name: "" });
+  const [countdown, setCountdown] = useState<number>(0);
+  const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
+  let countdownInterval: string | number | NodeJS.Timer | undefined;
+
+  useEffect(() => {
+    if (triggerCountDown && countdown > 0) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      countdownInterval = setInterval(() => {
+        setCountdown((prevCount) => prevCount - 1);
+      }, 1000);
+    } else if (countdown === 0 && triggerCountDown) {
+      capturePhoto();
+      setTriggerCountDown(false);
+    }
+
+    return () => {
+      clearInterval(countdownInterval);
+    };
+  }, [countdown, triggerCountDown]);
+
+  const handleCapturePhoto = () => {
+    setImage((camera.current as any).takePhoto());
+  };
+  const handleCancelClick = () => {
+    setImage(null);
+    setTriggerCountDown(false);
+    setCountdown(0);
+  };
+  const capturePhoto = () => {
+    setCountdown(0);
+    setImage((camera.current as any).takePhoto());
+  };
+  const handleTimerClick = () => {
+    setImage(null);
+    setCountdown(5);
+    setTriggerCountDown(true);
+  };
+  const handleClose = () => {
+    setCountdown(0);
+    setImage(null);
+    onClose();
+  };
+
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      aria-labelledby="camera"
+      aria-describedby="camera-pop-up-for-try-on"
+      className="flex items-center justify-center"
+    >
+      <Fade in={open}>
+        <Box
+          className="
+          relative flex flex-col gap-4
+          h-[80%] w-[30%] overflow-hidden
+          relative rounded-xl bg-black
+        "
+        >
+          {/* Camera */}
+          {image ? (
+            // eslint-disable-next-line jsx-a11y/img-redundant-alt
+            <img
+              src={image}
+              alt="Taken photo"
+              style={{ transform: "scaleX(-1)" }}
+            />
+          ) : (
+            <>
+              <Camera
+                ref={camera}
+                errorMessages={{
+                  noCameraAccessible: undefined,
+                  permissionDenied: undefined,
+                  switchCamera: undefined,
+                  canvas: undefined,
+                }}
+                facingMode="user"
+              />
+            </>
+          )}
+          {/* Count Down */}
+          {countdown !== 0 ? (
+            <div className="absolute top-[41%] right-[41%] font-Bungee font-normal text-7xl leading-10 text-red-600">
+              {countdown}
+            </div>
+          ) : (
+            ""
+          )}
+          {/* Top Row - Item Basic Description */}
+          <Box className="absolute top-4 flex justify-between w-full items-start">
+            {/* Product Basic Info */}
+            <Box className="px-4 flex gap-1 items-center">
+              <Box className="bg-gray-100 h-[40px] w-[30px] rounded-sm"></Box>
+              <Box className="flex flex-col gap-1">
+                <Typography className="font-Montserrat font-bold text-xs">
+                  Product Name
+                </Typography>
+                <Box className="flex gap-1 justify-center items-center">
+                  <Box className="rounded-full border-2 border-white border-solid p-2 bg-blue-500"></Box>
+                  <Typography className="font-Montserrat font-bold text-xs">
+                    Color Name
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+            {/* Close Button */}
+            <Box className="px-2">
+              <IconButton
+                onClick={() => handleClose()}
+                className="bg-black bg-opacity-10"
+              >
+                <svg
+                  className="w-6 h-6 text-gray-500"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </IconButton>
+            </Box>
+          </Box>
+          {/* Colors Row */}
+          <Box className="absolute bottom-20 w-full flex flex-col gap-2 items-center justify-center">
+            <Typography className="text-xs text-white font-bold">
+              Recommended Shades:{" "}
+            </Typography>
+            <Box
+              className="flex gap-3 overflow-x-auto max-w-[90%]"
+              style={{
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+              }}
+            >
+              {colors?.map((color) => {
+                return (
+                  <Box
+                    className={`p-6 rounded-full`}
+                    style={{ backgroundColor: color.hexa }}
+                  />
+                );
+              })}
+            </Box>
+          </Box>
+          {/* Toolbar Row */}
+          <Box className="absolute bottom-4 w-full flex justify-center items-center">
+            <Box className="bg-primarySaturated p-3 rounded-xl flex justify-between gap-2">
+              {/* Cancel */}
+              <button
+                className="bg-transparent border-none p-0 m-0 cursor-pointer"
+                onClick={() => {
+                  if (countdown !== 0) handleCancelClick();
+                }}
+              >
+                <div className="px-4 py-2 leading-none bg-gray-500 rounded-xl font-Montserrat font-semibold text-xs text-white flex justify-center items-center">
+                  Cancel
+                </div>
+              </button>
+              {/* Retake */}
+              <button
+                onClick={() => setImage(null)}
+                className="bg-transparent border-none p-0 m-0 cursor-pointer"
+              >
+                <div className="w-8 h-8 rounded-full">
+                  <RefreshIcon className="h-full w-full text-white" />
+                </div>
+              </button>
+              {/* Capture */}
+              <button
+                onClick={() => handleCapturePhoto()}
+                className="bg-transparent border-none p-0 m-0 cursor-pointer"
+              >
+                <div className="border-4 border-solid border-white bg-red-500 p-3 rounded-full flex justify-center items-center"></div>
+              </button>
+              {/* Okay */}
+              <button className="bg-transparent border-none p-0 m-0 cursor-pointer">
+                <div className="w-8 h-8 rounded-full">
+                  <CheckCircleIcon className="h-full w-full text-white" />
+                </div>
+              </button>
+              {/* Timer */}
+              <button
+                className="bg-transparent border-none p-0 m-0 cursor-pointer"
+                onClick={() => {
+                  handleTimerClick();
+                }}
+              >
+                <div className="px-4 py-2 leading-none bg-gray-500 rounded-xl font-Montserrat font-semibold text-xs text-white flex justify-center items-center">
+                  Timer
+                </div>
+              </button>
+            </Box>
+          </Box>
+        </Box>
+      </Fade>
+    </Modal>
+  );
+};
+
+export default CameraPopUp;

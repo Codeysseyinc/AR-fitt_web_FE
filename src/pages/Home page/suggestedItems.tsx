@@ -51,7 +51,7 @@ const SuggestedItems: React.FC = () => {
               <div key={categoryName}>
                 <Typography
                   variant="body1"
-                  className="font-Dhurjati font-thin text-[150%] text-gray-300 leading-[1]"
+                  className="font-Dhurjati font-thin text-[150%] text-gray-300 leading-[1] cursor-pointer"
                 >
                   {categoryName}
                 </Typography>
@@ -60,7 +60,7 @@ const SuggestedItems: React.FC = () => {
                     <li key={item} className="pt-2">
                       <Typography
                         variant="body2"
-                        className="font-Dhurjati font-thin text-[150%] text-gray-300 leading-[1]"
+                        className="font-Dhurjati font-thin text-[150%] text-gray-300 leading-[1] cursor-pointer"
                       >
                         {item}
                       </Typography>
