@@ -165,12 +165,12 @@ const OtpInputField: React.FC = () => {
               otpError === "You have entered an incorrect OTP"
                 ? "focus:bg-red-600 "
                 : "focus:bg-teal-500 "
-            }  w-[20px] h-[20px] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none`}
+            }  w-[20px] h-[20px] xl:w-[40px] xl:h-[40px] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none xl:text-md`}
           />
         ))}
       </Grid>
       {/* Resend OTP */}
-      <Grid className="Montserrat-text text-xs flex justify-start items-start w-full m-4">
+      <Grid className="Montserrat-text text-xs xl:text-md flex justify-start items-start w-full m-4">
         <div className="w-[50%]">
           Didn’t Receive the OTP yet?{" "}
           <Link
@@ -192,7 +192,7 @@ const OtpInputField: React.FC = () => {
       </Grid>
       {/* Error on wrong OTP */}
       <p
-        className={`font-Montserrat text-xs ${
+        className={`font-Montserrat text-xs xl:text-md h-4 flex justify-center ${
           otpError === "You have entered an incorrect OTP"
             ? "text-red-500"
             : "text-green-500"

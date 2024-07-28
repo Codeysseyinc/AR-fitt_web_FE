@@ -1,13 +1,13 @@
 import { Grid } from "@mui/material";
 import Webcam from "react-webcam";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentForm } from "../redux/signup/SignupActions";
 import CONSTANTS from "../utils/constants/CONSTANTS";
 import axios from "axios";
+import { Camera, CameraType } from "react-camera-pro";
+import CameraTools from "./cameraTools";
 interface SignUpCameraProps {
   type: string;
 }
@@ -18,10 +18,11 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     height: 162,
     facingMode: "user",
   };
-  const webcamRef = useRef<Webcam>(null);
+  const camera = useRef<CameraType>(null);
+  const [numberOfCameras, setNumberOfCameras] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [imgSrc, setImgSrc] = useState("");
+  const [imgSrc, setImgSrc] = useState<string>("");
   const [countdown, setCountdown] = useState<number>(0);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
   const [confirmation, setConfirmation] = useState(false);
@@ -109,15 +110,46 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
       });
   }
   const handleCapturePhoto = () => {
-    const image = webcamRef.current?.getScreenshot();
-    if (image) {
-      setImgSrc(image);
+    if (!confirmation) {
+      setConfirmation(true);
+    } else {
+      const image = camera.current?.takePhoto();
+      console.log("image", image);
+      if (image && typeof image === "string") {
+        setImgSrc(image);
+      }
     }
   };
   const handleCancelClick = () => {
+    if (countdown !== 0) {
+      setImgSrc("");
+      setTriggerCountDown(false);
+      setCountdown(0);
+    }
+  };
+  const handleRetryClick = () => {
     setImgSrc("");
-    setTriggerCountDown(false);
+  };
+  const capturePhoto = () => {
     setCountdown(0);
+    handleCapturePhoto();
+  };
+  const handleConfirm = () => {
+    if (imgSrc) {
+      setMatrix();
+      setImage();
+      if (isFaceScanRequired && type === "body") {
+        dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));
+      } else {
+        dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+        navigate("/home");
+      }
+    }
+  };
+  const handleTimerClick = () => {
+    setImgSrc("");
+    setCountdown(5);
+    setTriggerCountDown(true);
   };
   useEffect(() => {
     if (triggerCountDown && countdown > 0) {
@@ -135,29 +167,15 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     };
   }, [countdown, triggerCountDown]);
 
-  const capturePhoto = () => {
-    setCountdown(0);
-
-    const image = webcamRef.current?.getScreenshot();
-    if (image) {
-      setImgSrc(image);
-    }
-  };
-  const handleTimerClick = () => {
-    setImgSrc("");
-    setCountdown(5);
-    setTriggerCountDown(true);
-  };
-
   return (
     <Grid
       direction="column"
-      className="h-[100%] w-[100%] flex justify-center items-center "
+      className="xs:w-[320px] xl:w-[450px] xs:h-[406px] lg:h-[550px] mt-6 flex justify-start items-center"
     >
-      <div className="relative h-[80%] ">
+      <div className="relative h-[85%] w-[80%]">
         {!confirmation ? (
-          <div className="rounded-[10%] h-[100%] w-[237px] px-[15px] bg-primary flex flex-col items-center justify-center">
-            <p className="font-Montserrat font-bold text-white">
+          <div className="rounded-[20px] h-[100%] px-[15px] bg-primary flex flex-col items-center justify-center">
+            <p className="font-Montserrat font-bold text-white text-center">
               Camera Activation Required
             </p>
             <p className="font-Montserrat text-white text-center">
@@ -169,20 +187,31 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
         ) : imgSrc ? (
           <img
             src={imgSrc}
-            alt="webcam"
-            className="rounded-[10%] h-[162] w-[137]"
+            alt="captured image"
+            className="rounded-[20px] h-[100%] w-[100%]"
           />
         ) : (
           <>
-            <Webcam
-              audio={false}
-              height={"100%"}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={videoConstraints}
-              className="rounded-[10%] z-0 "
-            />
-
+            <div className="relative rounded-[20px] overflow-hidden h-[100%] w-[100%]">
+              <Camera
+                ref={camera}
+                aspectRatio="cover"
+                facingMode="user"
+                numberOfCamerasCallback={(i) => setNumberOfCameras(i)}
+                errorMessages={{
+                  noCameraAccessible:
+                    "No camera device accessible. Please connect your camera or try a different browser.",
+                  permissionDenied:
+                    "Permission denied. Please refresh and give camera permission.",
+                  switchCamera:
+                    "It is not possible to switch camera to different one because there is only one video device accessible.",
+                  canvas: "Canvas is not supported.",
+                }}
+                videoReadyCallback={() => {
+                  console.log("Video feed ready.");
+                }}
+              />
+            </div>
             <img
               src={
                 type === "body"
@@ -193,7 +222,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
               className={
                 type === "body"
                   ? "absolute top-0 left-[25%] w-[50%] h-[100%] scale-25 z-1 "
-                  : "absolute top-0 left-[0] h-[98%] scale-25 z-1 opacity-[10%] self-center "
+                  : "absolute top-0  w-[100%] h-[100%] scale-25 z-1 opacity-[10%]"
               }
             />
             {countdown !== 0 ? (
@@ -207,73 +236,15 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
         )}
       </div>
       {/* Buttons Panel */}
-      <Grid className="bg-primary h-[15%] xs:w-[290px] md:w-[300px] rounded-xl	mt-4 flex justify-between items-center">
-        {/* Cancel button */}
-        <div className=" h-[73%] w-[35%] flex justify-end items-center">
-          <div
-            className={`${
-              countdown === 0 ? "bg-gray-500" : "bg-primaryDark"
-            } h-[73%] w-[85%] rounded-xl font-Montserrat font-semibold text-xs leading-10 text-white flex justify-center items-center`}
-            onClick={() => {
-              if (countdown !== 0) handleCancelClick();
-            }}
-          >
-            Cancel
-          </div>
-        </div>
-        {/* Retry button */}
-        <div className="h-[73%] w-[35%] flex justify-center items-center">
-          <RefreshIcon
-            sx={{ color: "white" }}
-            onClick={() => {
-              setImgSrc("");
-            }}
-          />
-        </div>
-        {/* Capture button */}
-        <div
-          className="h-8 w-28 flex justify-center items-center "
-          onClick={() => {
-            if (!confirmation) {
-              setConfirmation(true);
-            } else {
-              handleCapturePhoto();
-            }
-          }}
-        >
-          <div className="border-4 border-solid border-white bg-red-500 h-[100%] w-[55%] xl:w-[50%] rounded-full flex justify-center items-center"></div>
-        </div>
-        {/* Tick button */}
-        <div className=" h-[73%] w-[35%] flex justify-center items-center">
-          <CheckCircleIcon
-            sx={{ color: "white" }}
-            onClick={() => {
-              if (imgSrc) {
-                setMatrix();
-                setImage();
-                if (isFaceScanRequired && type === "body") {
-                  dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));
-                } else {
-                  dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
-                  navigate("/home");
-                }
-              }
-            }}
-          />
-        </div>
-
-        {/* Timer button */}
-        <div className="h-[73%] w-[35%] flex  items-center">
-          <div
-            className="bg-primaryDark h-[73%] w-[85%] rounded-xl font-Montserrat font-semibold text-xs leading-10 text-white flex justify-center items-center cursor-pointer"
-            onClick={() => {
-              handleTimerClick();
-            }}
-          >
-            Timer
-          </div>
-        </div>
-      </Grid>
+      <CameraTools
+        cameraRef={camera}
+        type={type}
+        onCancel={handleCancelClick}
+        onRetry={handleRetryClick}
+        onCapture={handleCapturePhoto}
+        onConfirm={handleConfirm}
+        onSetTimer={handleTimerClick}
+      />
     </Grid>
   );
 };

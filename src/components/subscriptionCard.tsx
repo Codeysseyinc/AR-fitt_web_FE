@@ -92,7 +92,7 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
   return (
     <Grid
       direction="column"
-      className="shadow-xl xs:h-[120px] xs:w-[180px] md:h-[330px] md:w-[180px] ml-4 xs:mb-4 md:mb-0 rounded-[15px] flex justify-start align-center"
+      className="shadow-xl xs:h-[120px] xs:w-[160px] md:h-[370px] lg:w-[200px] ml-2 lg:ml-4 xs:mb-4 md:mb-0 rounded-[15px] flex justify-start align-center"
     >
       <Grid
         className={`${

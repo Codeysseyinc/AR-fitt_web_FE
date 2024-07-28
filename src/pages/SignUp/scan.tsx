@@ -33,9 +33,8 @@ const Scan: React.FC<ScanProps> = ({ type }) => {
         modelsSrc="/assets/images/signUp/scanningModels.png"
       />
       <ContentArea title={type === "body" ? "Body Scanning" : "Face Scanning"}>
-        <Grid direction="row" className="w-[100%] h-[67%] mt-6">
-          <SignUpCamera type={type} />
-        </Grid>
+        <SignUpCamera type={type} />
+
         <Grid
           className=" w-[100%] h-[40px] pr-[20px] flex flex-row justify-end font-Montserrat font-bold xs:text-lg md:text-2xl text-[#408589] cursor-pointer"
           onClick={() => {
