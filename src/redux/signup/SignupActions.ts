@@ -5,6 +5,7 @@ import { Dispatch as reduxDispatch, AnyAction } from "redux";
 import SignupActionTypes from "./SignupActionTypes";
 import URLS from "../../utils/constants/URLS";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
+import HTTPService from "../../services/base.service";
 
 // * ============== Redux Reducer Action Triggers =================
 export const practiceTest = () => ({
@@ -128,10 +129,10 @@ export const registerUserStartAsync = (
         const token = response.headers.access_token;
         if (token) {
           localStorage.setItem("access_token", token);
+          HTTPService.setToken(token);
         }
         dispatch(registerUserStart());
         dispatch(setUserDetails(payload));
-        console.log("change form");
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
       })
       .catch((error: AxiosError | any) => {

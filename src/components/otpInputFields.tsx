@@ -1,17 +1,15 @@
 import { Grid, Link } from "@mui/material";
 import "./index.css";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   verifyEmailFailure,
   verifyEmailSuccess,
   setErrorMsg,
-  setCurrentForm,
 } from "../redux/signup/SignupActions";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CONSTANTS from "../utils/constants/CONSTANTS";
+import { useMutation, useQuery } from "react-query";
+import signupService from "../services/signup.service";
 
 const OtpInputField: React.FC = () => {
   const secondsCountDown = 60 * 1; // time in seconds
@@ -46,59 +44,27 @@ const OtpInputField: React.FC = () => {
     }
     return;
   }
-  function sendOTP(): any {
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/user/requestOTP?email=${email}`,
-      method: "GET",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        console.log("email sent");
-      })
 
-      // Catch errors if any
-      .catch((err: any) => {
-        if (err?.response.data.message === "Unauthorized access") {
-          navigate("/");
-          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
-        }
-      });
-  }
-
-  function verifyOTP(otp: string): any {
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/user/verifyOTP`,
-      method: "POST",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-      data: {
-        email: email,
-        otp: otp,
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
+  const { refetch: sendOTP } = useQuery(
+    "send-OTP",
+    async () => signupService.sendOTP(email, dispatch),
+    { enabled: false }
+  );
+  const { mutate: verifyOTP } = useMutation(
+    async (otp: string) => signupService.verifyOTP(otp, email),
+    {
+      onSuccess: (res) => {
         dispatch(verifyEmailSuccess());
         dispatch(setErrorMsg(null));
         setOtpError("Correct OTP");
-      })
-
-      // Catch errors if any
-      .catch((err: any) => {
-        console.log("otp not verified ", otp, err);
+      },
+      onError: (err: any) => {
         dispatch(verifyEmailFailure("You have entered an incorrect OTP"));
         setOtpError("You have entered an incorrect OTP");
         dispatch(setErrorMsg(err?.response.data.message));
-      });
-  }
+      },
+    }
+  );
   const handleResend = () => {
     setCountdown(secondsCountDown);
     setTriggerCountDown(true);
@@ -127,7 +93,6 @@ const OtpInputField: React.FC = () => {
     } else {
       setOtpError("");
     }
-    // verifyOTP(otp.join(""))
   }, [otp]);
 
   const isMounted = useRef(false);

@@ -22,7 +22,6 @@ const ContentArea: React.FC<ContentAreaProps> = ({
 }) => {
   const navigate = useNavigate();
   const error = useSelector((state: any) => state.signup.errorMessage);
-
   const getPreviousForm = (title?: string, setCurrentForm?: any) => {
     if (title === "Scanning") {
       navigate("/");

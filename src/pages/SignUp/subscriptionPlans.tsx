@@ -16,7 +16,7 @@ const SubscriptionPlans = () => {
   const session_id = searchParams.get("session_id") ?? "";
   const token = localStorage.getItem("access_token");
   useEffect(() => {
-    dispatch(setErrorMsg(null));
+    // dispatch(setErrorMsg(null));
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
     if (token) {
       const decodedToken = jwtDecode(token);

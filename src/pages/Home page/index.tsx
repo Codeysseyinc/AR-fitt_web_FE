@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { useFetcher, useNavigate } from "react-router-dom";
 import RedirectionModal from "../../components/HomePage/redirectionModal";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
   setBodyScanFailure,
@@ -12,6 +11,8 @@ import {
   setFaceScanFailure,
   setFaceScanSuccess,
 } from "../../redux/signup/SignupActions";
+import dashboardService from "../../services/dashboard.service";
+import { useQuery } from "react-query";
 
 const HomePage = () => {
   const userDetails = useSelector((state: any) => state.signup.userDetails);
@@ -33,19 +34,15 @@ const HomePage = () => {
       setModalOpen(true);
     }
   };
-  function getMatrix(type: string) {
-    return (
-      axios({
-        // Endpoint
-        url: `${process.env.REACT_APP_BASE_URL}/${type}Matrix?email=${email}`,
-        method: "GET",
-        headers: {
-          // Add any auth token here
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      })
-        // Handle the response from backend here
-        .then((res) => {
+  const { refetch: getFaceMatrix } = useGetMatrix("face", email, dispatch);
+  const { refetch: getBodyMatrix } = useGetMatrix("body", email, dispatch);
+  function useGetMatrix(type: string, email: string, dispatch: any) {
+    return useQuery(
+      ["getMatrix", type], // Add type to the query key
+      async () => dashboardService.getMatrix(email, type, dispatch),
+      {
+        enabled: false,
+        onSuccess: (res) => {
           if (type === "face") {
             console.log("face matrix exist");
             dispatch(setFaceScanSuccess());
@@ -53,22 +50,21 @@ const HomePage = () => {
             console.log("body matrix exist");
             dispatch(setBodyScanSuccess());
           }
-        })
-
-        // Catch errors if any
-        .catch((err: any) => {
+        },
+        onError: () => {
           if (type === "face") {
             dispatch(setFaceScanFailure(""));
           } else {
             dispatch(setBodyScanFailure(""));
           }
-        })
+        },
+      }
     );
   }
   useEffect(() => {
     setTimeout(() => {
-      getMatrix("face");
-      getMatrix("body");
+      getFaceMatrix();
+      getBodyMatrix();
     }, 2000);
   }, []);
   return (

@@ -1,13 +1,13 @@
 import { Grid } from "@mui/material";
-import Webcam from "react-webcam";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentForm } from "../redux/signup/SignupActions";
+import { setCurrentForm, setErrorMsg } from "../redux/signup/SignupActions";
 import CONSTANTS from "../utils/constants/CONSTANTS";
-import axios from "axios";
 import { Camera, CameraType } from "react-camera-pro";
 import CameraTools from "./cameraTools";
+import signupService from "../services/signup.service";
+import { useMutation } from "react-query";
 interface SignUpCameraProps {
   type: string;
 }
@@ -36,34 +36,33 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     ) && !isFaceScanExists;
   const email = useSelector((state: any) => state.signup.userDetails.email);
 
-  function setMatrix(): any {
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/${type}Matrix`,
-      method: "POST",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-      data: {
-        email: email,
-        [`${type}Matrix`]: '["inferences": "123"]',
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        console.log("matrix set for sent ", type);
-      })
-
-      // Catch errors if any
-      .catch((err: any) => {
-        console.log("auth error", err);
-        if (err?.response.message === "Unauthorized access") {
+  const { mutate: setMatrix } = useMutation(
+    async () => signupService.setMatrix(type, email),
+    {
+      onError: (err: any) => {
+        if (err?.response.data.message === "Unauthorized access") {
           navigate("/");
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+          localStorage.clear();
         }
-      });
-  }
+        dispatch(setErrorMsg(err?.response.data.message));
+      },
+    }
+  );
+  const { mutate: storeImage } = useMutation(
+    async (blob: Blob) => signupService.storeImage(type, blob, email),
+    {
+      onError: (err: any) => {
+        if (err?.response.data.message === "Unauthorized access") {
+          navigate("/");
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+          localStorage.clear();
+        }
+        dispatch(setErrorMsg(err?.response.data.message));
+      },
+    }
+  );
+
   function setImage(): any {
     // Convert base64 string to Blob
     const byteString = atob(imgSrc.split(",")[1]);
@@ -80,41 +79,13 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     // Prepare form data
     const formData = new FormData();
     formData.append("image", blob);
-    console.log("blob", blob);
-
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/${type}Image?email=${email}`,
-      method: "POST",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-        "Content-Type": "multipart/form-data;",
-      },
-      data: {
-        [`${type}Image`]: blob,
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        console.log("image stored ", type);
-      })
-
-      // Catch errors if any
-      .catch((err: any) => {
-        console.log("auth error", err?.response.message);
-        if (err?.response.message === "Unauthorized access") {
-          navigate("/");
-          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
-        }
-      });
+    storeImage(blob);
   }
   const handleCapturePhoto = () => {
     if (!confirmation) {
       setConfirmation(true);
     } else {
       const image = camera.current?.takePhoto();
-      console.log("image", image);
       if (image && typeof image === "string") {
         setImgSrc(image);
       }
@@ -206,9 +177,6 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
                   switchCamera:
                     "It is not possible to switch camera to different one because there is only one video device accessible.",
                   canvas: "Canvas is not supported.",
-                }}
-                videoReadyCallback={() => {
-                  console.log("Video feed ready.");
                 }}
               />
             </div>

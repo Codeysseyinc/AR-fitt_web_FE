@@ -12,7 +12,6 @@ import {
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
-import axios from "axios";
 import {
   registerUserStart,
   setCurrentForm,
@@ -23,6 +22,9 @@ import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useDispatch } from "react-redux";
 import GuestLoginCard from "../../components/guestLoginCard";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import HTTPService from "../../services/base.service";
+import loginService from "../../services/login.service";
+import { useMutation } from "react-query";
 
 const LogIn: React.FC = () => {
   const navigate = useNavigate();
@@ -47,28 +49,10 @@ const LogIn: React.FC = () => {
     });
   };
   const hasErrors = Object.values(errors).some((error) => error !== false);
-  function authenticateUser(): any {
-    if (!(email && password)) {
-      setError("Please fill in the required fields");
-      return;
-    }
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/user/login`,
-      method: "POST",
-      headers: {
-        // Add any auth token here
-        Authorization: "your token comes here",
-        "Content-Type": "application/json",
-      },
-
-      data: {
-        email: email,
-        password: password,
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
+  const { mutate: login } = useMutation(
+    async () => loginService.login(email, password),
+    {
+      onSuccess: (res: any) => {
         dispatch(registerUserStart());
         dispatch(setUserDetails(res.data.message));
 
@@ -76,6 +60,7 @@ const LogIn: React.FC = () => {
 
         if (token) {
           localStorage.setItem("access_token", token);
+          HTTPService.setToken(token);
         }
 
         if (!res.data.message.isVerified) {
@@ -89,12 +74,18 @@ const LogIn: React.FC = () => {
         } else {
           navigate("/home");
         }
-      })
-
-      // Catch errors if any
-      .catch((err: any) => {
+      },
+      onError: (err: any) => {
         setError(err?.response.data.message);
-      });
+      },
+    }
+  );
+  function authenticateUser(): any {
+    if (!(email && password)) {
+      setError("Please fill in the required fields");
+      return;
+    }
+    login();
   }
   useEffect(() => {
     dispatch(setErrorMsg(null));
