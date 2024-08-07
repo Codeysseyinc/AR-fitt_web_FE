@@ -1,0 +1,55 @@
+[
+  {
+    "id": "1245e3f8-a427-4d23-93cd-234ee5fbde4f",
+    "categoryID": "9a9d035c-cf5e-45a4-9def-ba95c0275f28",
+    "name": "Red Lip Stick",
+    "brand": "Sefora",
+    "price": "45.00",
+    "currency": "gbp",
+    "description": null,
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z",
+    "itemColors": [
+      {
+        "id": "41c1b7a8-9e83-4a7b-abba-ac4cf94accea",
+        "itemID": "1245e3f8-a427-4d23-93cd-234ee5fbde4f",
+        "color": "Red",
+        "colorHex": "#FF0000",
+        "createdAt": "2024-06-08T23:55:17.000Z",
+        "modifiedAt": "2024-06-08T23:55:17.000Z"
+      }
+    ],
+    "itemImagesURLs": [
+      {
+        "id": "41c1b7a8-9e83-4a7b-abba-ac4cf94accea",
+        "itemID": "1245e3f8-a427-4d23-93cd-234ee5fbde4f",
+        "imageURL": "/itemImage/1245e3f8-a427-4d23-93cd-234ee5fbde4f/41c1b7a8-9e83-4a7b-abba-ac4cf94accea",
+        "createdAt": "2024-06-08T23:55:17.000Z",
+        "modifiedAt": "2024-06-08T23:55:17.000Z"
+      }
+    ],
+    "itemSizes": [
+      {
+        "id": "41c1b7a8-9e83-4a7b-abba-ac4cf94accea",
+        "itemID": "1245e3f8-a427-4d23-93cd-234ee5fbde4f",
+        "size": "32",
+        "createdAt": "2024-06-08T23:55:17.000Z",
+        "modifiedAt": "2024-06-08T23:55:17.000Z"
+      },
+      {
+        "id": "c3bb791c-4a6b-4044-929d-f2f464bf43cc",
+        "itemID": "1245e3f8-a427-4d23-93cd-234ee5fbde4f",
+        "size": "34",
+        "createdAt": "2024-06-08T23:55:17.000Z",
+        "modifiedAt": "2024-06-08T23:55:17.000Z"
+      },
+      {
+        "id": "56ebed06-72a7-4409-984b-637fcf8264ec",
+        "itemID": "1245e3f8-a427-4d23-93cd-234ee5fbde4f",
+        "size": "36",
+        "createdAt": "2024-06-08T23:55:17.000Z",
+        "modifiedAt": "2024-06-08T23:55:17.000Z"
+      }
+    ]
+  }
+]

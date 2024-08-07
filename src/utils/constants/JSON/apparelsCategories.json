@@ -1,0 +1,114 @@
+[
+  {
+    "id": "8c8d034c-cf5e-45a4-9cef-ca95c0274f27",
+    "name": "Shirts",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "b98fd639-c6a7-46ee-971a-c7f484dcfde2",
+    "name": "Pants",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "1a34676c-f0f9-4349-911b-56d700220298",
+    "name": "Shoes",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "5b6c0533-d6bf-4437-8ea5-86814c7fbe37",
+    "name": "Hats",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "b8586e1b-09f6-490d-bf6a-3f18df089af7",
+    "name": "Jackets",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "df8b25af-0705-4288-b331-389d2db86096",
+    "name": "Shorts",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "ae53764d-58e1-42d5-958e-b616e9663473",
+    "name": "T-Shirts",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "e2b51511-e5ed-4936-96ff-6ce7987c147f",
+    "name": "Dress Shirts",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "d9feba45-a55e-476c-9e10-37fb140e6aaa",
+    "name": "Under Shirts",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "de724059-2c5d-444d-b43d-7f8672c077d2",
+    "name": "Hoodies",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "0da32a59-83aa-4b03-ad59-c0c38573f098",
+    "name": "Casual Shirts",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "6d475a28-4767-4a2c-a4b2-0ac36d61b737",
+    "name": "Round-neck Shirts",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "193aa98f-320c-4a7a-9923-a20b0e7ba8fe",
+    "name": "Zipper Hoodies",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  },
+  {
+    "id": "925ea5bc-04d1-47fb-b238-1b7a37ed0450",
+    "name": "Warsaw Jackets",
+    "description": null,
+    "type": "apparel",
+    "createdAt": "2024-06-08T23:55:17.000Z",
+    "modifiedAt": "2024-06-08T23:55:17.000Z"
+  }
+]

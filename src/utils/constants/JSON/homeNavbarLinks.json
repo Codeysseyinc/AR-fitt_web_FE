@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Home",
+    "link": "/home",
+    "type": "link"
+  },
+  {
+    "name": "Suggested Items",
+    "link": "/home/suggestion",
+    "type": "link"
+  },
+  {
+    "name": "Apparel",
+    "link": "/home/suggestion?type=Apparel",
+    "type": "link"
+  },
+  {
+    "name": "Cosmetics",
+    "link": "/home/suggestion?type=Cosmetics",
+    "type": "link"
+  },
+  {
+    "name": "About Us",
+    "link": "/",
+    "type": "link"
+  },
+  {
+    "name": "Contact Us",
+    "link": "/",
+    "type": "link"
+  }
+]

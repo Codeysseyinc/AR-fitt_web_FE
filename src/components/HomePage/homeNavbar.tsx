@@ -1,25 +1,34 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from "react";
-import { Box, Grid, Menu, MenuItem } from "@mui/material";
-import { initializeSignUpState } from "../../redux/signup/SignupActions";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Box, Grid, Menu, MenuItem } from "@mui/material";
+import { initializeSignUpState } from "../../redux/signup/SignupActions";
+import SvgIconFromPublic from "../atomicComponents/svgIcon";
+import navbarData from "../../utils/constants/JSON/homeNavbarLinks.json";
 
 const HomeNavbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const anchorTagStyling =
-    "no-underline m-0 p-0 font-Montserrat font-bold text-sm text-gray-300";
+    "no-underline m-0 p-0 font-Montserrat font-bold max-sm:hidden max-md:text-xs text-sm";
+
   const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileAnchorEl, setMobileAnchorEl] = useState(null);
+  const [selectedRoute, setSelectedRoute] = useState(navbarData[0]);
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const handleMobileMenuClick = (event: any) => {
+    setMobileAnchorEl(event.currentTarget);
+  };
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const handleMobileMenuClose = () => {
+    setMobileAnchorEl(null);
+  };
   const handleLogout = () => {
     dispatch(initializeSignUpState());
     localStorage.clear();
@@ -27,12 +36,28 @@ const HomeNavbar = () => {
     console.log("Logout clicked");
     handleClose();
   };
-
   const handleAccountManagement = () => {
     // Add your account management logic here
     console.log("Account Management clicked");
     handleClose();
   };
+
+  useEffect(() => {
+    const currentUrl = window.location.pathname;
+    const queryParams = window.location?.search;
+    if (queryParams) {
+      const urlParams = new URLSearchParams(queryParams);
+      const type = urlParams.get("type");
+      if (type) {
+        const matchingItem = navbarData.find((item) => item.name === type);
+        setSelectedRoute(matchingItem || navbarData[0]);
+      }
+    } else {
+      const matchingItem = navbarData.find((item) => item.link === currentUrl);
+      setSelectedRoute(matchingItem || navbarData[0]);
+    }
+  }, []);
+
   return (
     <Grid
       item
@@ -42,24 +67,33 @@ const HomeNavbar = () => {
       {/* Navbar Top Row */}
       <Grid item container className="flex justify-between items-center">
         <img className="w-8 h-8" src="/assets/images/logo.png" alt="logo" />
-        <Grid item className="flex gap-4">
-          <Box className="bg-white rounded-full p-1 w-6 h-6 shadow-lg flex items-center justify-center">
-            <img
+        <Grid item className="flex gap-4 items-center">
+          <Box className="bg-gray-100 rounded-full p-1 w-5 h-5 shadow-xl flex items-center justify-center max-sm:hidden">
+            <SvgIconFromPublic
+              src={`${process.env.PUBLIC_URL}/assets/icons/svg/favourite.svg`}
               className="w-4 h-4"
-              src="/assets/icons/png/heartIcon.png"
-              alt="fav icon"
             />
           </Box>
           <Box
-            className="bg-white rounded-full p-1 w-6 h-6 shadow-lg flex items-center justify-center cursor-pointer"
+            className="bg-gray-100 rounded-full p-1 w-5 h-5 shadow-xl flex items-center justify-center cursor-pointer"
             aria-controls="simple-menu"
             aria-haspopup="true"
             onClick={handleClick}
           >
-            <img
+            <SvgIconFromPublic
+              src={`${process.env.PUBLIC_URL}/assets/icons/svg/person.svg`}
               className="w-5 h-5"
-              src="/assets/icons/png/personIcon.png"
-              alt="fav icon"
+            />
+          </Box>
+          <Box
+            className="sm:hidden bg-white rounded-full p-1 w-5 h-5 shadow-xl flex items-center justify-center cursor-pointer"
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={handleMobileMenuClick}
+          >
+            <SvgIconFromPublic
+              src={`${process.env.PUBLIC_URL}/assets/icons/svg/hamburger.svg`}
+              className="w-5 h-5"
             />
           </Box>
           <Menu
@@ -74,30 +108,48 @@ const HomeNavbar = () => {
             </MenuItem>
             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
           </Menu>
+          <Menu
+            id="menu"
+            anchorEl={mobileAnchorEl}
+            keepMounted
+            open={Boolean(mobileAnchorEl)}
+            onClose={handleMobileMenuClose}
+          >
+            {navbarData?.map((item: any) => {
+              return (
+                <MenuItem
+                  onClick={() => {
+                    navigate(item.link);
+                  }}
+                >
+                  {item.name}
+                </MenuItem>
+              );
+            })}
+          </Menu>
         </Grid>
       </Grid>
       {/* Horizontal Line */}
-      <div className="bg-gray-200 w-full h-[2px] rounded-full"></div>
+      <div className="bg-gray-200 w-full h-[2px] rounded-full max-sm:hidden"></div>
       {/* Options */}
-      <Grid item container className="flex justify-between">
-        <a href="" className={`${anchorTagStyling}`}>
-          Suggested Items
-        </a>
-        <a href="" className={`${anchorTagStyling}`}>
-          Apparels
-        </a>
-        <a href="" className={`${anchorTagStyling}`}>
-          Cosmetics
-        </a>
-        <a href="" className={`${anchorTagStyling}`}>
-          How To
-        </a>
-        <a href="" className={`${anchorTagStyling}`}>
-          About Us
-        </a>
-        <a href="" className={`${anchorTagStyling}`}>
-          Contact Us
-        </a>
+      <Grid item container className="flex justify-between max-sm:hidden">
+        {navbarData?.map((item: any) => {
+          return (
+            <a
+              href={item.link}
+              className={`${anchorTagStyling} ${
+                selectedRoute?.name === item.name
+                  ? "text-primaryDark"
+                  : "text-gray-300"
+              }`}
+              onClick={() => {
+                setSelectedRoute(item);
+              }}
+            >
+              {item.name}
+            </a>
+          );
+        })}
       </Grid>
     </Grid>
   );

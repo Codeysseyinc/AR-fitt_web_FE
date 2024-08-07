@@ -1,54 +1,33 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Modal,
-  Backdrop,
-  Fade,
-  Box,
-  Typography,
-  IconButton,
-  Grid,
-} from "@mui/material";
+import { Modal, Fade, Box, Typography, IconButton } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Camera } from "react-camera-pro";
-import Webcam from "react-webcam";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/rootReducer";
 
 const CameraPopUp = ({
   open,
+  selectedColor,
+  productImage,
   onClose,
+  handleSelectedColor,
 }: {
   open: boolean;
+  selectedColor: any;
+  productImage: any;
   onClose: () => void;
+  handleSelectedColor: (payload: any) => void;
 }) => {
-  // TODO: Remove This
-  const colors = [
-    { hexa: "#5C0029", name: "Tyrian Purple" },
-    { hexa: "#61304B", name: "Violet (JTC)" },
-    { hexa: "#857C8D", name: "Taupe gray" },
-    { hexa: "#94BFBE", name: "Tiffany Blue" },
-  ];
   const camera = useRef(null);
+  let countdownInterval: string | number | NodeJS.Timer | undefined;
   const [image, setImage] = useState(null);
-  const [selectedColor, setSelectedColor] = useState({ hexa: "", name: "" });
   const [countdown, setCountdown] = useState<number>(0);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
-  let countdownInterval: string | number | NodeJS.Timer | undefined;
-
-  useEffect(() => {
-    if (triggerCountDown && countdown > 0) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      countdownInterval = setInterval(() => {
-        setCountdown((prevCount) => prevCount - 1);
-      }, 1000);
-    } else if (countdown === 0 && triggerCountDown) {
-      capturePhoto();
-      setTriggerCountDown(false);
-    }
-
-    return () => {
-      clearInterval(countdownInterval);
-    };
-  }, [countdown, triggerCountDown]);
+  const selectedItem = useSelector(
+    (state: RootState) => state.main.selectedItem
+  );
 
   const handleCapturePhoto = () => {
     setImage((camera.current as any).takePhoto());
@@ -73,6 +52,22 @@ const CameraPopUp = ({
     onClose();
   };
 
+  useEffect(() => {
+    if (triggerCountDown && countdown > 0) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      countdownInterval = setInterval(() => {
+        setCountdown((prevCount) => prevCount - 1);
+      }, 1000);
+    } else if (countdown === 0 && triggerCountDown) {
+      capturePhoto();
+      setTriggerCountDown(false);
+    }
+
+    return () => {
+      clearInterval(countdownInterval);
+    };
+  }, [countdown, triggerCountDown]);
+
   return (
     <Modal
       open={open}
@@ -85,8 +80,10 @@ const CameraPopUp = ({
         <Box
           className="
           relative flex flex-col gap-4
-          h-[80%] w-[30%] overflow-hidden
-          relative rounded-xl bg-black
+          h-[80%]
+          max-sm:w-full sm:w-[80%] md:w-[60%] lg:w-[55%] xl:w-[40%] w-full
+          overflow-hidden
+          rounded-xl bg-transparent
         "
         >
           {/* Camera */}
@@ -122,16 +119,23 @@ const CameraPopUp = ({
           {/* Top Row - Item Basic Description */}
           <Box className="absolute top-4 flex justify-between w-full items-start">
             {/* Product Basic Info */}
-            <Box className="px-4 flex gap-1 items-center">
-              <Box className="bg-gray-100 h-[40px] w-[30px] rounded-sm"></Box>
-              <Box className="flex flex-col gap-1">
+            <Box className="px-4 flex gap-2 items-center">
+              {/* Image */}
+              <img
+                src={productImage}
+                className="bg-gray-100 h-[40px] w-[30px] rounded-sm"
+              />
+              <Box className="flex flex-col gap-1 items-start">
                 <Typography className="font-Montserrat font-bold text-xs">
-                  Product Name
+                  {selectedItem?.name}
                 </Typography>
                 <Box className="flex gap-1 justify-center items-center">
-                  <Box className="rounded-full border-2 border-white border-solid p-2 bg-blue-500"></Box>
+                  <Box
+                    style={{ backgroundColor: selectedColor?.colorHex }}
+                    className="rounded-full border-1 border-primaryDark border-solid p-2"
+                  ></Box>
                   <Typography className="font-Montserrat font-bold text-xs">
-                    Color Name
+                    {selectedColor?.color}
                   </Typography>
                 </Box>
               </Box>
@@ -171,11 +175,18 @@ const CameraPopUp = ({
                 msOverflowStyle: "none",
               }}
             >
-              {colors?.map((color) => {
+              {selectedItem?.itemColors?.map((color: any) => {
                 return (
                   <Box
-                    className={`p-6 rounded-full`}
-                    style={{ backgroundColor: color.hexa }}
+                    className={`p-6 rounded-full cursor-pointer border border-solid border-[2px] ${
+                      selectedColor?.colorHex === color?.colorHex
+                        ? "border-primaryDark"
+                        : ""
+                    }`}
+                    style={{ backgroundColor: color.colorHex }}
+                    onClick={() => {
+                      handleSelectedColor(color);
+                    }}
                   />
                 );
               })}

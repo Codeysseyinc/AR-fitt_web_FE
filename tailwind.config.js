@@ -10,8 +10,10 @@ module.exports = {
     screens: {
       xs: "300px",
       xsm: "420px",
+      mui_sm: "600px",
+      mui_md: "900px",
+      mui_lg: "1200px",
       ...defaultTheme.screens,
-      // => @media (min-width: 300px) { ... }
     },
     extend: {
       colors: {

@@ -9,7 +9,7 @@ const HomeLayout: React.FC = () => {
 
   return (
     <Grid
-      className="p-2 h-screen overflow-auto"
+      className="p-2 h-screen overflow-auto flex justify-center"
       style={
         isHomePage
           ? {
@@ -22,8 +22,10 @@ const HomeLayout: React.FC = () => {
           : { backgroundColor: "white" }
       }
     >
-      <HomeNavbar />
-      <Outlet />
+      <Grid className="max-w-[1440px] w-full h-screen">
+        <HomeNavbar />
+        <Outlet />
+      </Grid>
     </Grid>
   );
 };
