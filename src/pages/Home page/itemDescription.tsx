@@ -42,6 +42,7 @@ const ItemDescription = () => {
           return defaultImage;
         }
       } catch {
+        console.log("XX Catch: ", defaultImage);
         return defaultImage;
       }
     };
@@ -56,6 +57,7 @@ const ItemDescription = () => {
           (item: any) => item.imageURL
         );
         const validatedImages = await validateImages(imageUrls);
+        console.log("XX Validate Image: ", validatedImages);
         setImages(validatedImages);
       }
     };

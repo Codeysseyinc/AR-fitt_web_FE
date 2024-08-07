@@ -1,14 +1,10 @@
 [
   {
-    "name": "Home",
+    "name": "Dashboard",
     "link": "/home",
     "type": "link"
   },
-  {
-    "name": "Suggested Items",
-    "link": "/home/suggestion",
-    "type": "link"
-  },
+
   {
     "name": "Apparel",
     "link": "/home/suggestion?type=Apparel",
@@ -21,12 +17,12 @@
   },
   {
     "name": "About Us",
-    "link": "/",
+    "link": "/#aboutUs",
     "type": "link"
   },
   {
     "name": "Contact Us",
-    "link": "/",
+    "link": "/#contact",
     "type": "link"
   }
 ]

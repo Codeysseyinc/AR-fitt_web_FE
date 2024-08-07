@@ -23,7 +23,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
       className="flex flex-col w-full h-full border-solid border-2 border-gray-200 rounded-[20px] overflow-hidden cursor-pointer"
     >
       <img
-        className="w-full min-h-[70%] object-cover bg-red-500"
+        className="w-full min-h-[70%] object-cover"
         src="/assets/images/placeHolderImage.jpeg"
         alt="placeholder"
       />

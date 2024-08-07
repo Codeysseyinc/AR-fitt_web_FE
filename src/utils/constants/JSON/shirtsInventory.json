@@ -6,7 +6,7 @@
     "brand": "Gucci",
     "price": "12.05",
     "currency": "gbp",
-    "description": null,
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     "createdAt": "2024-06-08T23:55:17.000Z",
     "modifiedAt": "2024-06-08T23:55:17.000Z",
     "itemColors": [
@@ -39,7 +39,7 @@
       {
         "id": "41c1b7a8-9e83-4a7b-abba-ac4cf94acce7",
         "itemID": "555e3f63-f927-4b76-93cd-098ee5fbde4e",
-        "imageURL": "/itemImage/555e3f63-f927-4b76-93cd-098ee5fbde4e/41c1b7a8-9e83-4a7b-abba-ac4cf94acce7",
+        "imageURL": "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
         "createdAt": "2024-06-08T23:55:17.000Z",
         "modifiedAt": "2024-06-08T23:55:17.000Z"
       }

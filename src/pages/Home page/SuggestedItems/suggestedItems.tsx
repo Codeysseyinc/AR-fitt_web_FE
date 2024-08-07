@@ -197,12 +197,16 @@ const SuggestedItems: React.FC = () => {
         handleCategory={handleCategory}
       />
       {/* The suggested items section */}
-      <Grid item xs={12} md={7} lg={8.5}>
-        <h1 className="font-Dhurjati text-[220%] font-normal text-gray-300 leading-[1]">
+      <Grid item xs={12} md={7} lg={8.5} className="p-0 m-0">
+        <h1 className="font-Dhurjati text-[220%] font-normal text-gray-300 leading-[1] p-0 my-4">
           Suggested Items
         </h1>
         {/* Grid Rows */}
-        <Grid container gap={2} className="flex flex-wrap w-full">
+        <Grid
+          container
+          gap={2}
+          className="flex flex-wrap w-full max-mui_md:justify-center"
+        >
           {items?.map((item: any, index: React.Key | null | undefined) => (
             <Grid
               item
