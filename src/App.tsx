@@ -12,7 +12,7 @@ import ResetPassword from "./pages/LogIn/resetPassword";
 import { PersistGate } from "redux-persist/integration/react";
 import CategoryPage from "./pages/SignUp/categoryPage";
 import HomeLayout from "./layouts/homePageLayout";
-import SuggestedItems from "./pages/Home page/suggestedItems";
+import SuggestedItems from "./pages/Home page/SuggestedItems/suggestedItems";
 import ItemDescription from "./pages/Home page/itemDescription";
 
 const App = () => {
@@ -29,7 +29,6 @@ const App = () => {
               <Route path="/forgotPassword" element={<ForgotPassword />} />
               <Route path="/resetPassword" element={<ResetPassword />} />
               <Route path="/categoryPage" element={<CategoryPage />} />
-              {/* <Route path="/home" element={<HomePage />} /> */}
               <Route path="/home" element={<HomeLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="suggestion" element={<SuggestedItems />} />
