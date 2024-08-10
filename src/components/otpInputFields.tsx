@@ -26,9 +26,11 @@ const OtpInputField: React.FC = () => {
   const email = userDetails.email;
   const dispatch = useDispatch();
   function handleChange(value: any, index: number) {
-    let newArr = [...otp];
-    newArr[index] = value;
-    setOtp(newArr);
+    if (typeof value === "number" || !isNaN(Number(value))) {
+      let newArr = [...otp];
+      newArr[index] = value;
+      setOtp(newArr);
+    }
   }
 
   function handleBackspaceAndEnter(e: any, index: number) {
@@ -39,8 +41,10 @@ const OtpInputField: React.FC = () => {
     } else if (index < numberOfDigits - 1 && e.target.value) {
       otpBoxReference.current[index + 1].focus();
     } else if (index < numberOfDigits - 1 && !e.target.value) {
-      handleChange(e.key, index);
-      otpBoxReference.current[index + 1].focus();
+      if (typeof e.key === "number" || !isNaN(Number(e.key))) {
+        handleChange(e.key, index);
+        otpBoxReference.current[index + 1].focus();
+      }
     }
     return;
   }
@@ -68,8 +72,27 @@ const OtpInputField: React.FC = () => {
   const handleResend = () => {
     setCountdown(secondsCountDown);
     setTriggerCountDown(true);
-    sendOTP();
+    // sendOTP();
   };
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    // Get the pasted data
+    const pastedValue = event.clipboardData.getData("text");
+    // Split pasted value into individual characters
+    const digits = pastedValue.replace(/[^0-9]/g, "").split("");
+
+    const newInputs = [...otp];
+    // Fill the inputs with the pasted digits
+    digits.forEach((digit, idx) => {
+      if (idx < numberOfDigits) {
+        // Only fill up to numberOfDigits fields
+        newInputs[idx] = digit;
+      }
+    });
+    setOtp(newInputs);
+  };
+
   useEffect(() => {
     setTriggerCountDown(true);
     if (triggerCountDown && countdown > 0) {
@@ -96,6 +119,7 @@ const OtpInputField: React.FC = () => {
   }, [otp]);
 
   const isMounted = useRef(false);
+
   useEffect(() => {
     // Skip the effect on the initial render
     if (!isMounted.current) {
@@ -104,8 +128,11 @@ const OtpInputField: React.FC = () => {
     }
     setTimeout(() => {
       setTriggerCountDown(true);
-      sendOTP();
+      // sendOTP();
     }, 2000);
+    if (otpBoxReference.current[0]) {
+      otpBoxReference.current[0].focus();
+    }
   }, []);
   return (
     <>
@@ -116,6 +143,7 @@ const OtpInputField: React.FC = () => {
         {/* Boxes for digits */}
         {otp.map((digit: any, index: number) => (
           <input
+            onPaste={handlePaste}
             key={index}
             value={digit}
             maxLength={1}
