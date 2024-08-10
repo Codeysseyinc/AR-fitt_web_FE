@@ -26,6 +26,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
     if (title === "Scanning") {
       navigate("/");
     } else navigate(-1);
+    localStorage.clear();
   };
   return (
     <Grid

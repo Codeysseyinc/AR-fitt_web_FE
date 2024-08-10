@@ -49,9 +49,6 @@ const ForgotPassword: React.FC = () => {
     );
     forgetPassword();
   }
-  useEffect(() => {
-    dispatch(setErrorMsg(null));
-  });
   return (
     <Grid
       container
@@ -88,7 +85,7 @@ const ForgotPassword: React.FC = () => {
             className="flex items-center justify-center w-[100%] h-[100px]  "
           >
             <Button
-              className="bg-primary text-contrastText font-bold xs:text-xs md:text-base"
+              className={`bg-white text-primary border-solid border-black border h-[80%] font-bold xs:text-xs md:text-base`}
               disableElevation={true}
               variant="contained"
               style={{
@@ -107,8 +104,8 @@ const ForgotPassword: React.FC = () => {
             <Button
               disabled={hasErrors}
               className={`${
-                hasErrors ? "bg-gray-500 text-white" : "bg-white text-primary"
-              } text-primary border-solid border-black border h-[80%] font-bold xs:text-xs md:text-base`}
+                hasErrors ? "bg-gray-500" : "bg-primary"
+              } text-contrastText font-bold xs:text-xs md:text-base`}
               variant="contained"
               disableElevation={true}
               style={{

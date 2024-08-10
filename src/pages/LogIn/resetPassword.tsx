@@ -4,7 +4,6 @@ import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setErrorMsg } from "../../redux/signup/SignupActions";
 import HTTPService from "../../services/base.service";
@@ -42,7 +41,7 @@ const ResetPassword: React.FC = () => {
         navigate("/login");
       },
       onError: (err: any) => {
-        dispatch(setErrorMsg(err?.response.data));
+        dispatch(setErrorMsg(err?.response.data.message));
       },
     }
   );
@@ -56,28 +55,6 @@ const ResetPassword: React.FC = () => {
       return;
     }
     resetPassword();
-    // axios({
-    //   // Endpoint
-    //   url: `${process.env.REACT_APP_BASE_URL}/user/resetPassword`,
-    //   method: "POST",
-    //   headers: {
-    //     // Add any auth token here
-    //     Authorization: "Bearer " + token,
-    //   },
-    //   data: {
-    //     email: email,
-    //     password: password,
-    //   },
-    // })
-    //   // Handle the response from backend here
-    //   .then((res) => {
-    //     navigate("/login");
-    //   })
-
-    //   // Catch errors if any
-    //   .catch((err: any) => {
-    //     dispatch(setErrorMsg(err?.response.data));
-    //   });
   }
   const navigate = useNavigate();
 

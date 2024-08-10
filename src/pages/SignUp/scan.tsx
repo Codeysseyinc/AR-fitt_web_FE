@@ -5,6 +5,7 @@ import ContentArea from "../../components/contentArea";
 import SignUpCamera from "../../components/signUpCamera";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setErrorMsg } from "../../redux/signup/SignupActions";
 
 interface ScanProps {
   type: string;
@@ -18,6 +19,7 @@ const Scan: React.FC<ScanProps> = ({ type }) => {
   );
 
   useEffect(() => {
+    dispatch(setErrorMsg(null));
     // if (!isSubscribed) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
   });
   return (

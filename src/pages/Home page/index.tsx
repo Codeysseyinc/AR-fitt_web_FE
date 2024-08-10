@@ -65,7 +65,7 @@ const HomePage = () => {
     setTimeout(() => {
       getFaceMatrix();
       getBodyMatrix();
-    }, 2000);
+    }, 1000);
   }, []);
   return (
     <Grid
