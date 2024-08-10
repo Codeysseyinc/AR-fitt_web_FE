@@ -1,7 +1,7 @@
 import { Button, Drawer, Grid, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import navbarData from "./navbar.json";
+import navbarData from "../../utils/constants/JSON/navbar.json";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 const Navbar = () => {
   const navigate = useNavigate();

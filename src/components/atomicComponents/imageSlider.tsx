@@ -13,7 +13,7 @@ const ImageSlider = ({ images }: any) => {
       sx={{ maxWidth: "100%", position: "relative" }}
       className="flex flex-col gap-4"
     >
-      <Box className="bg-red-500 w-full h-[400px] overflow-hidden rounded-xl">
+      <Box className="w-full h-[400px] overflow-hidden rounded-xl">
         {images.map((image: any, index: any) => (
           <Box
             key={index}
@@ -48,7 +48,6 @@ const ImageSlider = ({ images }: any) => {
                 currentIndex === index ? "2px solid #007bff" : "1px solid #ddd",
             }}
             onClick={() => handleThumbnailClick(index)}
-            className="bg-red-500"
           >
             <img
               src={image}
