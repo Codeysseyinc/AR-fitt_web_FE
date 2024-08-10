@@ -27,26 +27,28 @@ const App = () => {
   });
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ARfittProvider>
-          <Router>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/getStarted" element={<GetStarted />} />
-              <Route path="/forgotPassword" element={<ForgotPassword />} />
-              <Route path="/resetPassword" element={<ResetPassword />} />
-              <Route path="/categoryPage" element={<CategoryPage />} />
-              <Route path="/home" element={<HomeLayout />}>
-                <Route index element={<HomePage />} />
-                <Route path="suggestion" element={<SuggestedItems />} />
-                <Route path="item" element={<ItemDescription />} />
-              </Route>
-            </Routes>
-          </Router>
-        </ARfittProvider>
-      </PersistGate>
+      <QueryClientProvider client={queryClient}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ARfittProvider>
+            <Router>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<LogIn />} />
+                <Route path="/getStarted" element={<GetStarted />} />
+                <Route path="/forgotPassword" element={<ForgotPassword />} />
+                <Route path="/resetPassword" element={<ResetPassword />} />
+                <Route path="/categoryPage" element={<CategoryPage />} />
+                <Route path="/home" element={<HomeLayout />}>
+                  <Route index element={<HomePage />} />
+                  <Route path="suggestion" element={<SuggestedItems />} />
+                  <Route path="item" element={<ItemDescription />} />
+                </Route>
+              </Routes>
+            </Router>
+          </ARfittProvider>
+        </PersistGate>
+      </QueryClientProvider>
     </Provider>
   );
 };
