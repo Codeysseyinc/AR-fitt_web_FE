@@ -30,14 +30,14 @@ class SignupService extends HTTPService {
   };
   setMatrix = (type: string, email?: string, userId?: string) => {
     return this.post(`${process.env.REACT_APP_BASE_URL}/${type}Matrix`, {
-      ...(userId ? { id: userId } : { email: email }),
+      ...(userId ? { userId: userId } : { email: email }),
       [`${type}Matrix`]: '["inferences": "123"]',
     });
   };
   storeImage = (type: string, blob: Blob, email?: string, userId?: string) => {
     return this.post(
       `${process.env.REACT_APP_BASE_URL}/${type}Image?${
-        userId ? `id=${userId}` : `email=${email}`
+        userId ? `userID=${userId}` : `email=${email}`
       }`,
 
       {
@@ -50,6 +50,12 @@ class SignupService extends HTTPService {
     return this.post(`${process.env.REACT_APP_BASE_URL}/user/resetPassword`, {
       email: email,
       password: password,
+    });
+  };
+  guestSignup = (data: any) => {
+    return this.post(`${process.env.REACT_APP_BASE_URL}/signUpGuest`, {
+      gender: data.gender,
+      dob: data.dob,
     });
   };
 }

@@ -56,8 +56,7 @@ const LogIn: React.FC = () => {
         dispatch(registerUserStart());
         dispatch(setUserDetails(res.data.message));
 
-        const token = res.headers.access_token; // Adjust the key based on your API response
-
+        const token = res.headers.access_token;
         if (token) {
           localStorage.setItem("access_token", token);
           HTTPService.setToken(token);

@@ -35,6 +35,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
       (item: any) => item.includes("cosmetics")
     ) && !isFaceScanExists;
   const email = useSelector((state: any) => state.signup.userDetails.email);
+  const guestDetails = useSelector((state: any) => state.signup.guestDetails);
 
   const { mutate: setMatrix } = useMutation(
     async () => signupService.setMatrix(type, email),
@@ -50,7 +51,8 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     }
   );
   const { mutate: storeImage } = useMutation(
-    async (blob: Blob) => signupService.storeImage(type, blob, email),
+    async (blob: Blob) =>
+      signupService.storeImage(type, blob, email, guestDetails.id),
     {
       onError: (err: any) => {
         if (err?.response.data.message === "Unauthorized access") {
@@ -107,7 +109,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   };
   const handleConfirm = () => {
     if (imgSrc) {
-      setMatrix();
+      // setMatrix();
       setImage();
       if (isFaceScanRequired && type === "body") {
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));

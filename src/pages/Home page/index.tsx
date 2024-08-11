@@ -25,6 +25,7 @@ const HomePage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [redirectionLink, setRedirectionLink] = useState("");
   const email = useSelector((state: any) => state.signup.userDetails.email);
+  const guestDetails = useSelector((state: any) => state.signup.guestDetails);
 
   const handleContinueClick = () => {
     if (isBodyMatrixPresent || isFaceMatrixPresent)
@@ -34,12 +35,32 @@ const HomePage = () => {
       setModalOpen(true);
     }
   };
-  const { refetch: getFaceMatrix } = useGetMatrix("face", email, dispatch);
-  const { refetch: getBodyMatrix } = useGetMatrix("body", email, dispatch);
-  function useGetMatrix(type: string, email: string, dispatch: any) {
+  const { refetch: getFaceMatrix } = useGetMatrix(
+    "face",
+    dispatch,
+    email,
+    guestDetails.id
+  );
+  const { refetch: getBodyMatrix } = useGetMatrix(
+    "body",
+    dispatch,
+    email,
+    guestDetails.id
+  );
+
+  function useGetMatrix(
+    type: string,
+    dispatch: any,
+    email?: string,
+    id?: string
+  ) {
     return useQuery(
-      ["getMatrix", type], // Add type to the query key
-      async () => dashboardService.getMatrix(email, type, dispatch),
+      [email ? "getMatrix" : "getImageById", type],
+      async () =>
+        email
+          ? dashboardService.getMatrix(email, type, dispatch)
+          : dashboardService.getImageById(id, type, dispatch), // This function is being used for guest users exclusively
+
       {
         enabled: false,
         onSuccess: (res) => {
@@ -53,8 +74,10 @@ const HomePage = () => {
         },
         onError: () => {
           if (type === "face") {
+            console.log("NO face matrix");
             dispatch(setFaceScanFailure(""));
           } else {
+            console.log("NO body matrix");
             dispatch(setBodyScanFailure(""));
           }
         },
@@ -66,7 +89,7 @@ const HomePage = () => {
       getFaceMatrix();
       getBodyMatrix();
     }, 1000);
-  }, []);
+  }, [dispatch]);
   return (
     <Grid
       item

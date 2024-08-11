@@ -124,6 +124,18 @@ const HomeNavbar = () => {
               return (
                 <MenuItem
                   onClick={() => {
+                    setSelectedRoute(item);
+                    if (item.name === "Apparel" && !isBodyMatrixPresent) {
+                      setModalOpen(true);
+                      setRedirectionLink(CONSTANTS.SIGN_UP_BODY_SCANNING);
+                      return;
+                    }
+                    if (item.name === "Cosmetics" && !isFaceMatrixPresent) {
+                      setModalOpen(true);
+                      setRedirectionLink(CONSTANTS.SIGN_UP_FACE_SCANNING);
+                      return;
+                    }
+
                     navigate(item.link);
                   }}
                 >

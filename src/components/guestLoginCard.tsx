@@ -10,7 +10,14 @@ import GenderDropDown from "./genderDropdown";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setGuestDetails } from "../redux/signup/SignupActions";
+import {
+  setCurrentForm,
+  setErrorMsg,
+  setGuestDetails,
+} from "../redux/signup/SignupActions";
+import { useMutation } from "react-query";
+import signupService from "../services/signup.service";
+import HTTPService from "../services/base.service";
 
 interface GuestLoginCardFieldProps {
   open: boolean;
@@ -33,6 +40,33 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
       [field]: isError,
     });
   };
+  const { mutate: guestSignup } = useMutation(
+    async () => signupService.guestSignup({ gender: gender, dob: dob }),
+    {
+      onSuccess: (res) => {
+        if (gender && dob) {
+          dispatch(
+            setGuestDetails({
+              id: res.data.message.id,
+              dob: res.data.message.dob,
+              gender: res.data.message.gender,
+              isFaceScanned: res.data.message.isFaceScanned,
+              isBodyScanned: res.data.message.isBodyScanned,
+            })
+          );
+          const token = res.headers.access_token;
+          if (token) {
+            localStorage.setItem("access_token", token);
+            HTTPService.setToken(token);
+          }
+          navigate("/home");
+        }
+      },
+      onError: (err: any) => {
+        dispatch(setErrorMsg(err?.response.data.message));
+      },
+    }
+  );
   return (
     <Dialog
       open={open}
@@ -100,15 +134,7 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
               height: "60px",
             }}
             onClick={() => {
-              if (gender && dob) {
-                dispatch(
-                  setGuestDetails({
-                    dob: dob,
-                    gender: gender,
-                  })
-                );
-                navigate("/home");
-              }
+              guestSignup();
             }}
           >
             Continue As Guest
