@@ -72,7 +72,7 @@ const OtpInputField: React.FC = () => {
   const handleResend = () => {
     setCountdown(secondsCountDown);
     setTriggerCountDown(true);
-    // sendOTP();
+    sendOTP();
   };
   const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -128,7 +128,7 @@ const OtpInputField: React.FC = () => {
     }
     setTimeout(() => {
       setTriggerCountDown(true);
-      // sendOTP();
+      sendOTP();
     }, 2000);
     if (otpBoxReference.current[0]) {
       otpBoxReference.current[0].focus();
