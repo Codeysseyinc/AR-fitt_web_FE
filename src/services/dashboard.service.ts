@@ -1,9 +1,9 @@
 import HTTPService from "./base.service";
 
 class DashboardService extends HTTPService {
-  getMatrix(email: any, type: string, dispatch: any) {
+  getImageByEmail(email: any, type: string, dispatch: any) {
     return this.get(
-      `${process.env.REACT_APP_BASE_URL}/${type}Matrix?email=${email}`,
+      `${process.env.REACT_APP_BASE_URL}/${type}Image?email=${email}`,
       dispatch
     );
   }

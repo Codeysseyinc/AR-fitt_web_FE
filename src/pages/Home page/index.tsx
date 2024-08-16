@@ -55,10 +55,10 @@ const HomePage = () => {
     id?: string
   ) {
     return useQuery(
-      [email ? "getMatrix" : "getImageById", type],
+      [email ? "getImageByEmail" : "getImageById", type],
       async () =>
         email
-          ? dashboardService.getMatrix(email, type, dispatch)
+          ? dashboardService.getImageByEmail(email, type, dispatch)
           : dashboardService.getImageById(id, type, dispatch), // This function is being used for guest users exclusively
 
       {
@@ -72,8 +72,11 @@ const HomePage = () => {
             dispatch(setBodyScanSuccess());
           }
         },
-        onError: () => {
-          if (type === "face") {
+        onError: (err: any) => {
+          if (
+            type === "face" &&
+            err.response.data.messageCode === "user_body_image_not_exist"
+          ) {
             console.log("NO face matrix");
             dispatch(setFaceScanFailure(""));
           } else {
