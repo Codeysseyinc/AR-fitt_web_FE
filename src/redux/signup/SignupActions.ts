@@ -136,12 +136,10 @@ export const registerUserStartAsync = (
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
       })
       .catch((error: AxiosError | any) => {
-        const errorMessage = error?.response?.data
-          ? Object.values(error.response.data)
-          : null;
+        const errorMessage = error?.response.data.message;
         dispatch(setErrorMsg(errorMessage));
         dispatch(setErrorMessage(errorMessage || "Signup Failed. "));
-        dispatch(registerUserFailure(error.message));
+        dispatch(registerUserFailure(errorMessage));
       });
   };
 };
