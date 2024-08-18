@@ -4,9 +4,11 @@ import ContentArea from "../../components/contentArea";
 import InputField from "../../components/inputField";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setErrorMsg } from "../../redux/signup/SignupActions";
+import HTTPService from "../../services/base.service";
+import { useQuery } from "react-query";
+import signupService from "../../services/signup.service";
 
 const ResetPassword: React.FC = () => {
   const email = useSelector((state: any) => state.signup.userDetails).email;
@@ -28,9 +30,22 @@ const ResetPassword: React.FC = () => {
   const hasErrors = Object.values(errors).some((error) => error !== false);
 
   localStorage.setItem("access_token", token);
+  HTTPService.setToken(token);
 
+  const { refetch: resetPassword } = useQuery(
+    "resetPassword",
+    async () => signupService.resetPassword(email, password),
+    {
+      enabled: false,
+      onSuccess: () => {
+        navigate("/login");
+      },
+      onError: (err: any) => {
+        dispatch(setErrorMsg(err?.response.data.message));
+      },
+    }
+  );
   function handlePasswordReset(): any {
-    console.log("in reset");
     if (!password) {
       dispatch(setErrorMsg("Please fill in the required fields"));
       return;
@@ -39,28 +54,7 @@ const ResetPassword: React.FC = () => {
       dispatch(setErrorMsg("Passwords do not match"));
       return;
     }
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/user/resetPassword`,
-      method: "POST",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + token,
-      },
-      data: {
-        email: email,
-        password: password,
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        navigate("/login");
-      })
-
-      // Catch errors if any
-      .catch((err: any) => {
-        dispatch(setErrorMsg(err?.response.data));
-      });
+    resetPassword();
   }
   const navigate = useNavigate();
 

@@ -5,38 +5,32 @@ import ContentArea from "../../components/contentArea";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { setCurrentForm, setErrorMsg } from "../../redux/signup/SignupActions";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
-import axios from "axios";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import signupService from "../../services/signup.service";
+import { useQuery } from "react-query";
 
 const SignupSuccess: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const session_id = searchParams.get("session_id") ?? "";
   const userDetails = useSelector((state: any) => state.signup.userDetails);
   const email = userDetails.email;
-  function getSubscriptionStatus() {
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/user/subscriptionStatus?email=${email}`,
-      method: "GET",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        console.log("result", res.data.messageCode);
+  const { refetch: getSubscriptionStatus } = useQuery(
+    "getSubscriptionStatus",
+    async () => signupService.getSubscriptionStatus(email, dispatch),
+    {
+      onSuccess: (res: any) => {
         if (res.data.messageCode === "user_not_subscribed" && session_id) {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
           dispatch(setErrorMsg(res.data.message));
         }
-      })
-      // Catch errors if any
-      .catch((err: any) => {
-        dispatch(setErrorMsg(err?.response.data));
-      });
-  }
+      },
+
+      enabled: false,
+    }
+  );
+
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));
     dispatch(setErrorMsg(null));

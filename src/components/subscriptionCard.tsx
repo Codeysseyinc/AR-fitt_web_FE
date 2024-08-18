@@ -5,8 +5,9 @@ import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentForm, setErrorMsg } from "../redux/signup/SignupActions";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import signupService from "../services/signup.service";
 interface SubscriptionCard {
   title: string;
   color: string;
@@ -43,7 +44,6 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
   };
   const handleNextPage = (nextPage: string) => {
     dispatch(setCurrentForm(nextPage));
-    return "http://localhost:3000/signup";
   };
 
   const stripePromise = loadStripe(
@@ -54,45 +54,34 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
       return process.env.REACT_APP_ONE_TIME_PLAN_PRICE_ID;
     else if (title === "Monthly")
       return process.env.REACT_APP_MONTHLY_PLAN_PRICE_ID;
-    else if (title === "Yearly")
-      return process.env.REACT_APP_YEARLY_PLAN_PRICE_ID;
+    else return process.env.REACT_APP_YEARLY_PLAN_PRICE_ID;
   };
-  const handleClick = async (event: any) => {
-    // When the customer clicks on the button, redirect them to Checkout.
-    // /payment/createSubscription
-    const resp = axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/payment/createSubscription`,
-      method: "POST",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-      data: {
-        userEmail: email,
-        priceID: getPriceId(),
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        console.log("redirecting to payment", res);
+  const { mutate: createSubscription } = useMutation(
+    async () => signupService.createSubscription(email, getPriceId() ?? ""),
+    {
+      onSuccess: (res) => {
         // set the page that will come after payment
         handleNextPage(CONSTANTS.SIGN_UP_SUCCESS);
         window.location.href = res.data.message.checkout_session_url;
-      })
-
-      // Catch errors if any
-      .catch((err: any) => {
-        console.log("payment error", err);
-        if (err?.response.data.message === "Unauthorized access") navigate("/");
-
+      },
+      onError: (err: any) => {
+        if (err?.response.data.message === "Unauthorized access") {
+          navigate("/");
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+          localStorage.clear();
+        }
         dispatch(setErrorMsg(err?.response.data.message));
-      });
+      },
+    }
+  );
+  const handleClick = async (event: any) => {
+    // When the customer clicks on the button, redirect them to Checkout.
+    createSubscription();
   };
   return (
     <Grid
       direction="column"
-      className="shadow-xl xs:h-[120px] xs:w-[180px] md:h-[330px] md:w-[180px] ml-4 xs:mb-4 md:mb-0 rounded-[15px] flex justify-start align-center"
+      className="shadow-xl xs:h-[120px] xs:w-[160px] md:h-[370px] lg:w-[200px] ml-2 lg:ml-4 xs:mb-4 md:mb-0 rounded-[15px] flex justify-start align-center"
     >
       <Grid
         className={`${

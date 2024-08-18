@@ -1,17 +1,15 @@
 import { Grid, Link } from "@mui/material";
 import "./index.css";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   verifyEmailFailure,
   verifyEmailSuccess,
   setErrorMsg,
-  setCurrentForm,
 } from "../redux/signup/SignupActions";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CONSTANTS from "../utils/constants/CONSTANTS";
+import { useMutation, useQuery } from "react-query";
+import signupService from "../services/signup.service";
 
 const OtpInputField: React.FC = () => {
   const secondsCountDown = 60 * 1; // time in seconds
@@ -28,9 +26,11 @@ const OtpInputField: React.FC = () => {
   const email = userDetails.email;
   const dispatch = useDispatch();
   function handleChange(value: any, index: number) {
-    let newArr = [...otp];
-    newArr[index] = value;
-    setOtp(newArr);
+    if (typeof value === "number" || !isNaN(Number(value))) {
+      let newArr = [...otp];
+      newArr[index] = value;
+      setOtp(newArr);
+    }
   }
 
   function handleBackspaceAndEnter(e: any, index: number) {
@@ -41,69 +41,58 @@ const OtpInputField: React.FC = () => {
     } else if (index < numberOfDigits - 1 && e.target.value) {
       otpBoxReference.current[index + 1].focus();
     } else if (index < numberOfDigits - 1 && !e.target.value) {
-      handleChange(e.key, index);
-      otpBoxReference.current[index + 1].focus();
+      if (typeof e.key === "number" || !isNaN(Number(e.key))) {
+        handleChange(e.key, index);
+        otpBoxReference.current[index + 1].focus();
+      }
     }
     return;
   }
-  function sendOTP(): any {
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/user/requestOTP?email=${email}`,
-      method: "GET",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        console.log("email sent");
-      })
 
-      // Catch errors if any
-      .catch((err: any) => {
-        if (err?.response.data.message === "Unauthorized access") {
-          navigate("/");
-          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
-        }
-      });
-  }
-
-  function verifyOTP(otp: string): any {
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/user/verifyOTP`,
-      method: "POST",
-      headers: {
-        // Add any auth token here
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-      data: {
-        email: email,
-        otp: otp,
-      },
-    })
-      // Handle the response from backend here
-      .then((res) => {
+  const { refetch: sendOTP } = useQuery(
+    "send-OTP",
+    async () => signupService.sendOTP(email, dispatch),
+    { enabled: false }
+  );
+  const { mutate: verifyOTP } = useMutation(
+    async (otp: string) => signupService.verifyOTP(otp, email),
+    {
+      onSuccess: (res) => {
         dispatch(verifyEmailSuccess());
         dispatch(setErrorMsg(null));
         setOtpError("Correct OTP");
-      })
-
-      // Catch errors if any
-      .catch((err: any) => {
-        console.log("otp not verified ", otp, err);
+      },
+      onError: (err: any) => {
         dispatch(verifyEmailFailure("You have entered an incorrect OTP"));
         setOtpError("You have entered an incorrect OTP");
         dispatch(setErrorMsg(err?.response.data.message));
-      });
-  }
+      },
+    }
+  );
   const handleResend = () => {
     setCountdown(secondsCountDown);
     setTriggerCountDown(true);
     sendOTP();
   };
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    // Get the pasted data
+    const pastedValue = event.clipboardData.getData("text");
+    // Split pasted value into individual characters
+    const digits = pastedValue.replace(/[^0-9]/g, "").split("");
+
+    const newInputs = [...otp];
+    // Fill the inputs with the pasted digits
+    digits.forEach((digit, idx) => {
+      if (idx < numberOfDigits) {
+        // Only fill up to numberOfDigits fields
+        newInputs[idx] = digit;
+      }
+    });
+    setOtp(newInputs);
+  };
+
   useEffect(() => {
     setTriggerCountDown(true);
     if (triggerCountDown && countdown > 0) {
@@ -127,10 +116,10 @@ const OtpInputField: React.FC = () => {
     } else {
       setOtpError("");
     }
-    // verifyOTP(otp.join(""))
   }, [otp]);
 
   const isMounted = useRef(false);
+
   useEffect(() => {
     // Skip the effect on the initial render
     if (!isMounted.current) {
@@ -141,6 +130,9 @@ const OtpInputField: React.FC = () => {
       setTriggerCountDown(true);
       sendOTP();
     }, 2000);
+    if (otpBoxReference.current[0]) {
+      otpBoxReference.current[0].focus();
+    }
   }, []);
   return (
     <>
@@ -151,6 +143,7 @@ const OtpInputField: React.FC = () => {
         {/* Boxes for digits */}
         {otp.map((digit: any, index: number) => (
           <input
+            onPaste={handlePaste}
             key={index}
             value={digit}
             maxLength={1}
@@ -165,12 +158,12 @@ const OtpInputField: React.FC = () => {
               otpError === "You have entered an incorrect OTP"
                 ? "focus:bg-red-600 "
                 : "focus:bg-teal-500 "
-            }  w-[20px] h-[20px] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none`}
+            }  w-[20px] h-[20px] xl:w-[40px] xl:h-[40px] text-black p-3 rounded-md block bg-opacity-25 border-none font-Montserrat text-center items-center focus:outline-none appearance-none xl:text-md`}
           />
         ))}
       </Grid>
       {/* Resend OTP */}
-      <Grid className="Montserrat-text text-xs flex justify-start items-start w-full m-4">
+      <Grid className="Montserrat-text text-xs xl:text-md flex justify-start items-start w-full m-4">
         <div className="w-[50%]">
           Didn’t Receive the OTP yet?{" "}
           <Link
@@ -192,7 +185,7 @@ const OtpInputField: React.FC = () => {
       </Grid>
       {/* Error on wrong OTP */}
       <p
-        className={`font-Montserrat text-xs ${
+        className={`font-Montserrat text-xs xl:text-md h-4 flex justify-center ${
           otpError === "You have entered an incorrect OTP"
             ? "text-red-500"
             : "text-green-500"

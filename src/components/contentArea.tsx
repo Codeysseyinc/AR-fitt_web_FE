@@ -22,11 +22,11 @@ const ContentArea: React.FC<ContentAreaProps> = ({
 }) => {
   const navigate = useNavigate();
   const error = useSelector((state: any) => state.signup.errorMessage);
-
   const getPreviousForm = (title?: string, setCurrentForm?: any) => {
     if (title === "Scanning") {
       navigate("/");
     } else navigate(-1);
+    localStorage.clear();
   };
   return (
     <Grid
@@ -34,9 +34,17 @@ const ContentArea: React.FC<ContentAreaProps> = ({
       direction="column"
       className={`${className} bg-white sm:rounded-tl-[40px] xs:w-[100%] sm:w-[65%] sm:absolute left-[35%] h-screen flex items-center `}
     >
+      {error && (
+        <Alert severity="error" className="absolute">
+          {error}{" "}
+        </Alert>
+      )}
       {/* logo and back button */}
-      <Grid direction="row" className=" w-[100%] h-[17%] flex justify-start">
-        <div className=" w-[50%] h-[100%] flex justify-start">
+      <Grid
+        direction="row"
+        className=" w-[100%] h-[100px] flex justify-between"
+      >
+        <div className="w-[30%] h-[100%] flex justify-start items-end">
           <ArrowBackRoundedIcon
             onClick={() => {
               getPreviousForm(title, setCurrentForm);
@@ -45,22 +53,20 @@ const ContentArea: React.FC<ContentAreaProps> = ({
             className="self-center bg-primary rounded-[50%] scale-150 ml-8 mt-6 cursor-pointer"
           />
         </div>
-        <div className=" w-[50%] h-[100%] flex justify-end ">
+        {/* title */}
+        <Grid className="font-Montserrat font-bold xs:text-xl md:text-3xl text-primary flex justify-center items-end text-center">
+          {title}
+        </Grid>
+        {/* logo */}
+        <div className="w-[30%] h-[100%] flex justify-end ">
           <img
-            className="self-end flex justify-end mr-6 h-[75%]"
+            className="self-end flex justify-end mr-6 h-[60%]"
             style={{ display: `${removeLogo ? "none" : "block"}` }}
             src="/assets/images/logo.png"
           />
         </div>
       </Grid>
-      <Grid className="font-Montserrat font-bold xs:text-2xl md:text-3xl text-primary flex justify-center ">
-        {title}
-      </Grid>
-      {error && (
-        <Alert severity="error" className="absolute">
-          {error}{" "}
-        </Alert>
-      )}
+
       {children}
     </Grid>
   );

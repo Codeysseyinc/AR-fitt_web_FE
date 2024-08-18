@@ -47,11 +47,11 @@ const INITIAL_STATE: SignupState = {
   isChangingPassword: false,
 
   guestDetails: {
-    email: "",
-    firstName: "",
-    lastName: "",
+    id: "",
     dob: "",
     gender: "",
+    isFaceScanned: false,
+    isBodyScanned: false,
   },
   test: "",
   interestCategories: [],

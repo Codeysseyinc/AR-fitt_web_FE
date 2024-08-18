@@ -5,10 +5,11 @@ import InputField from "../../components/inputField";
 import { useARfittContext } from "../../context/storeContext";
 import { useNavigate } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setErrorMsg, setUserDetails } from "../../redux/signup/SignupActions";
+import { useQuery } from "react-query";
+import loginService from "../../services/login.service";
 
 const ForgotPassword: React.FC = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,16 @@ const ForgotPassword: React.FC = () => {
   };
   const hasErrors = Object.values(errors).some((error) => error !== false);
 
+  const { refetch: forgetPassword } = useQuery(
+    "forgetPassword",
+    async () => loginService.forgetPassword(email, dispatch),
+    {
+      enabled: false,
+      onSuccess: () => {
+        setEmailSent(true);
+      },
+    }
+  );
   function resetPasswordClicked(): any {
     if (!email) {
       dispatch(setErrorMsg("Please fill in the required fields"));
@@ -36,25 +47,8 @@ const ForgotPassword: React.FC = () => {
         email: email,
       })
     );
-
-    axios({
-      // Endpoint
-      url: `${process.env.REACT_APP_BASE_URL}/user/forgetPassword?email=${email}`,
-      method: "GET",
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        setEmailSent(true);
-      })
-
-      // Catch errors if any
-      .catch((err: any) => {
-        dispatch(setErrorMsg(err?.response.data));
-      });
+    forgetPassword();
   }
-  useEffect(() => {
-    dispatch(setErrorMsg(null));
-  });
   return (
     <Grid
       container
@@ -91,7 +85,7 @@ const ForgotPassword: React.FC = () => {
             className="flex items-center justify-center w-[100%] h-[100px]  "
           >
             <Button
-              className="bg-primary text-contrastText font-bold xs:text-xs md:text-base"
+              className={`bg-white text-primary border-solid border-black border h-[80%] font-bold xs:text-xs md:text-base`}
               disableElevation={true}
               variant="contained"
               style={{
@@ -110,8 +104,8 @@ const ForgotPassword: React.FC = () => {
             <Button
               disabled={hasErrors}
               className={`${
-                hasErrors ? "bg-gray-500 text-white" : "bg-white text-primary"
-              } text-primary border-solid border-black border h-[80%] font-bold xs:text-xs md:text-base`}
+                hasErrors ? "bg-gray-500" : "bg-primary"
+              } text-contrastText font-bold xs:text-xs md:text-base`}
               variant="contained"
               disableElevation={true}
               style={{

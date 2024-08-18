@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
 import OtpInputField from "../../components/otpInputFields";
-import { setCurrentForm, practiceTest } from "../../redux/signup/SignupActions";
+import {
+  setCurrentForm,
+  practiceTest,
+  setErrorMsg,
+} from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const OtpVerification: React.FC = () => {
@@ -15,7 +19,7 @@ const OtpVerification: React.FC = () => {
   );
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
-    dispatch(practiceTest());
+    dispatch(setErrorMsg(""));
   }, []);
 
   const handleNextPage = () => {
@@ -37,8 +41,8 @@ const OtpVerification: React.FC = () => {
       />
       {/* Content Area */}
       <ContentArea title="OTP Verification">
-        <Grid direction="column" className="w-[70%] flex justify-center">
-          <p className="font-Montserrat text-sm flex justify-center text-center">
+        <Grid direction="column" className="w-[70%] h-full flex justify-center">
+          <p className="font-Montserrat text-sm xl:text-lg flex justify-center text-center">
             Please enter the One-Time Password to verify your account <br /> A
             One-Time Password has been sent to {email}
           </p>
@@ -47,7 +51,7 @@ const OtpVerification: React.FC = () => {
           <Grid className="flex items-center justify-evenly w-full mt-[4%]">
             {/* Verify Button */}
             <Button
-              className="bg-primary text-contrastText drop-shadow-lg"
+              className="bg-primary text-contrastText drop-shadow-lg xl:text-lg"
               variant="contained"
               style={{
                 width: "100%",

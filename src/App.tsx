@@ -12,33 +12,43 @@ import ResetPassword from "./pages/LogIn/resetPassword";
 import { PersistGate } from "redux-persist/integration/react";
 import CategoryPage from "./pages/SignUp/categoryPage";
 import HomeLayout from "./layouts/homePageLayout";
-import SuggestedItems from "./pages/Home page/suggestedItems";
+import SuggestedItems from "./pages/Home page/SuggestedItems/suggestedItems";
 import ItemDescription from "./pages/Home page/itemDescription";
-
+import { useEffect } from "react";
+import HTTPService from "./services/base.service";
+import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient();
 const App = () => {
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      HTTPService.setToken(token);
+    }
+  });
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ARfittProvider>
-          <Router>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/getStarted" element={<GetStarted />} />
-              <Route path="/forgotPassword" element={<ForgotPassword />} />
-              <Route path="/resetPassword" element={<ResetPassword />} />
-              <Route path="/categoryPage" element={<CategoryPage />} />
-              {/* <Route path="/home" element={<HomePage />} /> */}
-              <Route path="/home" element={<HomeLayout />}>
-                <Route index element={<HomePage />} />
-                <Route path="suggestion" element={<SuggestedItems />} />
-                <Route path="item" element={<ItemDescription />} />
-              </Route>
-            </Routes>
-          </Router>
-        </ARfittProvider>
-      </PersistGate>
+      <QueryClientProvider client={queryClient}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ARfittProvider>
+            <Router>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<LogIn />} />
+                <Route path="/getStarted" element={<GetStarted />} />
+                <Route path="/forgotPassword" element={<ForgotPassword />} />
+                <Route path="/resetPassword" element={<ResetPassword />} />
+                <Route path="/categoryPage" element={<CategoryPage />} />
+                <Route path="/home" element={<HomeLayout />}>
+                  <Route index element={<HomePage />} />
+                  <Route path="suggestion" element={<SuggestedItems />} />
+                  <Route path="item" element={<ItemDescription />} />
+                </Route>
+              </Routes>
+            </Router>
+          </ARfittProvider>
+        </PersistGate>
+      </QueryClientProvider>
     </Provider>
   );
 };

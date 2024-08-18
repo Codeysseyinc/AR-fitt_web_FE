@@ -16,7 +16,7 @@ const SubscriptionPlans = () => {
   const session_id = searchParams.get("session_id") ?? "";
   const token = localStorage.getItem("access_token");
   useEffect(() => {
-    dispatch(setErrorMsg(null));
+    // dispatch(setErrorMsg(null));
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
     if (token) {
       const decodedToken = jwtDecode(token);
@@ -45,7 +45,7 @@ const SubscriptionPlans = () => {
         modelsSrc="/assets/images/signUp/subscriptionPlansModels.png"
       />
       <ContentArea title="Subscription Plans">
-        <Grid className="w-[100%] xs:h-[80%] md:h-[60%] flex justify-center items-center mt-6 xs:flex-col md:flex-row">
+        <Grid className="w-[100%] xs:h-[80%] md:h-[80%] flex justify-center items-center mt-6 xs:flex-col md:flex-row">
           {/* One Time */}
           <SubscriptionCard
             title="One Time"

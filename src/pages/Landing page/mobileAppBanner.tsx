@@ -15,7 +15,7 @@ const MobileAppBanner = () => {
         className=" w-[65%] lg:w-[55%] xl:w-[45%] md:h-[100%] sm:h-[80%] xs:h-[70%] flex justify-center xs:pl-4 md:pl-10 bg-gradient-to-b from-primarySaturated to-[#9DC3C5] rounded-l-3xl xs:rounded-l-md"
       >
         {/* Title */}
-        <div className=" xs:w-[80%] lg:w-[85%] xl:w-[80%]  font-Montserrat font-bold xs:text-xs md:text-2xl xl:text-4xl leading-11 tracking-tight xs:mb-2 md:mb-4">
+        <div className=" xs:w-[80%] lg:w-[85%] xl:w-[80%]  font-Montserrat font-bold xs:text-xs md:text-2xl xl:text-3xl leading-11 tracking-tight xs:mb-2 md:mb-4">
           Transform Your Wardrobe with a Swipe!
         </div>
         {/* Description */}

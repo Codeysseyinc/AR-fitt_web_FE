@@ -58,7 +58,10 @@ const BasicInformation: React.FC<any> = () => {
       />
       {/* content section */}
       <ContentArea title="Create Account">
-        <Grid direction="column" className="w-[70%] flex justify-center">
+        <Grid
+          direction="column"
+          className="xs:w-[70%] xl:w-[80%] flex justify-center h-full"
+        >
           {/* First Name & Last Name */}
           <Grid
             direction="row"
@@ -138,7 +141,7 @@ const BasicInformation: React.FC<any> = () => {
                 fontFamily: "Montserrat",
                 margin: "4%",
                 borderRadius: "15px",
-                height: "70%",
+                height: "52px",
               }}
               onClick={() => {
                 if (!(password && email && firstName && lastName)) {
