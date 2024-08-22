@@ -65,10 +65,8 @@ const HomePage = () => {
         enabled: false,
         onSuccess: (res) => {
           if (type === "face") {
-            console.log("face matrix exist");
             dispatch(setFaceScanSuccess());
           } else {
-            console.log("body matrix exist");
             dispatch(setBodyScanSuccess());
           }
         },

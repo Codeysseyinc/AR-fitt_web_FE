@@ -10,8 +10,9 @@ import { setSelectedCategory } from "../../../redux/main/mainActions";
 import PantsItemsData from "../../../utils/constants/JSON/pantsInventory.json";
 import ShirtsItemsData from "../../../utils/constants/JSON/shirtsInventory.json";
 import LipstickItemsData from "../../../utils/constants/JSON/lipstickInventory.json";
-import ApparelCategoryData from "../../../utils/constants/JSON/apparelsCategories.json";
-import CosmeticCategoryData from "../../../utils/constants/JSON/cosmeticCategories.json";
+import { useQuery } from "react-query";
+import dashboardService from "../../../services/dashboard.service";
+import CONSTANTS from "../../../utils/constants/CONSTANTS";
 
 const SuggestedItems: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,40 +39,30 @@ const SuggestedItems: React.FC = () => {
     searchParams.set("categoryId", category.id);
     navigate(`${location.pathname}?${searchParams.toString()}`);
   };
-  const initializeCategories = (
-    apparelCategory: any,
-    cosmeticCategory: any
-  ) => {
+  const initializeCategories = (category: any, categoryType: string) => {
     const newCategories: { [key: string]: any } = {};
-    if (apparelCategory && apparelCategory.length > 0) {
-      newCategories["Apparel"] = apparelCategory;
+    if (category && category.length > 0) {
+      newCategories[categoryType] = category;
     }
-    if (cosmeticCategory && cosmeticCategory.length > 0) {
-      newCategories["Cosmetics"] = cosmeticCategory;
-    }
-    setCategories(newCategories);
+    setCategories((prevData) => ({
+      ...prevData,
+      [categoryType]: newCategories[categoryType],
+    }));
   };
-  const setDefaultCategory = (apparelCategory: any, cosmeticCategory: any) => {
-    const defaultCategory =
-      (apparelCategory &&
-        apparelCategory.length > 0 && {
-          type: "Apparel",
-          category: apparelCategory[0],
-        }) ||
-      (cosmeticCategory &&
-        cosmeticCategory.length > 0 && {
-          type: "Cosmetics",
-          category: cosmeticCategory[0],
-        });
-
-    if (defaultCategory) {
-      updateQueryParams(defaultCategory?.type, defaultCategory?.category);
-      dispatch(setSelectedCategory(defaultCategory));
+  const setDefaultCategory = () => {
+    if (categories || Object.keys(categories).length > 0) {
+      const [firstKey, firstArray] = Object.entries(categories)[0];
+      const defaultCategory = {
+        type: firstKey,
+        category: firstArray,
+      };
+      if (defaultCategory && defaultCategory?.category) {
+        updateQueryParams(defaultCategory?.type, defaultCategory?.category);
+        dispatch(setSelectedCategory(defaultCategory));
+      }
     }
   };
   const setCategoryFromQueryParams = (
-    apparelCategory: any,
-    cosmeticCategory: any,
     queryParamType: string | null,
     queryParamCategory: string | null,
     queryParamId: string | null
@@ -118,24 +109,17 @@ const SuggestedItems: React.FC = () => {
         return;
       }
     }
-    setDefaultCategory(apparelCategory, cosmeticCategory);
+    setDefaultCategory();
   };
-
   const handleTypeCategory = (type: string) => {
-    let defaultCategory: any;
-    if (type === "Apparel") {
-      defaultCategory = {
-        type: "Apparel",
+    if (categories[type].length > 0) {
+      const defaultCategory = {
+        type: type,
         category: categories[type][0],
       };
-    } else if (type === "Cosmetics") {
-      defaultCategory = {
-        type: "Cosmetics",
-        category: categories[type][0],
-      };
+      updateQueryParams(type, defaultCategory.category);
+      dispatch(setSelectedCategory(defaultCategory));
     }
-    updateQueryParams(type, defaultCategory.category);
-    dispatch(setSelectedCategory(defaultCategory));
   };
   const handleCategory = (category: any) => {
     const selected_category = {
@@ -157,8 +141,37 @@ const SuggestedItems: React.FC = () => {
     } else return null;
   };
 
+  const useGetCategories = (type: string) => {
+    return useQuery(
+      ["getCategories", type],
+      async () => await dashboardService.getCategories(type, dispatch),
+      {
+        enabled: false,
+        onSuccess: (response) => {
+          const categoriesResponse = response?.data?.message;
+          // TODO: Remove the ternary
+          initializeCategories(
+            categoriesResponse,
+            type === "apparel" ? "Apparel" : "Cosmetics"
+          );
+        },
+        onError: (error) => {
+          console.log(
+            "XX => Error Occured While Fetching Categories For Type: ",
+            type
+          );
+        },
+      }
+    );
+  };
+  const { refetch: getApparelCategories } = useGetCategories(CONSTANTS.APPAREL);
+  const { refetch: getCosmeticsCategories } = useGetCategories(
+    CONSTANTS.COSMETICS
+  );
+
   useEffect(() => {
-    initializeCategories(ApparelCategoryData, CosmeticCategoryData);
+    getApparelCategories();
+    getCosmeticsCategories();
   }, []);
 
   useEffect(() => {
@@ -169,8 +182,6 @@ const SuggestedItems: React.FC = () => {
       const queryParamId = queryParams.get("categoryId");
 
       setCategoryFromQueryParams(
-        ApparelCategoryData,
-        CosmeticCategoryData,
         queryParamType,
         queryParamCategory,
         queryParamId

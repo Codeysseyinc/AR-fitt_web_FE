@@ -6,29 +6,5 @@
     "type": "cosmetics",
     "createdAt": "2024-06-08T23:55:17.000Z",
     "modifiedAt": "2024-06-08T23:55:17.000Z"
-  },
-  {
-    "id": "b98fd639-c6a7-46ee-971a-c7f484dcfde2",
-    "name": "Eye Shadows",
-    "description": null,
-    "type": "cosmetics",
-    "createdAt": "2024-06-08T23:55:17.000Z",
-    "modifiedAt": "2024-06-08T23:55:17.000Z"
-  },
-  {
-    "id": "1a34676c-f0f9-4349-911b-56d700220298",
-    "name": "Blush",
-    "description": null,
-    "type": "cosmetics",
-    "createdAt": "2024-06-08T23:55:17.000Z",
-    "modifiedAt": "2024-06-08T23:55:17.000Z"
-  },
-  {
-    "id": "5b6c0533-d6bf-4437-8ea5-86814c7fbe37",
-    "name": "Foundation",
-    "description": null,
-    "type": "cosmetics",
-    "createdAt": "2024-06-08T23:55:17.000Z",
-    "modifiedAt": "2024-06-08T23:55:17.000Z"
   }
 ]

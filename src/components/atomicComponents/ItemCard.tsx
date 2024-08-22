@@ -1,8 +1,11 @@
-import React from "react";
+/* eslint-disable jsx-a11y/img-redundant-alt */
+import React, { useEffect, useState } from "react";
 import { Grid, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { setSelectedItem } from "../../redux/main/mainActions";
 import { useDispatch } from "react-redux";
+import { useQuery } from "react-query";
+import dashboardService from "../../services/dashboard.service";
 
 interface ItemCardProps {
   item: any;
@@ -11,11 +14,52 @@ interface ItemCardProps {
 const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [imageData, setImageData] = useState(null);
 
+  const { refetch: getItemImage } = useQuery(
+    "getItemImage",
+    async () =>
+      dashboardService.getItemImage(
+        item.id,
+        item?.itemImagesURLs[0]?.id,
+        dispatch
+      ),
+    {
+      enabled: false,
+      onSuccess: (response) => {
+        if (response?.data) {
+          console.log("XXX => Get Item Image Response => ", response?.data);
+          setImageData(response?.data);
+        }
+      },
+    }
+  );
+  const getRenderableImage = (imageData: any) => {
+    let imageSrc = "";
+    if (!imageData) {
+      imageSrc = "/assets/images/placeHolderImage.jpeg";
+    }
+    if (typeof imageData === "string" && imageData.startsWith("data:image")) {
+      imageSrc = imageData;
+    } else if (imageData instanceof Blob) {
+      const objectURL = URL.createObjectURL(imageData);
+      imageSrc = objectURL;
+    } else {
+      console.warn("Unexpected image data format:", imageData);
+      imageSrc = "/assets/images/placeHolderImage.jpeg";
+    }
+    console.log("XXXX The Image to be rendered is: ", imageSrc);
+    return imageSrc;
+  };
   const handleItemClick = () => {
     dispatch(setSelectedItem(item));
     navigate(`/home/item?itemId=${item.id}`);
   };
+
+  useEffect(() => {
+    getItemImage();
+  }, []);
+
   return (
     <Grid
       item
@@ -24,9 +68,10 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
     >
       <img
         className="w-full min-h-[70%] object-cover"
-        src="/assets/images/placeHolderImage.jpeg"
+        src={getRenderableImage(imageData)}
         alt="placeholder"
       />
+      {/* {RenderImage()} */}
       {/* <div className="w-full min-h-[70%] object-cover" /> */}
       {/* Item Main Desc */}
       <Box className="flex w-full p-4 justify-start items-center">
