@@ -10,7 +10,6 @@ import { setOpenCameraModule } from "../../redux/main/mainActions";
 const ItemDescription = () => {
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     undefined
@@ -26,10 +25,9 @@ const ItemDescription = () => {
 
   const handleClose = () => {
     dispatch(setOpenCameraModule(false));
-    setOpen(false);
   };
   const handleOpen = () => {
-    setOpen(true);
+    dispatch(setOpenCameraModule(true));
   };
   const handleSelectedSize = (size: string) => {
     setSelectedSize(size);
@@ -74,10 +72,6 @@ const ItemDescription = () => {
       setSelectedColor(selectedItem?.itemColors[0] ?? undefined);
     }
   }, [selectedItem]);
-
-  useEffect(() => {
-    setOpen(openCameraModule ?? false);
-  }, []);
 
   return (
     <Grid container className="flex flex-col gap-1 items-center px-6 py-10">
@@ -165,13 +159,17 @@ const ItemDescription = () => {
           </Box>
         </Grid>
       </Grid>
-      <CameraPopUp
-        open={open}
-        selectedColor={selectedColor}
-        productImage={images[0]}
-        onClose={handleClose}
-        handleSelectedColor={handleSelectedColor}
-      />
+      {openCameraModule === true ? (
+        <CameraPopUp
+          open={openCameraModule ?? false}
+          selectedColor={selectedColor}
+          productImage={images[0]}
+          onClose={handleClose}
+          handleSelectedColor={handleSelectedColor}
+        />
+      ) : (
+        <></>
+      )}
     </Grid>
   );
 };

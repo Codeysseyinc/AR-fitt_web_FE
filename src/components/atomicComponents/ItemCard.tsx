@@ -58,7 +58,7 @@ const ItemCard: React.FC<ItemCardProps> = ({ item }) => {
   return (
     <Grid
       item
-      onClick={() => handleItemClick}
+      onClick={() => handleItemClick()}
       className="flex flex-col w-full h-full border-solid border-2 border-gray-200 rounded-[20px] overflow-hidden cursor-pointer"
     >
       <img
