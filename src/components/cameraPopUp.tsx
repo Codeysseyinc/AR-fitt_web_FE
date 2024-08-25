@@ -110,7 +110,7 @@ const CameraPopUp = ({
           )}
           {/* Count Down */}
           {countdown !== 0 ? (
-            <div className="absolute top-[41%] right-[41%] font-Bungee font-normal text-7xl leading-10 text-red-600">
+            <div className="absolute top-[45%] right-[47%] font-Bungee font-normal text-7xl leading-10 text-red-600">
               {countdown}
             </div>
           ) : (

@@ -9,5 +9,7 @@ const CONSTANTS = {
   MOBILE_VIEW_MAX_WIDTH: "(max-width:767px)",
   APPAREL: "apparel",
   COSMETICS: "cosmetics",
+  APPAREL_TITLE: "Apparel",
+  COSMETICS_TITLE: "Cosmetics",
 };
 export default CONSTANTS;

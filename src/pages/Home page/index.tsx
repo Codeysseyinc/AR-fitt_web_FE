@@ -29,7 +29,13 @@ const HomePage = () => {
 
   const handleContinueClick = () => {
     if (isBodyMatrixPresent || isFaceMatrixPresent)
-      navigate("/home/suggestion");
+      navigate(
+        `/home/suggestion?type=${
+          isBodyMatrixPresent
+            ? CONSTANTS.APPAREL_TITLE
+            : CONSTANTS.COSMETICS_TITLE
+        }`
+      );
     else {
       setRedirectionLink(CONSTANTS.SIGN_UP_CATEGORIES);
       setModalOpen(true);

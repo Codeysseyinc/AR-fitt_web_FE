@@ -19,6 +19,12 @@ class DashboardService extends HTTPService {
       dispatch
     );
   }
+  getInventory(id: string, dispatch: any) {
+    return this.get(
+      `${process.env.REACT_APP_BASE_URL}/category/inventoryItems?categoryID=${id}`,
+      dispatch
+    );
+  }
   getItemImage(itemId: string, ImageUrlId: string, dispatch: any) {
     return this.get(
       `${process.env.REACT_APP_BASE_URL}/itemImage/${itemId}/${ImageUrlId}`,

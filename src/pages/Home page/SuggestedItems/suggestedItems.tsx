@@ -7,38 +7,34 @@ import CategorySidebar from "./components/categorySidebar";
 import ItemCard from "../../../components/atomicComponents/ItemCard";
 import { RootState } from "../../../redux/rootReducer";
 import { setSelectedCategory } from "../../../redux/main/mainActions";
-import PantsItemsData from "../../../utils/constants/JSON/pantsInventory.json";
-import ShirtsItemsData from "../../../utils/constants/JSON/shirtsInventory.json";
-import LipstickItemsData from "../../../utils/constants/JSON/lipstickInventory.json";
 import { useQuery } from "react-query";
 import dashboardService from "../../../services/dashboard.service";
 import CONSTANTS from "../../../utils/constants/CONSTANTS";
 
 const SuggestedItems: React.FC = () => {
+  // React Hooks
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const typeQueryParamTrigger = queryParams.get("type");
+  // Redux Store Variables
   const selectedCategory = useSelector(
     (state: RootState) => state.main.selectedCategory
   );
+  // State Variables
   const [items, setItems] = useState<any>();
   const [categories, setCategories] = useState<{ [key: string]: any }>({});
-
+  // Helper Functions
   const isEmpty = (obj: any) =>
     Object.keys(obj).length === 0 && obj.constructor === Object;
   const capitalizeFirstChar = (str: any) => {
     if (typeof str !== "string" || str.length === 0) {
-      return str; // Return the string as is if it's not a string or is empty
+      return str;
     }
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
-  const updateQueryParams = (type: string, category: any) => {
-    const searchParams = new URLSearchParams(location.search);
-    searchParams.set("type", type);
-    searchParams.set("categoryName", category.name);
-    searchParams.set("categoryId", category.id);
-    navigate(`${location.pathname}?${searchParams.toString()}`);
-  };
+  // For initializing the data the following functions get executed
   const initializeCategories = (category: any, categoryType: string) => {
     const newCategories: { [key: string]: any } = {};
     if (category && category.length > 0) {
@@ -54,20 +50,23 @@ const SuggestedItems: React.FC = () => {
       const [firstKey, firstArray] = Object.entries(categories)[0];
       const defaultCategory = {
         type: firstKey,
-        category: firstArray,
+        category: firstArray[0],
       };
       if (defaultCategory && defaultCategory?.category) {
-        updateQueryParams(defaultCategory?.type, defaultCategory?.category);
         dispatch(setSelectedCategory(defaultCategory));
+        updateQueryParams(defaultCategory);
       }
     }
   };
+  // Sets the initial category value in the selected category state variable
   const setCategoryFromQueryParams = (
     queryParamType: string | null,
     queryParamCategory: string | null,
     queryParamId: string | null
   ) => {
+    // Holds the categories for the specified type; i.e all categories for apparels etc
     const typeCategories = queryParamType ? categories[queryParamType] : null;
+
     if (typeCategories && queryParamCategory && queryParamId) {
       // First Validate
       const validCategory = typeCategories.find(
@@ -86,8 +85,7 @@ const SuggestedItems: React.FC = () => {
         );
         return;
       }
-    }
-    if (typeCategories) {
+    } else if (typeCategories) {
       const typeFromQueryParam = capitalizeFirstChar(queryParamType);
       const defaultCategory = typeCategories[0];
 
@@ -111,36 +109,33 @@ const SuggestedItems: React.FC = () => {
     }
     setDefaultCategory();
   };
-  const handleTypeCategory = (type: string) => {
-    if (categories[type].length > 0) {
+  // On Selecting Category From Sidebar these function triggers
+  const updateQueryParams = (_category: any) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("type", capitalizeFirstChar(_category?.type));
+    searchParams.set("categoryName", _category.name);
+    searchParams.set("categoryId", _category.id);
+    navigate(`${location.pathname}?${searchParams.toString()}`);
+  };
+  const handleTypeCategory = (_type: string) => {
+    if (categories[_type].length > 0) {
       const defaultCategory = {
-        type: type,
-        category: categories[type][0],
+        type: _type,
+        category: categories[_type][0],
       };
-      updateQueryParams(type, defaultCategory.category);
+      updateQueryParams(categories[_type][0]);
       dispatch(setSelectedCategory(defaultCategory));
     }
   };
-  const handleCategory = (category: any) => {
+  const handleCategory = (_category: any) => {
     const selected_category = {
-      type: capitalizeFirstChar(category?.type),
-      category: category,
+      type: capitalizeFirstChar(_category?.type),
+      category: _category,
     };
-    updateQueryParams(selectedCategory.type, category);
+    updateQueryParams(_category);
     dispatch(setSelectedCategory(selected_category));
   };
-  // ? Dummy Function
-  // TODO: Remove this and integ api
-  const getItems = (category: any) => {
-    if (category?.category?.name === "Shirts") {
-      return ShirtsItemsData;
-    } else if (category?.category?.name === "Pants") {
-      return PantsItemsData;
-    } else if (category?.category?.name === "Lipsticks") {
-      return LipstickItemsData;
-    } else return null;
-  };
-
+  // API CALL - Use Query React Hook Api Call to get all categories
   const useGetCategories = (type: string) => {
     return useQuery(
       ["getCategories", type],
@@ -168,38 +163,59 @@ const SuggestedItems: React.FC = () => {
   const { refetch: getCosmeticsCategories } = useGetCategories(
     CONSTANTS.COSMETICS
   );
-
+  // API CALL - Use Query React Hook Api Call to get all inventory for specified category
+  const useGetInventory = (categoryId: string) => {
+    return useQuery(
+      ["getInventory", categoryId],
+      async () => await dashboardService.getInventory(categoryId, dispatch),
+      {
+        enabled: false,
+        onSuccess: (response) => {
+          const inventoryResponse = response?.data?.message;
+          setItems(inventoryResponse);
+        },
+        onError: (error) => {
+          console.log(
+            "XX => Error Occured While Fetching Inventory For Category: ",
+            selectedCategory
+          );
+        },
+      }
+    );
+  };
+  const { refetch: getInventory } = useGetInventory(
+    selectedCategory?.category?.id
+  );
+  // On Mount API Call triggered to get all categories
   useEffect(() => {
     getApparelCategories();
     getCosmeticsCategories();
   }, []);
-
+  // On categories state variable change update the query params
   useEffect(() => {
     if (!isEmpty(categories)) {
       const queryParams = new URLSearchParams(location.search);
       const queryParamType = queryParams.get("type");
       const queryParamCategory = queryParams.get("categoryName");
       const queryParamId = queryParams.get("categoryId");
-
       setCategoryFromQueryParams(
         queryParamType,
         queryParamCategory,
         queryParamId
       );
     }
-  }, [categories]);
-
+  }, [categories, typeQueryParamTrigger]);
+  // On selected category change get the respective items
   useEffect(() => {
     if (selectedCategory) {
-      const response = getItems(selectedCategory);
-      setItems(response);
+      getInventory();
     }
   }, [selectedCategory]);
-
+  // JSX
   return (
     <Grid
       container
-      className="w-full flex max-mui_sm:flex-col max-mui_sm:gap-0 gap-4"
+      className="w-full flex max-mui_sm:flex-col max-mui_sm:gap-0 gap-4 pb-10"
     >
       {/* The sidebar */}
       <CategorySidebar
@@ -218,15 +234,19 @@ const SuggestedItems: React.FC = () => {
           gap={2}
           className="flex flex-wrap w-full max-mui_md:justify-center"
         >
-          {items?.map((item: any, index: React.Key | null | undefined) => (
-            <Grid
-              item
-              key={index}
-              className="w-[100%] mui_sm:w-[45%] mui_md:w-[48%] mui_lg:w-[32%] min-h-[320px]"
-            >
-              <ItemCard item={item} />
-            </Grid>
-          ))}
+          {items?.length > 0 ? (
+            items?.map((item: any, index: React.Key | null | undefined) => (
+              <Grid
+                item
+                key={index}
+                className="w-[100%] mui_sm:w-[45%] mui_md:w-[48%] mui_lg:w-[32%] min-h-[320px]"
+              >
+                <ItemCard item={item} />
+              </Grid>
+            ))
+          ) : (
+            <p>Oops, Currently there are no items for the selected category</p>
+          )}
         </Grid>
       </Grid>
     </Grid>

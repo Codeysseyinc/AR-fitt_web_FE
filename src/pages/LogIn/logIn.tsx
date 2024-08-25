@@ -61,14 +61,11 @@ const LogIn: React.FC = () => {
           localStorage.setItem("access_token", token);
           HTTPService.setToken(token);
         }
-
         if (!res.data.message.isVerified) {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
-
           navigate("/signup");
         } else if (!res.data.message.isSubscribed) {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
-
           navigate("/signup");
         } else {
           navigate("/home");

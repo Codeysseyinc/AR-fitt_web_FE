@@ -1,28 +1,34 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Box, Grid, Menu, MenuItem } from "@mui/material";
-import { initializeSignUpState } from "../../redux/signup/SignupActions";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import RedirectionModal from "./redirectionModal";
-import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import RedirectionModal from "./redirectionModal";
+import { useDispatch, useSelector } from "react-redux";
+import { initializeSignUpState } from "../../redux/signup/SignupActions";
+import { Box, Grid, Menu, MenuItem } from "@mui/material";
 import SvgIconFromPublic from "../atomicComponents/svgIcon";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 import navbarData from "../../utils/constants/JSON/homeNavbarLinks.json";
+import { setSelectedRoute } from "../../redux/main/mainActions";
 
 const HomeNavbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const anchorTagStyling =
-    "no-underline m-0 p-0 font-Montserrat font-bold max-sm:hidden max-md:text-xs text-sm";
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const typeQueryParamTrigger = queryParams.get("type");
+
+  const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const selectedRoute = useSelector((state: any) => state.main.selectedRoute);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [redirectionLink, setRedirectionLink] = useState("");
-  const userDetails = useSelector((state: any) => state.signup.userDetails);
   const isFaceMatrixPresent = userDetails.isFaceScanned;
   const isBodyMatrixPresent = userDetails.isBodyScanned;
   const [mobileAnchorEl, setMobileAnchorEl] = useState(null);
-  const [selectedRoute, setSelectedRoute] = useState(navbarData[0]);
+
+  const anchorTagStyling =
+    "no-underline m-0 p-0 font-Montserrat font-bold max-sm:hidden max-md:text-xs text-sm cursor-pointer";
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -55,13 +61,28 @@ const HomeNavbar = () => {
       const type = urlParams.get("type");
       if (type) {
         const matchingItem = navbarData.find((item) => item.name === type);
-        setSelectedRoute(matchingItem || navbarData[0]);
+        dispatch(setSelectedRoute(matchingItem || navbarData[0]));
       }
     } else {
       const matchingItem = navbarData.find((item) => item.link === currentUrl);
-      setSelectedRoute(matchingItem || navbarData[0]);
+      dispatch(setSelectedRoute(matchingItem || navbarData[0]));
     }
   }, []);
+  useEffect(() => {
+    // TODO: Need to remove hardcoded value from here
+    if (
+      typeQueryParamTrigger === "Apparel" ||
+      typeQueryParamTrigger === "Cosmetics"
+    ) {
+      dispatch(
+        setSelectedRoute({
+          name: typeQueryParamTrigger,
+          link: `/home/suggestion?type=${typeQueryParamTrigger}`,
+          type: "link",
+        })
+      );
+    }
+  }, [dispatch, typeQueryParamTrigger, location]);
 
   return (
     <Grid
@@ -71,7 +92,15 @@ const HomeNavbar = () => {
     >
       {/* Navbar Top Row */}
       <Grid item container className="flex justify-between items-center">
-        <img className="w-8 h-8" src="/assets/images/logo.png" alt="logo" />
+        <img
+          className="w-8 h-8 cursor-pointer"
+          src="/assets/images/logo.png"
+          alt="logo"
+          onClick={() => {
+            dispatch(setSelectedRoute(navbarData[0]));
+            navigate("/home");
+          }}
+        />
         <Grid item className="flex gap-4 items-center">
           <Box className="bg-gray-100 rounded-full p-1 w-5 h-5 shadow-xl flex items-center justify-center max-sm:hidden">
             <SvgIconFromPublic
@@ -124,7 +153,7 @@ const HomeNavbar = () => {
               return (
                 <MenuItem
                   onClick={() => {
-                    setSelectedRoute(item);
+                    dispatch(setSelectedRoute(item));
                     if (item.name === "Apparel" && !isBodyMatrixPresent) {
                       setModalOpen(true);
                       setRedirectionLink(CONSTANTS.SIGN_UP_BODY_SCANNING);
@@ -159,7 +188,7 @@ const HomeNavbar = () => {
                   : "text-gray-300"
               }`}
               onClick={() => {
-                setSelectedRoute(item);
+                dispatch(setSelectedRoute(item));
                 if (item.name === "Apparel" && !isBodyMatrixPresent) {
                   setModalOpen(true);
                   setRedirectionLink(CONSTANTS.SIGN_UP_BODY_SCANNING);
@@ -170,7 +199,6 @@ const HomeNavbar = () => {
                   setRedirectionLink(CONSTANTS.SIGN_UP_FACE_SCANNING);
                   return;
                 }
-
                 navigate(item.link);
               }}
             >
