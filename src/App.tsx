@@ -14,13 +14,15 @@ import CategoryPage from "./pages/SignUp/categoryPage";
 import HomeLayout from "./layouts/homePageLayout";
 import SuggestedItems from "./pages/Home page/SuggestedItems/suggestedItems";
 import ItemDescription from "./pages/Home page/itemDescription";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import HTTPService from "./services/base.service";
 import { QueryClient, QueryClientProvider } from "react-query";
 const queryClient = new QueryClient();
 const App = () => {
+  const queryClient = new QueryClient();
+  const [token, _] = useState(localStorage.getItem("access-token"));
+
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
     if (token) {
       HTTPService.setToken(token);
     }

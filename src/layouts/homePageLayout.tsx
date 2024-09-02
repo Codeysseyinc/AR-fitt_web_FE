@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import HomeNavbar from "../components/HomePage/homeNavbar";
 import { Grid } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/rootReducer";
 
 const HomeLayout: React.FC = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/home";
+  const userDetails = useSelector(
+    (state: RootState) => state.signup.userDetails
+  );
+  const guestDetails = useSelector(
+    (state: RootState) => state.signup.guestDetails
+  );
+
+  const [_, setToken] = useState(localStorage.getItem("access-token"));
+
+  useEffect(() => {
+    setToken(localStorage.getItem("access-token"));
+  }, [userDetails, guestDetails]);
 
   return (
     <Grid

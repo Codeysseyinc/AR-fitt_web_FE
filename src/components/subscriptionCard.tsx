@@ -42,9 +42,6 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
     else if (title === "Monthly") return "/Month";
     else if (title === "Yearly") return "/Year";
   };
-  const handleNextPage = (nextPage: string) => {
-    dispatch(setCurrentForm(nextPage));
-  };
 
   const stripePromise = loadStripe(
     process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY as string
@@ -61,7 +58,6 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
     {
       onSuccess: (res) => {
         // set the page that will come after payment
-        handleNextPage(CONSTANTS.SIGN_UP_SUCCESS);
         window.location.href = res.data.message.checkout_session_url;
       },
       onError: (err: any) => {

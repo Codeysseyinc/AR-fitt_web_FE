@@ -51,8 +51,8 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     }
   );
   const { mutate: storeImage } = useMutation(
-    async (blob: Blob) =>
-      signupService.storeImage(type, blob, email, guestDetails.id),
+    async (img: any) =>
+      signupService.storeImage(type, img, email, guestDetails.id),
     {
       onError: (err: any) => {
         if (err?.response.data.message === "Unauthorized access") {
@@ -81,7 +81,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     // Prepare form data
     const formData = new FormData();
     formData.append("image", blob);
-    storeImage(blob);
+    storeImage(imgSrc);
   }
   const handleCapturePhoto = () => {
     if (!confirmation) {
