@@ -8,13 +8,38 @@ import { setCurrentForm, setErrorMsg } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useQuery } from "react-query";
+import signupService from "../../services/signup.service";
 
 const SubscriptionPlans = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const session_id = searchParams.get("session_id") ?? "";
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("access-token");
+  const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const email = userDetails.email;
+  const handleNextPage = (nextPage: string) => {
+    dispatch(setCurrentForm(nextPage));
+  };
+
+  const { refetch: getSubscriptionStatus } = useQuery(
+    "getSubscriptionStatus",
+    async () => signupService.getSubscriptionStatus(email, dispatch),
+    {
+      onSuccess: (res: any) => {
+        if (res.data.messageCode === "user_not_subscribed" && session_id) {
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+          dispatch(setErrorMsg(res.data.message));
+        } else if (res.data.messageCode === "user_subscribed" && session_id) {
+          handleNextPage(CONSTANTS.SIGN_UP_SUCCESS);
+        }
+      },
+
+      enabled: false,
+    }
+  );
+
   useEffect(() => {
     // dispatch(setErrorMsg(null));
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
@@ -24,13 +49,17 @@ const SubscriptionPlans = () => {
       if (!decodedToken.exp || decodedToken?.exp < currentTime) {
         navigate("/");
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+      } else {
+        console.log("token is valid");
+        getSubscriptionStatus();
       }
     } else {
       navigate("/");
       dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
     }
+
     // if (session_id) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BODY_SCANNING));
-  });
+  }, []);
 
   return (
     <Grid

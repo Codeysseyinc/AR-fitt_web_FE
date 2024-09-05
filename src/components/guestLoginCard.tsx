@@ -54,9 +54,9 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
               isBodyScanned: res.data.message.isBodyScanned,
             })
           );
-          const token = res.headers.access_token;
+          const token = res.headers["access-token"];
           if (token) {
-            localStorage.setItem("access_token", token);
+            localStorage.setItem("access-token", token);
             HTTPService.setToken(token);
           }
           navigate("/home");

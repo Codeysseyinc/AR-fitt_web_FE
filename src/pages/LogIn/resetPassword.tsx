@@ -29,7 +29,7 @@ const ResetPassword: React.FC = () => {
   };
   const hasErrors = Object.values(errors).some((error) => error !== false);
 
-  localStorage.setItem("access_token", token);
+  localStorage.setItem("access-token", token);
   HTTPService.setToken(token);
 
   const { refetch: resetPassword } = useQuery(

@@ -56,9 +56,9 @@ const LogIn: React.FC = () => {
         dispatch(registerUserStart());
         dispatch(setUserDetails(res.data.message));
 
-        const token = res.headers.access_token;
+        const token = res.headers["access-token"];
         if (token) {
-          localStorage.setItem("access_token", token);
+          localStorage.setItem("access-token", token);
           HTTPService.setToken(token);
         }
         if (!res.data.message.isVerified) {
