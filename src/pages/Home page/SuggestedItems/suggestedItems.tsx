@@ -22,6 +22,10 @@ const SuggestedItems: React.FC = () => {
   const selectedCategory = useSelector(
     (state: RootState) => state.main.selectedCategory
   );
+
+  const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const isBodyMatrixPresent = userDetails.isBodyScanned;
+  const isFaceMatrixPresent = userDetails.isFaceScanned;
   // State Variables
   const [items, setItems] = useState<any>();
   const [categories, setCategories] = useState<{ [key: string]: any }>({});
@@ -45,6 +49,7 @@ const SuggestedItems: React.FC = () => {
       [categoryType]: newCategories[categoryType],
     }));
   };
+  // Has All the type of categories and sets the default selected category
   const setDefaultCategory = () => {
     if (categories || Object.keys(categories).length > 0) {
       const [firstKey, firstArray] = Object.entries(categories)[0];
@@ -54,9 +59,10 @@ const SuggestedItems: React.FC = () => {
       };
       if (defaultCategory && defaultCategory?.category) {
         dispatch(setSelectedCategory(defaultCategory));
-        updateQueryParams(defaultCategory);
+        return defaultCategory;
       }
     }
+    return null;
   };
   // Sets the initial category value in the selected category state variable
   const setCategoryFromQueryParams = (
@@ -84,7 +90,7 @@ const SuggestedItems: React.FC = () => {
           })
         );
         return;
-      }
+      } else setDefaultCategory();
     } else if (typeCategories) {
       const typeFromQueryParam = capitalizeFirstChar(queryParamType);
       const defaultCategory = typeCategories[0];
@@ -105,17 +111,22 @@ const SuggestedItems: React.FC = () => {
         searchParams.set("categoryId", defaultCategory.id);
         navigate(`${location.pathname}?${searchParams.toString()}`);
         return;
-      }
+      } else setDefaultCategory();
+    } else {
+      const defaultCategory = setDefaultCategory();
+      updateQueryParams(defaultCategory);
     }
-    setDefaultCategory();
   };
   // On Selecting Category From Sidebar these function triggers
   const updateQueryParams = (_category: any) => {
-    const searchParams = new URLSearchParams(location.search);
-    searchParams.set("type", capitalizeFirstChar(_category?.type));
-    searchParams.set("categoryName", _category.name);
-    searchParams.set("categoryId", _category.id);
-    navigate(`${location.pathname}?${searchParams.toString()}`);
+    if (_category) {
+      console.log("## - updateQueryParams - Category: ", _category);
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set("type", capitalizeFirstChar(_category?.type));
+      searchParams.set("categoryName", _category.name);
+      searchParams.set("categoryId", _category.id);
+      navigate(`${location.pathname}?${searchParams.toString()}`);
+    }
   };
   const handleTypeCategory = (_type: string) => {
     if (categories[_type].length > 0) {
@@ -188,8 +199,8 @@ const SuggestedItems: React.FC = () => {
   );
   // On Mount API Call triggered to get all categories
   useEffect(() => {
-    getApparelCategories();
-    getCosmeticsCategories();
+    if (isBodyMatrixPresent) getApparelCategories();
+    if (isFaceMatrixPresent) getCosmeticsCategories();
   }, []);
   // On categories state variable change update the query params
   useEffect(() => {

@@ -97,11 +97,12 @@ const HomePage = () => {
       getBodyMatrix();
     }, 1000);
   }, [dispatch]);
+
   return (
     <Grid
       item
       container
-      className="
+      className="my-10
         w-full sm:h-[70%] sm:min-h-[500px]
         flex max-mui_md:justify-center mui_md:justify-between
       "
@@ -115,13 +116,16 @@ const HomePage = () => {
         lg={5}
         className="
           inline-block
-          flex max-mui_md:justify-center mui_md:justify-end
+          flex flex-col justify-center
           items-center
           mui_md:h-full overflow-hidden p-0
         "
       >
         <img
-          className="max-mui_md:h-[200px] mui_md:max-h-[95%] overflow-hidden"
+          className="overflow-hidden
+            max-mui_md:min-h-[200px] max-mui_md:max-h-[550px]
+            mui_md:max-h-[95%] min-w-[65%] max-w-[90%]
+          "
           src="assets/images/landingPage/heroSection/landingPageModels.png"
           alt="hero-img"
         />
@@ -132,7 +136,7 @@ const HomePage = () => {
         xs={12}
         md={4.5}
         lg={6.5}
-        className="p-0 flex max-mui_md:justify-center max-mui_md:items-start"
+        className="p-0 flex max-mui_md:justify-center max-mui_md:items-start pb-10"
       >
         <Box
           className="

@@ -39,7 +39,7 @@ const HomeLayout: React.FC = () => {
               : { backgroundColor: "white" }
           }
         >
-          <Grid className="max-w-[1440px] w-full h-screen">
+          <Grid className="max-w-[1440px] w-full min-h-screen">
             <HomeNavbar />
             <Outlet />
           </Grid>
