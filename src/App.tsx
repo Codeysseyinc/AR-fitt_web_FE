@@ -20,7 +20,7 @@ import SuggestedItems from "./pages/Home page/SuggestedItems/suggestedItems";
 
 const App = () => {
   const queryClient = new QueryClient();
-  const [token, _] = useState(localStorage.getItem("access_token"));
+  const [token, _] = useState(localStorage.getItem("access-token"));
 
   useEffect(() => {
     if (token) {

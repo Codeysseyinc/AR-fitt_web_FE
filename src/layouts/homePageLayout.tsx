@@ -15,10 +15,10 @@ const HomeLayout: React.FC = () => {
     (state: RootState) => state.signup.guestDetails
   );
 
-  const [token, setToken] = useState(localStorage.getItem("access_token"));
+  const [token, setToken] = useState(localStorage.getItem("access-token"));
 
   useEffect(() => {
-    setToken(localStorage.getItem("access_token"));
+    setToken(localStorage.getItem("access-token"));
   }, [userDetails, guestDetails]);
 
   return (
