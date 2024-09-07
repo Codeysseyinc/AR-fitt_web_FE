@@ -86,17 +86,17 @@ const HeroSection: React.FC<{}> = () => {
                 <HeroSectionCard
                   color="blue"
                   title="SUGGESTIONS"
-                  icon="landingPageSuggestionslogo.png"
+                  icon="landingPageSuggestionsIcon.png"
                 />
                 <HeroSectionCard
                   color="pink"
                   title="COSMETICS"
-                  icon="landingPageCosmeticsLogo.png"
+                  icon="landingPageCosmeticsIcon.png"
                 />
                 <HeroSectionCard
                   color="purple"
                   title="APPARELS"
-                  icon="landingPageApparelsLogo.png"
+                  icon="landingPageApparelsIcon.png"
                 />
               </Grid>
             </Grid>
