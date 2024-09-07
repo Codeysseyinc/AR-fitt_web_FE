@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useFetcher, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import RedirectionModal from "../../components/HomePage/redirectionModal";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useDispatch } from "react-redux";
@@ -79,12 +79,13 @@ const HomePage = () => {
         onError: (err: any) => {
           if (
             type === "face" &&
+            err.response.data.messageCode === "user_face_image_not_exist"
+          ) {
+            dispatch(setFaceScanFailure(""));
+          } else if (
+            type === "body" &&
             err.response.data.messageCode === "user_body_image_not_exist"
           ) {
-            console.log("NO face matrix");
-            dispatch(setFaceScanFailure(""));
-          } else {
-            console.log("NO body matrix");
             dispatch(setBodyScanFailure(""));
           }
         },
@@ -92,11 +93,9 @@ const HomePage = () => {
     );
   }
   useEffect(() => {
-    setTimeout(() => {
-      getFaceMatrix();
-      getBodyMatrix();
-    }, 1000);
-  }, [dispatch]);
+    getFaceMatrix();
+    getBodyMatrix();
+  }, [dispatch, getFaceMatrix, getBodyMatrix]);
 
   return (
     <Grid
