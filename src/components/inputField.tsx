@@ -88,7 +88,7 @@ const InputField: React.FC<InputFieldProps> = ({
   useEffect(() => {
     onErrorUpdate(false);
     // dispatch(setErrorMsg(null));
-  }, []);
+  }, [onErrorUpdate]);
   return (
     <>
       <TextField

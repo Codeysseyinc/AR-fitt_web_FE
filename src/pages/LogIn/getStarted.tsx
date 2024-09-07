@@ -20,7 +20,7 @@ const GetStarted: React.FC = () => {
     if (!session_id) {
       dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
     }
-  }, [dispatch]);
+  }, [dispatch, session_id]);
   return (
     <Grid
       container

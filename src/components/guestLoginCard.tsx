@@ -10,11 +10,7 @@ import GenderDropDown from "./genderDropdown";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  setCurrentForm,
-  setErrorMsg,
-  setGuestDetails,
-} from "../redux/signup/SignupActions";
+import { setErrorMsg, setGuestDetails } from "../redux/signup/SignupActions";
 import { useMutation } from "react-query";
 import signupService from "../services/signup.service";
 import HTTPService from "../services/base.service";

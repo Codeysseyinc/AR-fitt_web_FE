@@ -20,7 +20,11 @@ const FeaturesSection: React.FC<{}> = () => {
           {/* Black Logo section */}
           <div className="w-[30%] justify-center items-center h-[100%] xs:hidden md:flex">
             {" "}
-            <img src="/assets/images/logoBlack.png" className="scale-75 " />
+            <img
+              alt="AR-fitt black logo"
+              src="/assets/images/logoBlack.png"
+              className="scale-75 "
+            />
           </div>
           {/* Gradient section */}
           <Grid
@@ -86,6 +90,7 @@ const FeaturesSection: React.FC<{}> = () => {
                   >
                     <div className="bg-[#d9d9d9] rounded-full w-[40px] h-[40px]  bg-opacity-15 mb-1 flex justify-center items-center">
                       <img
+                        alt="features"
                         src={`/assets/images/landingPage/featuresSection/${
                           features[2 * index + indexj].icon
                         }`}

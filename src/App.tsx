@@ -21,6 +21,7 @@ import CONSTANTS from "./utils/constants/CONSTANTS";
 
 const App = () => {
   const queryClient = new QueryClient();
+  // eslint-disable-next-line
   const [token, _] = useState(localStorage.getItem(CONSTANTS.ACCESS_TOKEN));
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import SignUpCamera from "../../components/signUpCamera";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setErrorMsg } from "../../redux/signup/SignupActions";
 
@@ -14,9 +14,6 @@ interface ScanProps {
 const Scan: React.FC<ScanProps> = ({ type }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isSubscribed = useSelector(
-    (state: any) => state.signup.userDetails.isSubscribed
-  );
 
   useEffect(() => {
     dispatch(setErrorMsg(null));

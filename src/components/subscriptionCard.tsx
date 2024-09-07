@@ -43,9 +43,7 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
     else if (title === "Yearly") return "/Year";
   };
 
-  const stripePromise = loadStripe(
-    process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY as string
-  );
+  loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY as string);
   const getPriceId = () => {
     if (title === "One Time")
       return process.env.REACT_APP_ONE_TIME_PLAN_PRICE_ID;
@@ -88,7 +86,7 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
       </Grid>
       <Grid item className="xs:hidden md:flex justify-center h-[37%]">
         {" "}
-        <img src={icon} className="scale-[55%]" />
+        <img alt="subscription" src={icon} className="scale-[55%]" />
       </Grid>
       <p className="xs:hidden md:flex  justify-center m-0 font-Montserrat text-[#747474]">
         From

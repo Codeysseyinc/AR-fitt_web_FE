@@ -67,7 +67,7 @@ const HomeNavbar = () => {
       const matchingItem = navbarData.find((item) => item.link === currentUrl);
       dispatch(setSelectedRoute(matchingItem || navbarData[0]));
     }
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     // TODO: Need to remove hardcoded value from here
     if (

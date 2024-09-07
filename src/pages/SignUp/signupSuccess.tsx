@@ -43,7 +43,7 @@ const SignupSuccess: React.FC = () => {
     dispatch(setErrorMsg(null));
 
     getSubscriptionStatus();
-  }, [dispatch]);
+  }, [dispatch, getSubscriptionStatus]);
 
   return (
     <Grid
@@ -62,7 +62,7 @@ const SignupSuccess: React.FC = () => {
           direction="row"
           className="w-[70%] h-[67%] mt-6 flex flex-col justify-start items-center  space-y-16"
         >
-          <img className="" src="./assets/images/logo.png" />
+          <img alt="AR-fitt logo" className="" src="./assets/images/logo.png" />
           <Grid className="font-Montserrat font-bold text-center text-[#408589] max-w-xs ">
             <p className="text-3xl ">Success!</p>
 

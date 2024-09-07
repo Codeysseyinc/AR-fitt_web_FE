@@ -17,7 +17,6 @@ import {
   setCurrentForm,
   setErrorMsg,
   setSubscriptionFailure,
-  setSubscriptionSuccess,
   setUserDetails,
 } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
@@ -88,7 +87,7 @@ const LogIn: React.FC = () => {
   }
   useEffect(() => {
     dispatch(setErrorMsg(null));
-  }, []);
+  }, [dispatch]);
   return (
     <Grid
       container

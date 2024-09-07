@@ -50,7 +50,6 @@ const SubscriptionPlans = () => {
         navigate("/");
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
       } else {
-        console.log("token is valid");
         getSubscriptionStatus();
       }
     } else {
@@ -59,7 +58,7 @@ const SubscriptionPlans = () => {
     }
 
     // if (session_id) dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BODY_SCANNING));
-  }, []);
+  }, [dispatch, getSubscriptionStatus, navigate, token]);
 
   return (
     <Grid

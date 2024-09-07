@@ -9,7 +9,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentForm } from "../../redux/signup/SignupActions";
-import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 interface RedirectionModalProps {
   open: boolean;
