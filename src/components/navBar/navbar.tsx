@@ -22,7 +22,11 @@ const Navbar = () => {
             borderRadius: "7px",
           }}
           onClick={() => {
-            navigate(item.link);
+            if (localStorage.getItem(CONSTANTS.ACCESS_TOKEN)) {
+              navigate("/home");
+            } else {
+              navigate(item.link);
+            }
           }}
         >
           {item.name}

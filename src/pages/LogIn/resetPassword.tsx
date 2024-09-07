@@ -9,6 +9,7 @@ import { setErrorMsg } from "../../redux/signup/SignupActions";
 import HTTPService from "../../services/base.service";
 import { useQuery } from "react-query";
 import signupService from "../../services/signup.service";
+import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const ResetPassword: React.FC = () => {
   const email = useSelector((state: any) => state.signup.userDetails).email;
@@ -29,7 +30,7 @@ const ResetPassword: React.FC = () => {
   };
   const hasErrors = Object.values(errors).some((error) => error !== false);
 
-  localStorage.setItem("access-token", token);
+  localStorage.setItem(CONSTANTS.ACCESS_TOKEN, token);
   HTTPService.setToken(token);
 
   const { refetch: resetPassword } = useQuery(

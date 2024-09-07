@@ -24,8 +24,8 @@ const SuggestedItems: React.FC = () => {
   );
 
   const userDetails = useSelector((state: any) => state.signup.userDetails);
-  const isBodyMatrixPresent = userDetails.isBodyScanned;
-  const isFaceMatrixPresent = userDetails.isFaceScanned;
+  const isBodyScanPresent = userDetails.isBodyScanned;
+  const isFaceScanPresent = userDetails.isFaceScanned;
   // State Variables
   const [items, setItems] = useState<any>();
   const [categories, setCategories] = useState<{ [key: string]: any }>({});
@@ -199,8 +199,8 @@ const SuggestedItems: React.FC = () => {
   );
   // On Mount API Call triggered to get all categories
   useEffect(() => {
-    if (isBodyMatrixPresent) getApparelCategories();
-    if (isFaceMatrixPresent) getCosmeticsCategories();
+    if (isBodyScanPresent) getApparelCategories();
+    if (isFaceScanPresent) getCosmeticsCategories();
   }, []);
   // On categories state variable change update the query params
   useEffect(() => {

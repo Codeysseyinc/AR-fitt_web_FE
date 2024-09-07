@@ -23,8 +23,8 @@ const HomeNavbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [redirectionLink, setRedirectionLink] = useState("");
-  const isFaceMatrixPresent = userDetails.isFaceScanned;
-  const isBodyMatrixPresent = userDetails.isBodyScanned;
+  const isFaceScanPresent = userDetails.isFaceScanned;
+  const isBodyScanPresent = userDetails.isBodyScanned;
   const [mobileAnchorEl, setMobileAnchorEl] = useState(null);
 
   const anchorTagStyling =
@@ -154,12 +154,12 @@ const HomeNavbar = () => {
                 <MenuItem
                   onClick={() => {
                     dispatch(setSelectedRoute(item));
-                    if (item.name === "Apparel" && !isBodyMatrixPresent) {
+                    if (item.name === "Apparel" && !isBodyScanPresent) {
                       setModalOpen(true);
                       setRedirectionLink(CONSTANTS.SIGN_UP_BODY_SCANNING);
                       return;
                     }
-                    if (item.name === "Cosmetics" && !isFaceMatrixPresent) {
+                    if (item.name === "Cosmetics" && !isFaceScanPresent) {
                       setModalOpen(true);
                       setRedirectionLink(CONSTANTS.SIGN_UP_FACE_SCANNING);
                       return;
@@ -189,12 +189,12 @@ const HomeNavbar = () => {
               }`}
               onClick={() => {
                 dispatch(setSelectedRoute(item));
-                if (item.name === "Apparel" && !isBodyMatrixPresent) {
+                if (item.name === "Apparel" && !isBodyScanPresent) {
                   setModalOpen(true);
                   setRedirectionLink(CONSTANTS.SIGN_UP_BODY_SCANNING);
                   return;
                 }
-                if (item.name === "Cosmetics" && !isFaceMatrixPresent) {
+                if (item.name === "Cosmetics" && !isFaceScanPresent) {
                   setModalOpen(true);
                   setRedirectionLink(CONSTANTS.SIGN_UP_FACE_SCANNING);
                   return;

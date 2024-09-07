@@ -16,7 +16,7 @@ const SubscriptionPlans = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const session_id = searchParams.get("session_id") ?? "";
-  const token = localStorage.getItem("access-token");
+  const token = localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
   const userDetails = useSelector((state: any) => state.signup.userDetails);
   const email = userDetails.email;
   const handleNextPage = (nextPage: string) => {

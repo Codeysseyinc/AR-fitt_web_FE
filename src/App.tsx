@@ -17,10 +17,11 @@ import ForgotPassword from "./pages/LogIn/forgotPassword";
 import LandingPage from "./pages/Landing page/landingPage";
 import ItemDescription from "./pages/Home page/itemDescription";
 import SuggestedItems from "./pages/Home page/SuggestedItems/suggestedItems";
+import CONSTANTS from "./utils/constants/CONSTANTS";
 
 const App = () => {
   const queryClient = new QueryClient();
-  const [token, _] = useState(localStorage.getItem("access-token"));
+  const [token, _] = useState(localStorage.getItem(CONSTANTS.ACCESS_TOKEN));
 
   useEffect(() => {
     if (token) {

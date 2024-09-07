@@ -3,7 +3,11 @@ import { Button, Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
-import { setCurrentForm, setErrorMsg } from "../../redux/signup/SignupActions";
+import {
+  setCurrentForm,
+  setErrorMsg,
+  setSubscriptionFailure,
+} from "../../redux/signup/SignupActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import signupService from "../../services/signup.service";
@@ -24,6 +28,7 @@ const SignupSuccess: React.FC = () => {
         if (res.data.messageCode === "user_not_subscribed" && session_id) {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
           dispatch(setErrorMsg(res.data.message));
+          dispatch(setSubscriptionFailure("User is not subscribed"));
         }
       },
 
@@ -31,6 +36,8 @@ const SignupSuccess: React.FC = () => {
     }
   );
 
+  const isFaceScanPresent = userDetails.isFaceScanned;
+  const isBodyScanPresent = userDetails.isBodyScanned;
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));
     dispatch(setErrorMsg(null));
@@ -61,7 +68,7 @@ const SignupSuccess: React.FC = () => {
 
             <p className="text-2xl">
               {" "}
-              You have successfully created your account
+              You have successfully subscribed to AR-Fitt!
             </p>
           </Grid>
         </Grid>
@@ -77,7 +84,11 @@ const SignupSuccess: React.FC = () => {
             height: "83px",
           }}
           onClick={() => {
-            dispatch(setCurrentForm(CONSTANTS.SIGN_UP_CATEGORIES));
+            if (!isBodyScanPresent && !isFaceScanPresent) {
+              dispatch(setCurrentForm(CONSTANTS.SIGN_UP_CATEGORIES));
+            } else {
+              navigate("/home");
+            }
           }}
         >
           Continue

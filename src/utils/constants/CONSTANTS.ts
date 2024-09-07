@@ -11,5 +11,6 @@ const CONSTANTS = {
   COSMETICS: "cosmetics",
   APPAREL_TITLE: "Apparel",
   COSMETICS_TITLE: "Cosmetics",
+  ACCESS_TOKEN: "access-token",
 };
 export default CONSTANTS;

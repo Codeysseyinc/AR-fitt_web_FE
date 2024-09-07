@@ -18,6 +18,7 @@ import {
 import { useMutation } from "react-query";
 import signupService from "../services/signup.service";
 import HTTPService from "../services/base.service";
+import CONSTANTS from "../utils/constants/CONSTANTS";
 
 interface GuestLoginCardFieldProps {
   open: boolean;
@@ -54,9 +55,9 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
               isBodyScanned: res.data.message.isBodyScanned,
             })
           );
-          const token = res.headers["access-token"];
+          const token = res.headers[CONSTANTS.ACCESS_TOKEN];
           if (token) {
-            localStorage.setItem("access-token", token);
+            localStorage.setItem(CONSTANTS.ACCESS_TOKEN, token);
             HTTPService.setToken(token);
           }
           navigate("/home");

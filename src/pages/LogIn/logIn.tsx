@@ -16,6 +16,8 @@ import {
   registerUserStart,
   setCurrentForm,
   setErrorMsg,
+  setSubscriptionFailure,
+  setSubscriptionSuccess,
   setUserDetails,
 } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
@@ -56,15 +58,16 @@ const LogIn: React.FC = () => {
         dispatch(registerUserStart());
         dispatch(setUserDetails(res.data.message));
 
-        const token = res.headers["access-token"];
+        const token = res.headers[CONSTANTS.ACCESS_TOKEN];
         if (token) {
-          localStorage.setItem("access-token", token);
+          localStorage.setItem(CONSTANTS.ACCESS_TOKEN, token);
           HTTPService.setToken(token);
         }
         if (!res.data.message.isVerified) {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
           navigate("/signup");
         } else if (!res.data.message.isSubscribed) {
+          dispatch(setSubscriptionFailure("User is not subscribed"));
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
           navigate("/signup");
         } else {

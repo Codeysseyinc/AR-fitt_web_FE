@@ -16,8 +16,8 @@ import { useQuery } from "react-query";
 
 const HomePage = () => {
   const userDetails = useSelector((state: any) => state.signup.userDetails);
-  const isFaceMatrixPresent = userDetails.isFaceScanned;
-  const isBodyMatrixPresent = userDetails.isBodyScanned;
+  const isFaceScanPresent = userDetails.isFaceScanned;
+  const isBodyScanPresent = userDetails.isBodyScanned;
 
   const fullname = userDetails.firstName + " " + userDetails.lastName;
   const navigate = useNavigate();
@@ -28,10 +28,10 @@ const HomePage = () => {
   const guestDetails = useSelector((state: any) => state.signup.guestDetails);
 
   const handleContinueClick = () => {
-    if (isBodyMatrixPresent || isFaceMatrixPresent)
+    if (isBodyScanPresent || isFaceScanPresent)
       navigate(
         `/home/suggestion?type=${
-          isBodyMatrixPresent
+          isBodyScanPresent
             ? CONSTANTS.APPAREL_TITLE
             : CONSTANTS.COSMETICS_TITLE
         }`

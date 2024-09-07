@@ -12,7 +12,6 @@ export default class HTTPService {
 
   static setToken(token: string) {
     (axios as any).defaults.headers["Authorization"] = `Bearer ${token}`;
-    (axios as any).defaults.headers["access-token"] = `Bearer ${token}`;
   }
 
   protected get = async (

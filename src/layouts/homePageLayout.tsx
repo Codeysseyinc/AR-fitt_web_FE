@@ -4,6 +4,7 @@ import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/rootReducer";
 import HomeNavbar from "../components/HomePage/homeNavbar";
+import CONSTANTS from "../utils/constants/CONSTANTS";
 
 const HomeLayout: React.FC = () => {
   const location = useLocation();
@@ -15,10 +16,12 @@ const HomeLayout: React.FC = () => {
     (state: RootState) => state.signup.guestDetails
   );
 
-  const [token, setToken] = useState(localStorage.getItem("access-token"));
+  const [token, setToken] = useState(
+    localStorage.getItem(CONSTANTS.ACCESS_TOKEN)
+  );
 
   useEffect(() => {
-    setToken(localStorage.getItem("access-token"));
+    setToken(localStorage.getItem(CONSTANTS.ACCESS_TOKEN));
   }, [userDetails, guestDetails]);
 
   return (

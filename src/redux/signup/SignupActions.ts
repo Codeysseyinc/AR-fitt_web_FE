@@ -126,9 +126,9 @@ export const registerUserStartAsync = (
     axios
       .post(`${URLS.registerUser}`, payload)
       .then((response) => {
-        const token = response.headers["access-token"];
+        const token = response.headers[CONSTANTS.ACCESS_TOKEN];
         if (token) {
-          localStorage.setItem("access-token", token);
+          localStorage.setItem(CONSTANTS.ACCESS_TOKEN, token);
           HTTPService.setToken(token);
         }
         dispatch(registerUserStart());
