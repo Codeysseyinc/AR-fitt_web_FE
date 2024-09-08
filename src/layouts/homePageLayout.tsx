@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/rootReducer";
 import HomeNavbar from "../components/HomePage/homeNavbar";
 import CONSTANTS from "../utils/constants/CONSTANTS";
+import UnauthorisedPage from "../pages/Unauthorised page/unauthorisedPage";
 
 const HomeLayout: React.FC = () => {
   const location = useLocation();
@@ -26,7 +27,7 @@ const HomeLayout: React.FC = () => {
 
   return (
     <>
-      {token ? (
+      {token && (userDetails.isSubscribed || guestDetails.id) ? (
         <Grid
           className="p-2 h-screen overflow-auto flex justify-center"
           style={
@@ -48,7 +49,7 @@ const HomeLayout: React.FC = () => {
           </Grid>
         </Grid>
       ) : (
-        <p className="py-10 px-5">PLEASE LOGIN OR SIGNUP TO CONTINUE</p>
+        <UnauthorisedPage />
       )}
     </>
   );

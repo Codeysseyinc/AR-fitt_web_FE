@@ -1,10 +1,5 @@
 [
   {
-    "name": "HOME",
-    "link": "#home",
-    "type": "link"
-  },
-  {
     "name": "ABOUT US",
     "link": "#aboutUs",
     "type": "link"

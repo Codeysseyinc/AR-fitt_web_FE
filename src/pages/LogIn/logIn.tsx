@@ -17,6 +17,7 @@ import {
   setCurrentForm,
   setErrorMsg,
   setSubscriptionFailure,
+  setSubscriptionSuccess,
   setUserDetails,
 } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
@@ -71,6 +72,7 @@ const LogIn: React.FC = () => {
           navigate("/signup");
         } else {
           navigate("/home");
+          dispatch(setSubscriptionSuccess());
         }
       },
       onError: (err: any) => {

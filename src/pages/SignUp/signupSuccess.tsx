@@ -7,6 +7,7 @@ import {
   setCurrentForm,
   setErrorMsg,
   setSubscriptionFailure,
+  setSubscriptionSuccess,
 } from "../../redux/signup/SignupActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -29,6 +30,8 @@ const SignupSuccess: React.FC = () => {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
           dispatch(setErrorMsg(res.data.message));
           dispatch(setSubscriptionFailure("User is not subscribed"));
+        } else if (res.data.messageCode === "user_subscribed") {
+          dispatch(setSubscriptionSuccess());
         }
       },
 

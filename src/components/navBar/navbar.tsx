@@ -11,7 +11,7 @@ const Navbar = () => {
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
-
+  const token = localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
   const navList = navbarData.map((item, index) => {
     if (item.type === "button") {
       return (
@@ -22,14 +22,14 @@ const Navbar = () => {
             borderRadius: "7px",
           }}
           onClick={() => {
-            if (localStorage.getItem(CONSTANTS.ACCESS_TOKEN)) {
+            if (token) {
               navigate("/home");
             } else {
               navigate(item.link);
             }
           }}
         >
-          {item.name}
+          {token ? "HOME" : item.name}
         </Button>
       );
     } else {
