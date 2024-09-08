@@ -10,7 +10,7 @@ const LandingPage: React.FC<{}> = () => {
       <div
         style={{
           overflowY: "auto",
-          height:
+          maxHeight:
             "calc(env(safe-area-inset-top) + 100vh - env(safe-area-inset-bottom))",
         }}
       >
