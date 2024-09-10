@@ -1,14 +1,10 @@
 import { useEffect } from "react";
-import { Alert, Button, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import ContentArea from "../../components/contentArea";
 import AssetSection from "../../components/assetSection";
 import OtpInputField from "../../components/otpInputFields";
-import {
-  setCurrentForm,
-  practiceTest,
-  setErrorMsg,
-} from "../../redux/signup/SignupActions";
+import { setCurrentForm, setErrorMsg } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 
 const OtpVerification: React.FC = () => {
@@ -20,7 +16,7 @@ const OtpVerification: React.FC = () => {
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
     dispatch(setErrorMsg(""));
-  }, []);
+  }, [dispatch]);
 
   const handleNextPage = () => {
     if (otpVerificationStatus)

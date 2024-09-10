@@ -16,6 +16,8 @@ import {
   registerUserStart,
   setCurrentForm,
   setErrorMsg,
+  setSubscriptionFailure,
+  setSubscriptionSuccess,
   setUserDetails,
 } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
@@ -56,16 +58,15 @@ const LogIn: React.FC = () => {
         dispatch(registerUserStart());
         dispatch(setUserDetails(res.data.message));
 
-        const token = res.headers.access_token;
+        const token = res.headers[CONSTANTS.ACCESS_TOKEN];
         if (token) {
-          localStorage.setItem("access_token", token);
+          localStorage.setItem(CONSTANTS.ACCESS_TOKEN, token);
           HTTPService.setToken(token);
         }
-
         if (!res.data.message.isVerified) {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
-
           navigate("/signup");
+<<<<<<< HEAD
         }
         // else if (!res.data.message.isSubscribed) {
         //   dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
@@ -73,7 +74,15 @@ const LogIn: React.FC = () => {
         //   navigate("/signup");
         // }
         else {
+=======
+        } else if (!res.data.message.isSubscribed) {
+          dispatch(setSubscriptionFailure("User is not subscribed"));
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+          navigate("/signup");
+        } else {
+>>>>>>> dev
           navigate("/home");
+          dispatch(setSubscriptionSuccess());
         }
       },
       onError: (err: any) => {
@@ -90,7 +99,7 @@ const LogIn: React.FC = () => {
   }
   useEffect(() => {
     dispatch(setErrorMsg(null));
-  }, []);
+  }, [dispatch]);
   return (
     <Grid
       container

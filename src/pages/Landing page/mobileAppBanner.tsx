@@ -42,6 +42,7 @@ const MobileAppBanner = () => {
         className=" w-[20%] xl:w-[10%] lg:w-[20%] h-[90%] flex justify-center items-center  "
       >
         <img
+          alt="mobile app"
           src="/assets/images/landingPage/mobileAppBanner/mobileAppBannerAsset.png"
           className=" xs:h-[90%] xsm:h-[100%] sm:h-[120%] md:h-[140%]"
         />

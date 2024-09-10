@@ -7,7 +7,13 @@ import MobileAppBanner from "./mobileAppBanner";
 const LandingPage: React.FC<{}> = () => {
   return (
     <>
-      <div style={{ overflowY: "auto", maxHeight: "100vh" }}>
+      <div
+        style={{
+          overflowY: "auto",
+          maxHeight:
+            "calc(env(safe-area-inset-top) + 100vh - env(safe-area-inset-bottom))",
+        }}
+      >
         {/* Hero section */}
         <HeroSection />
         {/* Features section */}

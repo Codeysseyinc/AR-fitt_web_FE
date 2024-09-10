@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 import AssetSection from "../../components/assetSection";
 import ContentArea from "../../components/contentArea";
 import SignUpCamera from "../../components/signUpCamera";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setErrorMsg } from "../../redux/signup/SignupActions";
 
@@ -14,9 +14,6 @@ interface ScanProps {
 const Scan: React.FC<ScanProps> = ({ type }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isSubscribed = useSelector(
-    (state: any) => state.signup.userDetails.isSubscribed
-  );
 
   useEffect(() => {
     dispatch(setErrorMsg(null));
@@ -35,15 +32,17 @@ const Scan: React.FC<ScanProps> = ({ type }) => {
         modelsSrc="/assets/images/signUp/scanningModels.png"
       />
       <ContentArea title={type === "body" ? "Body Scanning" : "Face Scanning"}>
-        <SignUpCamera type={type} />
+        <Grid className="flex flex-col justify-evenly flex-1">
+          <SignUpCamera type={type} />
 
-        <Grid
-          className=" w-[100%] h-[40px] pr-[20px] flex flex-row justify-end font-Montserrat font-bold xs:text-lg md:text-2xl text-[#408589] cursor-pointer"
-          onClick={() => {
-            navigate("/home");
-          }}
-        >
-          Skip
+          <Grid
+            className=" w-[100%] h-[40px] pr-[20px] flex flex-row justify-end font-Montserrat font-bold xs:text-lg md:text-2xl text-[#408589] cursor-pointer"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
+            Skip
+          </Grid>
         </Grid>
       </ContentArea>
     </Grid>

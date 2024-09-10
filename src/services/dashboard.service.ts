@@ -13,6 +13,24 @@ class DashboardService extends HTTPService {
       dispatch
     );
   }
+  getCategories(type: string, dispatch: any) {
+    return this.get(
+      `${process.env.REACT_APP_BASE_URL}/inventoryCategories?type=${type}`,
+      dispatch
+    );
+  }
+  getInventory(id: string, dispatch: any) {
+    return this.get(
+      `${process.env.REACT_APP_BASE_URL}/category/inventoryItems?categoryID=${id}`,
+      dispatch
+    );
+  }
+  getItemImage(itemId: string, ImageUrlId: string, dispatch: any) {
+    return this.get(
+      `${process.env.REACT_APP_BASE_URL}/itemImage/${itemId}/${ImageUrlId}`,
+      dispatch
+    );
+  }
 }
 const dashboardService = new DashboardService();
 export default dashboardService;

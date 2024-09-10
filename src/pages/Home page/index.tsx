@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useFetcher, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import RedirectionModal from "../../components/HomePage/redirectionModal";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
 import { useDispatch } from "react-redux";
@@ -16,8 +16,8 @@ import { useQuery } from "react-query";
 
 const HomePage = () => {
   const userDetails = useSelector((state: any) => state.signup.userDetails);
-  const isFaceMatrixPresent = userDetails.isFaceScanned;
-  const isBodyMatrixPresent = userDetails.isBodyScanned;
+  const isFaceScanPresent = userDetails.isFaceScanned;
+  const isBodyScanPresent = userDetails.isBodyScanned;
 
   const fullname = userDetails.firstName + " " + userDetails.lastName;
   const navigate = useNavigate();
@@ -28,8 +28,14 @@ const HomePage = () => {
   const guestDetails = useSelector((state: any) => state.signup.guestDetails);
 
   const handleContinueClick = () => {
-    if (isBodyMatrixPresent || isFaceMatrixPresent)
-      navigate("/home/suggestion");
+    if (isBodyScanPresent || isFaceScanPresent)
+      navigate(
+        `/home/suggestion?type=${
+          isBodyScanPresent
+            ? CONSTANTS.APPAREL_TITLE
+            : CONSTANTS.COSMETICS_TITLE
+        }`
+      );
     else {
       setRedirectionLink(CONSTANTS.SIGN_UP_CATEGORIES);
       setModalOpen(true);
@@ -65,22 +71,21 @@ const HomePage = () => {
         enabled: false,
         onSuccess: (res) => {
           if (type === "face") {
-            console.log("face matrix exist");
             dispatch(setFaceScanSuccess());
           } else {
-            console.log("body matrix exist");
             dispatch(setBodyScanSuccess());
           }
         },
         onError: (err: any) => {
           if (
             type === "face" &&
+            err.response.data.messageCode === "user_face_image_not_exist"
+          ) {
+            dispatch(setFaceScanFailure(""));
+          } else if (
+            type === "body" &&
             err.response.data.messageCode === "user_body_image_not_exist"
           ) {
-            console.log("NO face matrix");
-            dispatch(setFaceScanFailure(""));
-          } else {
-            console.log("NO body matrix");
             dispatch(setBodyScanFailure(""));
           }
         },
@@ -88,16 +93,15 @@ const HomePage = () => {
     );
   }
   useEffect(() => {
-    setTimeout(() => {
-      getFaceMatrix();
-      getBodyMatrix();
-    }, 1000);
-  }, [dispatch]);
+    getFaceMatrix();
+    getBodyMatrix();
+  }, [dispatch, getFaceMatrix, getBodyMatrix]);
+
   return (
     <Grid
       item
       container
-      className="
+      className="my-10
         w-full sm:h-[70%] sm:min-h-[500px]
         flex max-mui_md:justify-center mui_md:justify-between
       "
@@ -111,13 +115,16 @@ const HomePage = () => {
         lg={5}
         className="
           inline-block
-          flex max-mui_md:justify-center mui_md:justify-end
+          flex flex-col justify-center
           items-center
           mui_md:h-full overflow-hidden p-0
         "
       >
         <img
-          className="max-mui_md:h-[200px] mui_md:max-h-[95%] overflow-hidden"
+          className="overflow-hidden
+            max-mui_md:min-h-[200px] max-mui_md:max-h-[550px]
+            mui_md:max-h-[95%] min-w-[65%] max-w-[90%]
+          "
           src="assets/images/landingPage/heroSection/landingPageModels.png"
           alt="hero-img"
         />
@@ -128,7 +135,7 @@ const HomePage = () => {
         xs={12}
         md={4.5}
         lg={6.5}
-        className="p-0 flex max-mui_md:justify-center max-mui_md:items-start"
+        className="p-0 flex max-mui_md:justify-center max-mui_md:items-start pb-10"
       >
         <Box
           className="

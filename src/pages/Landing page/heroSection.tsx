@@ -29,6 +29,7 @@ const HeroSection: React.FC<{}> = () => {
             className="pl-6 self-center w-[80%] h-[60%] self-center "
           >
             <img
+              alt="asset1"
               src="/assets/images/landingPage/heroSection/landingPageDemoAsset.png"
               className=" self-center  mt-0 h-[80%] lg:h-[80%] xl:h-[80%] md:h-[60%] "
             />
@@ -44,6 +45,7 @@ const HeroSection: React.FC<{}> = () => {
           </Grid>
           {/* AR-FITT dual tone */}
           <img
+            alt="asset2"
             src="/assets/images/landingPage/heroSection/landingPageHeroSectionText.png"
             className="absolute  left-[27%] xl:left-[27.5%]  lg:left-[27%] h-[77%]  xl:h-[80%] lg:h-[77%] top-[15%] xs:hidden md:flex"
           />
@@ -59,6 +61,7 @@ const HeroSection: React.FC<{}> = () => {
             {/* Hero Section Models + Grafitti*/}
             <div className="flex flex-col md:justify-end xs:justify-end relative h-[100%]">
               <img
+                alt="asset3"
                 className="z-10 xs:max-w-full sm:max-w-none xs:h-[90%] md:h-[100%] mt-12"
                 src={`/assets/images/landingPage/heroSection/${
                   isMobileView
@@ -86,17 +89,17 @@ const HeroSection: React.FC<{}> = () => {
                 <HeroSectionCard
                   color="blue"
                   title="SUGGESTIONS"
-                  icon="landingPageSuggestionslogo.png"
+                  icon="landingPageSuggestionsIcon.png"
                 />
                 <HeroSectionCard
                   color="pink"
                   title="COSMETICS"
-                  icon="landingPageCosmeticsLogo.png"
+                  icon="landingPageCosmeticsIcon.png"
                 />
                 <HeroSectionCard
                   color="purple"
                   title="APPARELS"
-                  icon="landingPageApparelsLogo.png"
+                  icon="landingPageApparelsIcon.png"
                 />
               </Grid>
             </Grid>

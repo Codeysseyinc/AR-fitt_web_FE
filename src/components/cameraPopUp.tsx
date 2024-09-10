@@ -20,11 +20,12 @@ const CameraPopUp = ({
   onClose: () => void;
   handleSelectedColor: (payload: any) => void;
 }) => {
-  const camera = useRef(null);
   let countdownInterval: string | number | NodeJS.Timer | undefined;
+  const camera = useRef(null);
   const [image, setImage] = useState(null);
   const [countdown, setCountdown] = useState<number>(0);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
+
   const selectedItem = useSelector(
     (state: RootState) => state.main.selectedItem
   );
@@ -71,7 +72,7 @@ const CameraPopUp = ({
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={() => handleClose()}
       aria-labelledby="camera"
       aria-describedby="camera-pop-up-for-try-on"
       className="flex items-center justify-center"
@@ -79,12 +80,12 @@ const CameraPopUp = ({
       <Fade in={open}>
         <Box
           className="
-          relative flex flex-col gap-4
-          h-[80%]
-          max-sm:w-full sm:w-[80%] md:w-[60%] lg:w-[55%] xl:w-[40%] w-full
-          overflow-hidden
-          rounded-xl bg-transparent
-        "
+            relative flex flex-col gap-4
+            h-[80%]
+            max-sm:w-full sm:w-[80%] md:w-[60%] lg:w-[55%] xl:w-[40%] w-full
+            overflow-hidden
+            rounded-xl bg-black
+          "
         >
           {/* Camera */}
           {image ? (
@@ -94,7 +95,7 @@ const CameraPopUp = ({
               alt="Taken photo"
               style={{ transform: "scaleX(-1)" }}
             />
-          ) : (
+          ) : open === true ? (
             <>
               <Camera
                 ref={camera}
@@ -107,10 +108,12 @@ const CameraPopUp = ({
                 facingMode="user"
               />
             </>
+          ) : (
+            <></>
           )}
           {/* Count Down */}
           {countdown !== 0 ? (
-            <div className="absolute top-[41%] right-[41%] font-Bungee font-normal text-7xl leading-10 text-red-600">
+            <div className="absolute top-[45%] right-[47%] font-Bungee font-normal text-7xl leading-10 text-red-600">
               {countdown}
             </div>
           ) : (

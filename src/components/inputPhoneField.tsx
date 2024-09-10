@@ -7,7 +7,6 @@ interface InputPhoneFieldProps {
 }
 
 const InputPhoneField: React.FC<InputPhoneFieldProps> = ({ setPhone }) => {
-
   return (
     <PhoneInput
       specialLabel=""

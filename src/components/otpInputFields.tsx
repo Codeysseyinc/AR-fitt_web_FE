@@ -7,7 +7,6 @@ import {
   verifyEmailSuccess,
   setErrorMsg,
 } from "../redux/signup/SignupActions";
-import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import signupService from "../services/signup.service";
 
@@ -17,7 +16,6 @@ const OtpInputField: React.FC = () => {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState("");
   const otpBoxReference = useRef<any>([]);
-  const navigate = useNavigate();
   const [countdown, setCountdown] = useState<number>(secondsCountDown);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
   let countdownInterval: string | number | NodeJS.Timer | undefined;
@@ -116,7 +114,7 @@ const OtpInputField: React.FC = () => {
     } else {
       setOtpError("");
     }
-  }, [otp]);
+  }, [otp, verifyOTP]);
 
   const isMounted = useRef(false);
 
@@ -133,7 +131,7 @@ const OtpInputField: React.FC = () => {
     if (otpBoxReference.current[0]) {
       otpBoxReference.current[0].focus();
     }
-  }, []);
+  }, [sendOTP]);
   return (
     <>
       <Grid

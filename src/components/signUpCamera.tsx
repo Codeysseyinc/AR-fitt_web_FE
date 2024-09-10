@@ -13,13 +13,7 @@ interface SignUpCameraProps {
 }
 
 const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
-  const videoConstraints = {
-    width: 137,
-    height: 162,
-    facingMode: "user",
-  };
   const camera = useRef<CameraType>(null);
-  const [numberOfCameras, setNumberOfCameras] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [imgSrc, setImgSrc] = useState<string>("");
@@ -37,22 +31,9 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   const email = useSelector((state: any) => state.signup.userDetails.email);
   const guestDetails = useSelector((state: any) => state.signup.guestDetails);
 
-  const { mutate: setMatrix } = useMutation(
-    async () => signupService.setMatrix(type, email),
-    {
-      onError: (err: any) => {
-        if (err?.response.data.message === "Unauthorized access") {
-          navigate("/");
-          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
-          localStorage.clear();
-        }
-        dispatch(setErrorMsg(err?.response.data.message));
-      },
-    }
-  );
   const { mutate: storeImage } = useMutation(
-    async (blob: Blob) =>
-      signupService.storeImage(type, blob, email, guestDetails.id),
+    async (img: any) =>
+      signupService.storeImage(type, img, email, guestDetails.id),
     {
       onError: (err: any) => {
         if (err?.response.data.message === "Unauthorized access") {
@@ -81,7 +62,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     // Prepare form data
     const formData = new FormData();
     formData.append("image", blob);
-    storeImage(blob);
+    storeImage(imgSrc);
   }
   const handleCapturePhoto = () => {
     if (!confirmation) {
@@ -109,7 +90,6 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   };
   const handleConfirm = () => {
     if (imgSrc) {
-      // setMatrix();
       setImage();
       if (isFaceScanRequired && type === "body") {
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));
@@ -160,7 +140,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
         ) : imgSrc ? (
           <img
             src={imgSrc}
-            alt="captured image"
+            alt="captured scan"
             className="rounded-[20px] h-[100%] w-[100%]"
           />
         ) : (
@@ -170,7 +150,6 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
                 ref={camera}
                 aspectRatio="cover"
                 facingMode="user"
-                numberOfCamerasCallback={(i) => setNumberOfCameras(i)}
                 errorMessages={{
                   noCameraAccessible:
                     "No camera device accessible. Please connect your camera or try a different browser.",

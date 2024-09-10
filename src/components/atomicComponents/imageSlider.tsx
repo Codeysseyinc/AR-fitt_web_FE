@@ -11,18 +11,22 @@ const ImageSlider = ({ images }: any) => {
   return (
     <Box
       sx={{ maxWidth: "100%", position: "relative" }}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-4 items-center justify-start"
     >
-      <Box className="w-full h-[400px] overflow-hidden rounded-xl">
+      {/*  */}
+      <Box
+        className="max-mui_md:min-w-[50%] max-mui_md:max-w-[70%] min-w-[90%] max-w-full mui_md:min-h-[400px] mui_md:max-h-[500px]
+        overflow-hidden rounded-xl bg-white flex justify-center items-center
+      "
+      >
         {images.map((image: any, index: any) => (
           <Box
             key={index}
             sx={{
-              width: "100%",
-              height: "100%",
               opacity: currentIndex === index ? 1 : 0,
               transition: "opacity 0.5s ease-in-out",
             }}
+            className="w-full h-full"
           >
             <img
               src={image}

@@ -16,7 +16,6 @@ const SignUp = () => {
 
   useEffect(() => {
     currentForm = currentForm || dispatch(initializeSignUpState());
-    console.log("sign up mounting", currentForm);
     currentForm = CONSTANTS.SIGN_UP_SUCCESS; // remove once developemnet is over on this page
   }, []);
 

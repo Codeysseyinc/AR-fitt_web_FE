@@ -5,7 +5,7 @@ import InputField from "../../components/inputField";
 import { useARfittContext } from "../../context/storeContext";
 import { useNavigate } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setErrorMsg, setUserDetails } from "../../redux/signup/SignupActions";
 import { useQuery } from "react-query";

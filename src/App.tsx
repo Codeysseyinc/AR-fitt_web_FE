@@ -1,30 +1,35 @@
+import { useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import SignUp from "./pages/SignUp";
-import LandingPage from "./pages/Landing page/landingPage";
-import LogIn from "./pages/LogIn/logIn";
-import ForgotPassword from "./pages/LogIn/forgotPassword";
-import GetStarted from "./pages/LogIn/getStarted";
-import HomePage from "./pages/Home page";
 import { store, persistor } from "./redux/store";
-import { ARfittProvider } from "./context/storeContext";
-import ResetPassword from "./pages/LogIn/resetPassword";
 import { PersistGate } from "redux-persist/integration/react";
-import CategoryPage from "./pages/SignUp/categoryPage";
-import HomeLayout from "./layouts/homePageLayout";
-import SuggestedItems from "./pages/Home page/SuggestedItems/suggestedItems";
-import ItemDescription from "./pages/Home page/itemDescription";
-import { useEffect } from "react";
+import { ARfittProvider } from "./context/storeContext";
 import HTTPService from "./services/base.service";
-import { QueryClient, QueryClientProvider } from "react-query";
-const queryClient = new QueryClient();
+import SignUp from "./pages/SignUp";
+import LogIn from "./pages/LogIn/logIn";
+import HomePage from "./pages/Home page";
+import HomeLayout from "./layouts/homePageLayout";
+import GetStarted from "./pages/LogIn/getStarted";
+import CategoryPage from "./pages/SignUp/categoryPage";
+import ResetPassword from "./pages/LogIn/resetPassword";
+import ForgotPassword from "./pages/LogIn/forgotPassword";
+import LandingPage from "./pages/Landing page/landingPage";
+import ItemDescription from "./pages/Home page/itemDescription";
+import SuggestedItems from "./pages/Home page/SuggestedItems/suggestedItems";
+import CONSTANTS from "./utils/constants/CONSTANTS";
+
 const App = () => {
+  const queryClient = new QueryClient();
+  // eslint-disable-next-line
+  const [token, _] = useState(localStorage.getItem(CONSTANTS.ACCESS_TOKEN));
+
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
     if (token) {
       HTTPService.setToken(token);
     }
-  });
+  }, [token]);
+
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>

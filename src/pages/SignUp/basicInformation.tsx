@@ -42,7 +42,7 @@ const BasicInformation: React.FC<any> = () => {
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
     dispatch(setErrorMsg(""));
-  }, []);
+  }, [dispatch]);
   return (
     // page
     <Grid

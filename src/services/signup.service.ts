@@ -34,17 +34,19 @@ class SignupService extends HTTPService {
       [`${type}Matrix`]: '["inferences": "123"]',
     });
   };
-  storeImage = (type: string, blob: Blob, email?: string, userId?: string) => {
-    return this.post(
-      `${process.env.REACT_APP_BASE_URL}/${type}Image?${
-        userId ? `userID=${userId}` : `email=${email}`
-      }`,
-
-      {
-        [`${type}Image`]: blob,
-      },
-      { headers: { "Content-Type": "multipart/form-data;" } }
-    );
+  storeImage = (
+    type: string,
+    blob: string,
+    email?: string,
+    userId?: string
+  ) => {
+    const payload = { [`${type}Image`]: blob };
+    if (userId) {
+      payload.userID = userId;
+    } else if (email) {
+      payload.email = email;
+    }
+    return this.post(`${process.env.REACT_APP_BASE_URL}/${type}Image`, payload);
   };
   resetPassword = (email: string, password: string) => {
     return this.post(`${process.env.REACT_APP_BASE_URL}/user/resetPassword`, {

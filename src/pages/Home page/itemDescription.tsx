@@ -1,27 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/rootReducer";
 import CameraPopUp from "../../components/cameraPopUp";
 import ImageSlider from "../../components/atomicComponents/imageSlider";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { setOpenCameraModule } from "../../redux/main/mainActions";
 
 const ItemDescription = () => {
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
   const [images, setImages] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     undefined
   );
   const [selectedColor, setSelectedColor] = useState<any>();
+
   const selectedItem = useSelector(
     (state: RootState) => state.main.selectedItem
   );
+  const openCameraModule = useSelector(
+    (state: RootState) => state.main.openCameraModule
+  );
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch(setOpenCameraModule(false));
   };
   const handleOpen = () => {
-    setOpen(true);
+    dispatch(setOpenCameraModule(true));
   };
   const handleSelectedSize = (size: string) => {
     setSelectedSize(size);
@@ -42,7 +48,6 @@ const ItemDescription = () => {
           return defaultImage;
         }
       } catch {
-        console.log("XX Catch: ", defaultImage);
         return defaultImage;
       }
     };
@@ -54,10 +59,9 @@ const ItemDescription = () => {
     const fetchImages = async () => {
       if (selectedItem && selectedItem?.itemImagesURLs?.length > 0) {
         const imageUrls = selectedItem?.itemImagesURLs?.map(
-          (item: any) => item.imageURL
+          (item: any) => `${process.env.REACT_APP_BASE_URL}${item.imageURL}`
         );
         const validatedImages = await validateImages(imageUrls);
-        console.log("XX Validate Image: ", validatedImages);
         setImages(validatedImages);
       }
     };
@@ -70,7 +74,7 @@ const ItemDescription = () => {
   }, [selectedItem]);
 
   return (
-    <Grid container className="flex flex-col gap-1 items-center px-6 pb-10">
+    <Grid container className="flex flex-col gap-1 items-center px-6 py-10">
       <Grid container className="flex gap-5">
         {/* Image Grid */}
         <Grid item xs={12} md={5}>
@@ -155,13 +159,17 @@ const ItemDescription = () => {
           </Box>
         </Grid>
       </Grid>
-      <CameraPopUp
-        open={open}
-        selectedColor={selectedColor}
-        productImage={images[0]}
-        onClose={handleClose}
-        handleSelectedColor={handleSelectedColor}
-      />
+      {openCameraModule === true ? (
+        <CameraPopUp
+          open={openCameraModule ?? false}
+          selectedColor={selectedColor}
+          productImage={images[0]}
+          onClose={handleClose}
+          handleSelectedColor={handleSelectedColor}
+        />
+      ) : (
+        <></>
+      )}
     </Grid>
   );
 };

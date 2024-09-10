@@ -5,16 +5,14 @@ import {
   setCurrentForm,
   setInterestCategory,
 } from "../../redux/signup/SignupActions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import categories from "./categories.json";
 
 const CategoryPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const interestCategories: Array<string> = useSelector(
-    (state: any) => state.signup.interestCategories
-  );
+
   const [clickedImages, setClickedImages] = useState<Array<string>>([]);
 
   const handleImageClick = (categoryName: string, itemName: string) => {
@@ -106,6 +104,7 @@ const CategoryPage: React.FC = () => {
         </div>{" "}
         <div
           onClick={() => {
+            dispatch(setInterestCategory([]));
             navigate("/home");
           }}
         >

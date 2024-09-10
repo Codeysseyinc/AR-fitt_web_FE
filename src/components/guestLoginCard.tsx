@@ -10,14 +10,11 @@ import GenderDropDown from "./genderDropdown";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  setCurrentForm,
-  setErrorMsg,
-  setGuestDetails,
-} from "../redux/signup/SignupActions";
+import { setErrorMsg, setGuestDetails } from "../redux/signup/SignupActions";
 import { useMutation } from "react-query";
 import signupService from "../services/signup.service";
 import HTTPService from "../services/base.service";
+import CONSTANTS from "../utils/constants/CONSTANTS";
 
 interface GuestLoginCardFieldProps {
   open: boolean;
@@ -54,9 +51,9 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
               isBodyScanned: res.data.message.isBodyScanned,
             })
           );
-          const token = res.headers.access_token;
+          const token = res.headers[CONSTANTS.ACCESS_TOKEN];
           if (token) {
-            localStorage.setItem("access_token", token);
+            localStorage.setItem(CONSTANTS.ACCESS_TOKEN, token);
             HTTPService.setToken(token);
           }
           navigate("/home");
