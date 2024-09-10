@@ -27,7 +27,7 @@ const HomeLayout: React.FC = () => {
 
   return (
     <>
-      {token && (userDetails.isSubscribed || guestDetails.id) ? (
+      {token ? (
         <Grid
           className="p-2 h-screen overflow-auto flex justify-center"
           style={

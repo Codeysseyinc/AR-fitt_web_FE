@@ -29,7 +29,7 @@ const SubscriptionPlans = () => {
     {
       onSuccess: (res: any) => {
         if (res.data.messageCode === "user_not_subscribed" && session_id) {
-          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));
           dispatch(setErrorMsg(res.data.message));
         } else if (res.data.messageCode === "user_subscribed" && session_id) {
           handleNextPage(CONSTANTS.SIGN_UP_SUCCESS);
@@ -42,7 +42,7 @@ const SubscriptionPlans = () => {
 
   useEffect(() => {
     // dispatch(setErrorMsg(null));
-    dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+    dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));
     if (token) {
       const decodedToken = jwtDecode(token);
       const currentTime = Math.floor(Date.now() / 1000);

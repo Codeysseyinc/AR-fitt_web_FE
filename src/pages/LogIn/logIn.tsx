@@ -66,21 +66,11 @@ const LogIn: React.FC = () => {
         if (!res.data.message.isVerified) {
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_OTP_VERIFICATION));
           navigate("/signup");
-<<<<<<< HEAD
-        }
-        // else if (!res.data.message.isSubscribed) {
-        //   dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
-
-        //   navigate("/signup");
-        // }
-        else {
-=======
         } else if (!res.data.message.isSubscribed) {
           dispatch(setSubscriptionFailure("User is not subscribed"));
-          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUBSCRIPTION));
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));
           navigate("/signup");
         } else {
->>>>>>> dev
           navigate("/home");
           dispatch(setSubscriptionSuccess());
         }
