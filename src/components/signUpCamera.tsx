@@ -123,7 +123,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   return (
     <Grid
       direction="column"
-      className="xs:w-[320px] xl:w-[450px] xs:h-[406px] lg:h-[550px] mt-6 flex justify-start items-center"
+      className="xs:w-[320px] xl:w-[395px] xs:h-[406px] xl:h-[500px] mt-4 flex justify-start items-center"
     >
       <div className="relative h-[85%] w-[80%]">
         {!confirmation ? (
