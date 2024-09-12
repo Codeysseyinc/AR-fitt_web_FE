@@ -30,9 +30,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   };
   return (
     <Grid
-      item
-      direction="column"
-      className={`${className} bg-white sm:rounded-tl-[40px] xs:w-[100%] sm:w-[65%] sm:absolute left-[35%] h-screen flex items-center `}
+      className={`${className} bg-white sm:rounded-tl-[40px] xs:w-[100%] sm:w-[65%] sm:absolute left-[35%] h-screen flex flex-col items-center overflow-y-auto`}
     >
       {error && (
         <Alert severity="error" className="absolute">

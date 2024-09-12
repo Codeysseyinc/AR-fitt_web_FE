@@ -7,15 +7,13 @@ const FeaturesSection: React.FC<{}> = () => {
       {/* Features section */}
       <Grid
         id="features"
-        container
-        direction="row"
         xs={12}
-        className="w-screen h-screen relative bg-white"
+        className="w-screen md:h-screen relative bg-white"
       >
         <Grid
           item
           direction="row"
-          className="h-[30%] w-[100%] flex justify-start items-start"
+          className="md:h-[30%] w-[100%] flex justify-start items-start"
         >
           {/* Black Logo section */}
           <div className="w-[30%] justify-center items-center h-[100%] xs:hidden md:flex">
@@ -46,7 +44,7 @@ const FeaturesSection: React.FC<{}> = () => {
             </div>
           </Grid>
         </Grid>
-        <Grid className=" h-[60%] w-[100%] flex justify-center items-center xs:flex-col lg:flex-row xs:mt-0 md:mt-4">
+        <Grid className=" md:h-[60%] w-[100%] flex justify-center items-center xs:flex-col lg:flex-row xs:mt-0 md:mt-4">
           {/* text area */}
           <Grid item direction="column" className="w-[40%] xs:hidden lg:flex">
             {/* features */}

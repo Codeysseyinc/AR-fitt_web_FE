@@ -122,7 +122,7 @@ const LogIn: React.FC = () => {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              onErrorUpdate={handleErrorUpdate("email")}
+              onErrorUpdate={() => handleErrorUpdate("email")}
             />
           </Grid>
 

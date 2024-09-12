@@ -12,6 +12,7 @@ import {
   setErrorMsg,
 } from "../../redux/signup/SignupActions";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
+import DateOfBirthPicker from "../../components/dateOfBirthPicker";
 
 const BasicInformation: React.FC<any> = () => {
   const dispatch: any = useDispatch();
@@ -22,7 +23,7 @@ const BasicInformation: React.FC<any> = () => {
   const [firstName, setFirstName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [dob, setDob] = useState("");
+  const [dob, setDob] = useState(new Date());
   const [errors, setErrors] = useState({
     firstName: false,
     lastName: false,
@@ -60,7 +61,7 @@ const BasicInformation: React.FC<any> = () => {
       <ContentArea title="Create Account">
         <Grid
           direction="column"
-          className="xs:w-[70%] xl:w-[80%] flex justify-center h-full"
+          className="xs:w-[70%] xl:w-[80%] flex xs:justify-evenly  md:justify-center h-full"
         >
           {/* First Name & Last Name */}
           <Grid
@@ -120,9 +121,7 @@ const BasicInformation: React.FC<any> = () => {
           </Grid>
           {/* DOB & Gender*/}
           <Grid className="flex h-[55px] justify-evenly w-full ">
-            <InputField
-              type="date"
-              placeholder="Date of Birth"
+            <DateOfBirthPicker
               setValue={setDob}
               onErrorUpdate={handleErrorUpdate("dateOfBirth")}
             />

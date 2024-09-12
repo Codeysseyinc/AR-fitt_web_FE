@@ -105,7 +105,6 @@ const InputField: React.FC<InputFieldProps> = ({
         error={nameError || passwordErrors.length || passwordErrors.specialChar}
         required
         className={` ${className} border-0 border-b border-[#646262] m-2 w-full text-xs font-Montserrat`}
-        inputProps={{ color: "#00ff00" }}
         variant="standard"
         type={showPassword ? "text" : type}
         placeholder={placeholder}

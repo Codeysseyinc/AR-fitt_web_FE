@@ -18,12 +18,12 @@ const GenderDropDown = ({ setGender, className }: GenderDropDownFieldProps) => {
         labelId="gender-label"
         onChange={handleChange}
         displayEmpty
-        renderValue={(selected) => selected || "Gender"}
+        value="Gender"
         sx={{
           color: "rgb(148 148 148)",
         }}
       >
-        <MenuItem value="" disabled>
+        <MenuItem value="Gender" disabled>
           Gender
         </MenuItem>
         <MenuItem value="Female">Female</MenuItem>

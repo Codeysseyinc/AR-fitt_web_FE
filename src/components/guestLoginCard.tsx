@@ -1,11 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContentText,
-  Grid,
-} from "@mui/material";
-import InputField from "./inputField";
+import { Button, Dialog, DialogActions, Grid } from "@mui/material";
 import GenderDropDown from "./genderDropdown";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +8,7 @@ import { useMutation } from "react-query";
 import signupService from "../services/signup.service";
 import HTTPService from "../services/base.service";
 import CONSTANTS from "../utils/constants/CONSTANTS";
+import DateOfBirthPicker from "./dateOfBirthPicker";
 
 interface GuestLoginCardFieldProps {
   open: boolean;
@@ -22,7 +16,7 @@ interface GuestLoginCardFieldProps {
 }
 const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
   const [gender, setGender] = useState("");
-  const [dob, setDob] = useState("");
+  const [dob, setDob] = useState(new Date());
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -37,6 +31,7 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
       [field]: isError,
     });
   };
+  console.log("dobbb", dob);
   const { mutate: guestSignup } = useMutation(
     async () => signupService.guestSignup({ gender: gender, dob: dob }),
     {
@@ -96,7 +91,7 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
           </svg>
         </Button>
       </DialogActions>
-      <DialogContentText
+      <Grid
         id="alert-dialog-description"
         className="flex flex-col items-center justify-center"
       >
@@ -111,10 +106,7 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
             guest
           </p>
           <GenderDropDown className="w-[100%]" setGender={setGender} />
-
-          <InputField
-            type="date"
-            placeholder="Date of Birth"
+          <DateOfBirthPicker
             setValue={setDob}
             onErrorUpdate={handleErrorUpdate("dateOfBirth")}
           />
@@ -137,7 +129,7 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
             Continue As Guest
           </Button>
         </Grid>
-      </DialogContentText>
+      </Grid>
     </Dialog>
   );
 };
