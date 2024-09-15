@@ -89,6 +89,7 @@ const LogIn: React.FC = () => {
   }
   useEffect(() => {
     dispatch(setErrorMsg(null));
+    localStorage.clear();
   }, [dispatch]);
   return (
     <Grid

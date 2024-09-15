@@ -23,10 +23,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({
   const navigate = useNavigate();
   const error = useSelector((state: any) => state.signup.errorMessage);
   const getPreviousForm = (title?: string, setCurrentForm?: any) => {
-    if (title === "Scanning") {
-      navigate("/");
-    } else navigate(-1);
-    localStorage.clear();
+    navigate(-1);
   };
   return (
     <Grid

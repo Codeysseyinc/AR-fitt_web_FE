@@ -64,7 +64,7 @@ const ForgotPassword: React.FC = () => {
       <ContentArea title="Forgot Password ?">
         <Grid
           direction="column"
-          className="w-[70%] h-full flex xs:justify-start md:justify-center xs:items-start md:items-center "
+          className="w-[70%] h-full flex justify-center xs:items-start md:items-center "
         >
           <p className="font-Montserrat text-sm flex justify-center text-center">
             Don't worry, we'll send you instructions to reset your password via

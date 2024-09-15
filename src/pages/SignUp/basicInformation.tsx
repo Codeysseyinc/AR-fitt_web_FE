@@ -61,7 +61,7 @@ const BasicInformation: React.FC<any> = () => {
       <ContentArea title="Create Account">
         <Grid
           direction="column"
-          className="xs:w-[70%] xl:w-[80%] flex xs:justify-evenly  md:justify-center h-full"
+          className="xs:w-[70%] xl:w-[80%] flex justify-center xs:gap-4 md:gap-0 h-full"
         >
           {/* First Name & Last Name */}
           <Grid
@@ -128,7 +128,7 @@ const BasicInformation: React.FC<any> = () => {
             <GenderDropDown className="w-[30%]" setGender={setGender} />
           </Grid>
           {/* Sign Up Button */}
-          <Grid className="flex items-center justify-evenly w-full mt-[4%]">
+          <Grid className="flex flex-col items-center justify-evenly w-full mt-[4%]">
             <Button
               disabled={hasErrors}
               className={`${
@@ -167,14 +167,14 @@ const BasicInformation: React.FC<any> = () => {
             >
               Sign Up
             </Button>{" "}
-          </Grid>
-          {/* Sign In option */}
-          <Grid className="Montserrat-text text-xs flex justify-start w-full m-4">
-            Have an account ?&nbsp;
-            <Link href="/login" className="text-link font-bold">
-              {" "}
-              Sign In
-            </Link>
+            {/* Sign In option */}
+            <Grid className="Montserrat-text text-xs flex justify-start w-full m-4">
+              Have an account ?&nbsp;
+              <Link href="/login" className="text-link font-bold">
+                {" "}
+                Sign In
+              </Link>
+            </Grid>
           </Grid>
         </Grid>
       </ContentArea>

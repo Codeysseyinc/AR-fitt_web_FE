@@ -61,6 +61,7 @@ const ResetPassword: React.FC = () => {
 
   useEffect(() => {
     dispatch(setErrorMsg(null));
+    localStorage.clear();
   });
   return (
     <Grid
