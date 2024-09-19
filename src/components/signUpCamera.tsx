@@ -2,7 +2,14 @@ import { Grid } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentForm, setErrorMsg } from "../redux/signup/SignupActions";
+import {
+  setBodyScanSuccess,
+  setCurrentForm,
+  setErrorMsg,
+  setFaceScanSuccess,
+  setGuestBodyScanSuccess,
+  setGuestFaceScanSuccess,
+} from "../redux/signup/SignupActions";
 import CONSTANTS from "../utils/constants/CONSTANTS";
 import { Camera, CameraType } from "react-camera-pro";
 import CameraTools from "./cameraTools";
@@ -35,6 +42,21 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     async (img: any) =>
       signupService.storeImage(type, img, email, guestDetails.id),
     {
+      onSuccess: () => {
+        if (type === "face") {
+          if (email) {
+            dispatch(setFaceScanSuccess());
+          } else {
+            dispatch(setGuestFaceScanSuccess());
+          }
+        } else {
+          if (email) {
+            dispatch(setBodyScanSuccess());
+          } else {
+            dispatch(setGuestBodyScanSuccess());
+          }
+        }
+      },
       onError: (err: any) => {
         if (err?.response.data.message === "Unauthorized access") {
           navigate("/");

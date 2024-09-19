@@ -18,6 +18,8 @@ const HomeNavbar = () => {
   const typeQueryParamTrigger = queryParams.get("type");
 
   const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const guestDetails = useSelector((state: any) => state.signup.guestDetails);
+
   const selectedRoute = useSelector((state: any) => state.main.selectedRoute);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -25,6 +27,8 @@ const HomeNavbar = () => {
   const [redirectionLink, setRedirectionLink] = useState("");
   const isFaceScanPresent = userDetails.isFaceScanned;
   const isBodyScanPresent = userDetails.isBodyScanned;
+  const isGuestFaceScanPresent = guestDetails.isFaceScanned;
+  const isGuestBodyScanPresent = guestDetails.isBodyScanned;
   const [mobileAnchorEl, setMobileAnchorEl] = useState(null);
 
   const anchorTagStyling =
@@ -154,12 +158,18 @@ const HomeNavbar = () => {
                 <MenuItem
                   onClick={() => {
                     dispatch(setSelectedRoute(item));
-                    if (item.name === "Apparel" && !isBodyScanPresent) {
+                    if (
+                      item.name === "Apparel" &&
+                      !(isBodyScanPresent || isGuestBodyScanPresent)
+                    ) {
                       setModalOpen(true);
                       setRedirectionLink(CONSTANTS.SIGN_UP_BODY_SCANNING);
                       return;
                     }
-                    if (item.name === "Cosmetics" && !isFaceScanPresent) {
+                    if (
+                      item.name === "Cosmetics" &&
+                      !(isFaceScanPresent || isGuestFaceScanPresent)
+                    ) {
                       setModalOpen(true);
                       setRedirectionLink(CONSTANTS.SIGN_UP_FACE_SCANNING);
                       return;
@@ -189,12 +199,18 @@ const HomeNavbar = () => {
               }`}
               onClick={() => {
                 dispatch(setSelectedRoute(item));
-                if (item.name === "Apparel" && !isBodyScanPresent) {
+                if (
+                  item.name === "Apparel" &&
+                  !(isBodyScanPresent || isGuestBodyScanPresent)
+                ) {
                   setModalOpen(true);
                   setRedirectionLink(CONSTANTS.SIGN_UP_BODY_SCANNING);
                   return;
                 }
-                if (item.name === "Cosmetics" && !isFaceScanPresent) {
+                if (
+                  item.name === "Cosmetics" &&
+                  !(isFaceScanPresent || isGuestFaceScanPresent)
+                ) {
                   setModalOpen(true);
                   setRedirectionLink(CONSTANTS.SIGN_UP_FACE_SCANNING);
                   return;

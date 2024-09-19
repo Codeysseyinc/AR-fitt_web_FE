@@ -236,6 +236,38 @@ const signupReducer: Reducer<SignupState, SignupAction> = (
         ...state,
         guestDetails: action.payload,
       };
+    case SignupActionTypes.GUEST_FACE_SCANNED_SUCCESS:
+      return {
+        ...state,
+        guestDetails: {
+          ...state.guestDetails,
+          isFaceScanned: true,
+        },
+      };
+    case SignupActionTypes.GUEST_FACE_SCANNED_FAILURE:
+      return {
+        ...state,
+        guestDetails: {
+          ...state.guestDetails,
+          isFaceScanned: false,
+        },
+      };
+    case SignupActionTypes.GUEST_BODY_SCANNED_SUCCESS:
+      return {
+        ...state,
+        guestDetails: {
+          ...state.guestDetails,
+          isBodyScanned: true,
+        },
+      };
+    case SignupActionTypes.GUEST_BODY_SCANNED_FAILURE:
+      return {
+        ...state,
+        guestDetails: {
+          ...state.guestDetails,
+          isBodyScanned: false,
+        },
+      };
     case SignupActionTypes.SET_INTEREST_CATEGORIES:
       return {
         ...state,

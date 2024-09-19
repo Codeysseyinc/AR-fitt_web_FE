@@ -6,6 +6,7 @@ import { RootState } from "../redux/rootReducer";
 import HomeNavbar from "../components/HomePage/homeNavbar";
 import CONSTANTS from "../utils/constants/CONSTANTS";
 import UnauthorisedPage from "../pages/Unauthorised page/unauthorisedPage";
+import { jwtDecode } from "jwt-decode";
 
 const HomeLayout: React.FC = () => {
   const location = useLocation();
@@ -21,13 +22,19 @@ const HomeLayout: React.FC = () => {
     localStorage.getItem(CONSTANTS.ACCESS_TOKEN)
   );
 
+  const isTokenExpired = () => {
+    if (token) {
+      const exp = jwtDecode(token).exp;
+      if (exp) return exp < Math.floor(Date.now() / 1000);
+    } else return true;
+  };
   useEffect(() => {
     setToken(localStorage.getItem(CONSTANTS.ACCESS_TOKEN));
   }, [userDetails, guestDetails]);
 
   return (
     <>
-      {token && (userDetails.isSubscribed || guestDetails.id) ? (
+      {!isTokenExpired() && (userDetails.isSubscribed || guestDetails.id) ? (
         <Grid
           className="p-2 h-screen overflow-auto flex justify-center"
           style={

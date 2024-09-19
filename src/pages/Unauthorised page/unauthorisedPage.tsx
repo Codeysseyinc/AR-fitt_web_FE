@@ -19,7 +19,7 @@ const UnauthorisedPage = () => {
       }}
     >
       {" "}
-      <p className="py-10 px-5 text-bold font-Montserrat text-xl text-white">
+      <p className="py-10 px-5 text-bold font-Montserrat text-xl text-white text-center">
         PLEASE LOGIN OR SIGNUP TO CONTINUE
       </p>
       <ArrowBackRoundedIcon
@@ -28,7 +28,7 @@ const UnauthorisedPage = () => {
           navigate("/");
         }}
         sx={{ color: "white" }}
-        className=" rounded-[50%] scale-150 ml-8 mt-6 cursor-pointer"
+        className=" rounded-[50%] scale-150  cursor-pointer border-white border-solid border-1 self-center"
       />
     </Grid>
   );

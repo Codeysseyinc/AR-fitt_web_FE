@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import navbarData from "../../utils/constants/JSON/navbar.json";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
+import { jwtDecode } from "jwt-decode";
 const Navbar = () => {
   const navigate = useNavigate();
   const isMobileView = useMediaQuery(CONSTANTS.MOBILE_VIEW_MAX_WIDTH);
@@ -12,6 +13,12 @@ const Navbar = () => {
     setOpen(newOpen);
   };
   const token = localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
+  const isTokenExpired = () => {
+    if (token) {
+      const exp = jwtDecode(token).exp;
+      if (exp) return exp < Math.floor(Date.now() / 1000);
+    } else return true;
+  };
   const navList = navbarData.map((item, index) => {
     if (item.type === "button") {
       return (
@@ -22,7 +29,7 @@ const Navbar = () => {
             borderRadius: "7px",
           }}
           onClick={() => {
-            if (token) {
+            if (!isTokenExpired()) {
               navigate("/home");
             } else {
               navigate(item.link);

@@ -1,15 +1,18 @@
-import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Dispatch } from "redux";
+import { useState } from "react";
 interface GenderDropDownFieldProps {
   setGender: Dispatch<React.SetStateAction<string | any>> | any;
   className?: string;
 }
+
 const GenderDropDown = ({ setGender, className }: GenderDropDownFieldProps) => {
+  const [selectedGender, setSelectedGender] = useState("Gender");
   const handleChange = (event: SelectChangeEvent) => {
     setGender(event.target.value);
+    setSelectedGender(event.target.value);
   };
 
   return (
@@ -18,7 +21,7 @@ const GenderDropDown = ({ setGender, className }: GenderDropDownFieldProps) => {
         labelId="gender-label"
         onChange={handleChange}
         displayEmpty
-        value="Gender"
+        value={selectedGender}
         sx={{
           color: "rgb(148 148 148)",
         }}

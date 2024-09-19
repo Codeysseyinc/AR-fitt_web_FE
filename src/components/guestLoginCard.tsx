@@ -3,7 +3,14 @@ import GenderDropDown from "./genderDropdown";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setErrorMsg, setGuestDetails } from "../redux/signup/SignupActions";
+import {
+  setErrorMsg,
+  setGuestBodyScanFailure,
+  setGuestBodyScanSuccess,
+  setGuestDetails,
+  setGuestFaceScanFailure,
+  setGuestFaceScanSuccess,
+} from "../redux/signup/SignupActions";
 import { useMutation } from "react-query";
 import signupService from "../services/signup.service";
 import HTTPService from "../services/base.service";
@@ -16,7 +23,7 @@ interface GuestLoginCardFieldProps {
 }
 const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
   const [gender, setGender] = useState("");
-  const [dob, setDob] = useState(new Date());
+  const [dob, setDob] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -31,7 +38,6 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
       [field]: isError,
     });
   };
-  console.log("dobbb", dob);
   const { mutate: guestSignup } = useMutation(
     async () => signupService.guestSignup({ gender: gender, dob: dob }),
     {
@@ -46,6 +52,17 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
               isBodyScanned: res.data.message.isBodyScanned,
             })
           );
+          if (res.data.message.isFaceScanned) {
+            dispatch(setGuestFaceScanSuccess());
+          } else {
+            dispatch(setGuestFaceScanFailure(""));
+          }
+          if (res.data.message.isBodyScanned) {
+            dispatch(setGuestBodyScanSuccess());
+          } else {
+            dispatch(setGuestBodyScanFailure(""));
+          }
+
           const token = res.headers[CONSTANTS.ACCESS_TOKEN];
           if (token) {
             localStorage.setItem(CONSTANTS.ACCESS_TOKEN, token);
@@ -112,6 +129,7 @@ const GuestLoginCard = ({ open, setOpen }: GuestLoginCardFieldProps) => {
           />
           {/* Guest Button */}
           <Button
+            disabled={!gender || !dob}
             className="bg-white text-primary border-solid border-black border h-[80%] font-bold"
             variant="contained"
             disableElevation={true}

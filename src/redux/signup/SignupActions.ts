@@ -110,6 +110,20 @@ export const setGuestDetails = (guest: any) => ({
   type: SignupActionTypes.SET_GUEST_DETAILS,
   payload: guest,
 });
+export const setGuestBodyScanSuccess = () => ({
+  type: SignupActionTypes.GUEST_BODY_SCANNED_SUCCESS,
+});
+export const setGuestBodyScanFailure = (errorMessage: string) => ({
+  type: SignupActionTypes.GUEST_BODY_SCANNED_FAILURE,
+  payload: errorMessage,
+});
+export const setGuestFaceScanSuccess = () => ({
+  type: SignupActionTypes.GUEST_FACE_SCANNED_SUCCESS,
+});
+export const setGuestFaceScanFailure = (errorMessage: string) => ({
+  type: SignupActionTypes.GUEST_FACE_SCANNED_FAILURE,
+  payload: errorMessage,
+});
 export const setInterestCategory = (interest: any) => ({
   type: SignupActionTypes.SET_INTEREST_CATEGORIES,
   payload: interest,

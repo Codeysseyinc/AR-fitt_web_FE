@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import RedirectionModal from "../../components/HomePage/redirectionModal";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
-import { useDispatch } from "react-redux";
-import {
-  setBodyScanFailure,
-  setBodyScanSuccess,
-  setFaceScanFailure,
-  setFaceScanSuccess,
-} from "../../redux/signup/SignupActions";
-import dashboardService from "../../services/dashboard.service";
-import { useQuery } from "react-query";
 
 const HomePage = () => {
   const userDetails = useSelector((state: any) => state.signup.userDetails);
   const isFaceScanPresent = userDetails.isFaceScanned;
   const isBodyScanPresent = userDetails.isBodyScanned;
-
+  const guestDetails = useSelector((state: any) => state.signup.guestDetails);
+  const isGuestFaceScanPresent = guestDetails.isFaceScanned;
+  const isGuestBodyScanPresent = guestDetails.isBodyScanned;
   const fullname = userDetails.firstName + " " + userDetails.lastName;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   const [redirectionLink, setRedirectionLink] = useState("");
-  const email = useSelector((state: any) => state.signup.userDetails.email);
-  const guestDetails = useSelector((state: any) => state.signup.guestDetails);
 
   const handleContinueClick = () => {
-    if (isBodyScanPresent || isFaceScanPresent)
+    if (
+      isGuestBodyScanPresent ||
+      isBodyScanPresent ||
+      isFaceScanPresent ||
+      isGuestFaceScanPresent
+    )
       navigate(
         `/home/suggestion?type=${
-          isBodyScanPresent
+          isBodyScanPresent || isGuestBodyScanPresent
             ? CONSTANTS.APPAREL_TITLE
             : CONSTANTS.COSMETICS_TITLE
         }`
@@ -41,61 +36,6 @@ const HomePage = () => {
       setModalOpen(true);
     }
   };
-  const { refetch: getFaceMatrix } = useGetMatrix(
-    "face",
-    dispatch,
-    email,
-    guestDetails.id
-  );
-  const { refetch: getBodyMatrix } = useGetMatrix(
-    "body",
-    dispatch,
-    email,
-    guestDetails.id
-  );
-
-  function useGetMatrix(
-    type: string,
-    dispatch: any,
-    email?: string,
-    id?: string
-  ) {
-    return useQuery(
-      [email ? "getImageByEmail" : "getImageById", type],
-      async () =>
-        email
-          ? dashboardService.getImageByEmail(email, type, dispatch)
-          : dashboardService.getImageById(id, type, dispatch), // This function is being used for guest users exclusively
-
-      {
-        enabled: false,
-        onSuccess: (res) => {
-          if (type === "face") {
-            dispatch(setFaceScanSuccess());
-          } else {
-            dispatch(setBodyScanSuccess());
-          }
-        },
-        onError: (err: any) => {
-          if (
-            type === "face" &&
-            err.response.data.messageCode === "user_face_image_not_exist"
-          ) {
-            dispatch(setFaceScanFailure(""));
-          } else if (
-            type === "body" &&
-            err.response.data.messageCode === "user_body_image_not_exist"
-          ) {
-            dispatch(setBodyScanFailure(""));
-          }
-        },
-      }
-    );
-  }
-  useEffect(() => {
-    getFaceMatrix();
-    getBodyMatrix();
-  }, [dispatch, getFaceMatrix, getBodyMatrix]);
 
   return (
     <Grid
