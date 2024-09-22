@@ -51,7 +51,7 @@ const Navbar = () => {
     }
   });
   return (
-    <Grid className="flex flex-row absolute w-full bg-[#C8C8C8]  bg-opacity-20 h-[8%] z-40">
+    <Grid className="flex flex-row sticky top-0 w-full bg-[#C8C8C8] bg-opacity-70 h-[60px] z-40 ">
       <div className=" w-[30%] flex">
         <img
           src="/assets/images/logo.png"

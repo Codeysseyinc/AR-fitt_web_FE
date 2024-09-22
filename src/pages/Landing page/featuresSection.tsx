@@ -7,6 +7,8 @@ const FeaturesSection: React.FC<{}> = () => {
       {/* Features section */}
       <Grid
         id="features"
+        container
+        direction="row"
         xs={12}
         className="w-screen md:h-screen relative bg-white"
       >

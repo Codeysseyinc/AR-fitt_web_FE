@@ -15,9 +15,8 @@ const HeroSection: React.FC<{}> = () => {
         container
         direction="row"
         xs={12}
-        className="w-screen md:h-screen relative "
+        className="w-screen md:h-screen relative mt-[-60px]"
       >
-        <Navbar />
         {/* white panel on left */}
         <Grid
           item
