@@ -119,11 +119,11 @@ const OtpInputField: React.FC = () => {
   const isMounted = useRef(false);
 
   useEffect(() => {
-    // Skip the effect on the initial render
-    if (!isMounted.current) {
-      isMounted.current = true;
-      return;
-    }
+    // Skip the effect on the initial render in development mode
+    // if (!isMounted.current) {
+    //   isMounted.current = true;
+    //   return;
+    // }
     setTimeout(() => {
       setTriggerCountDown(true);
       sendOTP();
