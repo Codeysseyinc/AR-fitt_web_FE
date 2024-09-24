@@ -30,7 +30,7 @@ const OtpInputField: React.FC = () => {
       setOtp(newArr);
     }
   }
-  console.log("test");
+
   function handleBackspaceAndEnter(e: any, index: number) {
     if (e.key === "Backspace" && !e.target.value && index > 0) {
       otpBoxReference.current[index - 1].focus();
