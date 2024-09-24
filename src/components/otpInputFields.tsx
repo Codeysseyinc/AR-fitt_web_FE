@@ -11,7 +11,7 @@ import { useMutation, useQuery } from "react-query";
 import signupService from "../services/signup.service";
 
 const OtpInputField: React.FC = () => {
-  const secondsCountDown = 60 * 1; // time in seconds
+  const secondsCountDown = 30 * 1; // time in seconds
   const numberOfDigits = 5;
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState("");

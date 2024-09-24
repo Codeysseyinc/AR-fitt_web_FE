@@ -1,5 +1,4 @@
 import { Grid, useMediaQuery } from "@mui/material";
-import Navbar from "../../components/navBar/navbar";
 import HeroSectionCard from "../../components/heroSectionCard";
 import CallToActionButton from "../../components/callToActionButton";
 import CONSTANTS from "../../utils/constants/CONSTANTS";
