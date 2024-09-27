@@ -20,6 +20,11 @@ const SignupSuccess: React.FC = () => {
   const [searchParams] = useSearchParams();
   const session_id = searchParams.get("session_id") ?? "";
   const userDetails = useSelector((state: any) => state.signup.userDetails);
+  const isFaceScanPresent = userDetails.isFaceScanned;
+  const isBodyScanPresent = userDetails.isBodyScanned;
+  const guestDetails = useSelector((state: any) => state.signup.guestDetails);
+  const isGuestFaceScanPresent = guestDetails.isFaceScanned;
+  const isGuestBodyScanPresent = guestDetails.isBodyScanned;
   const email = userDetails.email;
   const { refetch: getSubscriptionStatus } = useQuery(
     "getSubscriptionStatus",
@@ -39,8 +44,6 @@ const SignupSuccess: React.FC = () => {
     }
   );
 
-  const isFaceScanPresent = userDetails.isFaceScanned;
-  const isBodyScanPresent = userDetails.isBodyScanned;
   useEffect(() => {
     dispatch(setCurrentForm(CONSTANTS.SIGN_UP_SUCCESS));
     dispatch(setErrorMsg(null));
@@ -87,7 +90,10 @@ const SignupSuccess: React.FC = () => {
             height: "83px",
           }}
           onClick={() => {
-            if (!isBodyScanPresent && !isFaceScanPresent) {
+            if (
+              !(isBodyScanPresent || isGuestBodyScanPresent) &&
+              !(isFaceScanPresent || isGuestFaceScanPresent)
+            ) {
               dispatch(setCurrentForm(CONSTANTS.SIGN_UP_CATEGORIES));
             } else {
               navigate("/home");

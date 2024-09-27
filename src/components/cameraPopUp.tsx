@@ -31,7 +31,7 @@ const CameraPopUp = ({
   );
 
   const handleCapturePhoto = () => {
-    setImage((camera.current as any).takePhoto());
+    setImage((camera.current as any).takePhoto("imgData"));
   };
   const handleCancelClick = () => {
     setImage(null);
@@ -40,7 +40,7 @@ const CameraPopUp = ({
   };
   const capturePhoto = () => {
     setCountdown(0);
-    setImage((camera.current as any).takePhoto());
+    setImage((camera.current as any).takePhoto("imgData"));
   };
   const handleTimerClick = () => {
     setImage(null);
