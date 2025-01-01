@@ -12,5 +12,5 @@ class AIService extends HTTPService {
     });
   };
 }
-const loginService = new AIService();
-export default loginService;
+const AI_Service = new AIService();
+export default AI_Service;
