@@ -199,7 +199,7 @@ const SuggestedItems: React.FC = () => {
   );
   // On Mount API Call triggered to get all categories
   useEffect(() => {
-    if (isBodyScanPresent) getApparelCategories();
+    if (true) getApparelCategories();
     if (isFaceScanPresent) getCosmeticsCategories();
   }, []);
   // On categories state variable change update the query params

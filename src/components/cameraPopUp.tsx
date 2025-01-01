@@ -4,8 +4,9 @@ import { Modal, Fade, Box, Typography, IconButton } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Camera } from "react-camera-pro";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/rootReducer";
+import DashboardService from "../services/dashboard.service";
 
 const CameraPopUp = ({
   open,
@@ -29,7 +30,6 @@ const CameraPopUp = ({
   const selectedItem = useSelector(
     (state: RootState) => state.main.selectedItem
   );
-
   const handleCapturePhoto = () => {
     setImage((camera.current as any).takePhoto());
   };
@@ -52,6 +52,37 @@ const CameraPopUp = ({
     setImage(null);
     onClose();
   };
+
+  const [_count, _setCount] = useState(0);
+  const dispatch = useDispatch();
+  const intervalRef = useRef<any>(null);
+
+  useEffect(() => {
+    let testCount = 0;
+    const intervalId = setInterval(() => {
+      console.log("$$ ----------------------------");
+      console.log("$$ COUNT FRAMES");
+      console.log("$$ ----------------------------");
+      let frameCount = 0;
+      for (let i = 0; i < 30; i++) {
+        console.log("$$ API CALL WAS MADE FOR THE ", frameCount + 1, " Time");
+        const response = DashboardService.getInventory(
+          "8c8d034c-cf5e-45a4-9cef-ca95c0274f27",
+          dispatch
+        );
+        frameCount++;
+        response.then((e) => {
+          // console.log("$$ Response then: ", e);
+          testCount += 1;
+          _setCount(testCount);
+        });
+      }
+    }, 1000);
+    intervalRef.current = intervalId;
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (triggerCountDown && countdown > 0) {
@@ -244,6 +275,9 @@ const CameraPopUp = ({
               </button>
             </Box>
           </Box>
+          <h1 className="absolute top-[50%] left-[50%] text-3xl text-white font-bold">
+            {_count}
+          </h1>
         </Box>
       </Fade>
     </Modal>
