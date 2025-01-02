@@ -15,6 +15,7 @@ import { Camera, CameraType } from "react-camera-pro";
 import CameraTools from "./cameraTools";
 import signupService from "../services/signup.service";
 import { useMutation } from "react-query";
+import AI_Service from "../services/ai.service";
 interface SignUpCameraProps {
   type: string;
 }
@@ -31,6 +32,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
   const isFaceScanExists = useSelector(
     (state: any) => state.signup.userDetails.isFaceScanned
   );
+  const [isImageSuitable, setIsImageSuitable] = useState<boolean>(false);
   const isFaceScanRequired =
     useSelector((state: any) => state.signup.interestCategories).some(
       (item: any) => item.includes("cosmetics")
@@ -90,6 +92,11 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     if (!confirmation) {
       setConfirmation(true);
     } else {
+      if (type === "face") {
+        verifyFaceScan();
+      } else {
+        verifyBodyScan();
+      }
       const image = camera.current?.takePhoto();
       if (image && typeof image === "string") {
         setImgSrc(image);
@@ -111,7 +118,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     handleCapturePhoto();
   };
   const handleConfirm = () => {
-    if (imgSrc) {
+    if (imgSrc && isImageSuitable) {
       setImage();
       if (isFaceScanRequired && type === "body") {
         dispatch(setCurrentForm(CONSTANTS.SIGN_UP_FACE_SCANNING));
@@ -126,6 +133,44 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     setCountdown(5);
     setTriggerCountDown(true);
   };
+  const { mutate: verifyBodyScan } = useMutation(
+    async () => AI_Service.bodyScan(imgSrc),
+    {
+      onSuccess: (res) => {
+        setIsImageSuitable(res.data.response);
+
+        dispatch(setErrorMsg(res?.data.error_message));
+      },
+      onError: (err: any) => {
+        if (err?.data.response === "Unauthorized access") {
+          navigate("/");
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+          localStorage.clear();
+        }
+        dispatch(setErrorMsg(err?.data.error_message));
+        setIsImageSuitable(err?.data.response);
+      },
+    }
+  );
+  const { mutate: verifyFaceScan } = useMutation(
+    async () => AI_Service.faceScan(imgSrc),
+    {
+      onSuccess: (res) => {
+        setIsImageSuitable(res.data.response);
+
+        dispatch(setErrorMsg(res?.data.error_message));
+      },
+      onError: (err: any) => {
+        if (err?.data.response === "Unauthorized access") {
+          navigate("/");
+          dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
+          localStorage.clear();
+        }
+        dispatch(setErrorMsg(err?.data.error_message));
+        setIsImageSuitable(err?.data.response);
+      },
+    }
+  );
   useEffect(() => {
     if (triggerCountDown && countdown > 0) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
