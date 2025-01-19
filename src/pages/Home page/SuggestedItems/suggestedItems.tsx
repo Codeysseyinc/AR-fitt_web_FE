@@ -166,8 +166,8 @@ const SuggestedItems: React.FC = () => {
         },
         onError: (error) => {
           console.log(
-            "XX => Error Occured While Fetching Categories For Type: ",
-            type
+            `%cError Occured While Fetching Categories For Type: ${type}`,
+            "color: red"
           );
         },
       }
@@ -190,8 +190,8 @@ const SuggestedItems: React.FC = () => {
         },
         onError: (error) => {
           console.log(
-            "XX => Error Occured While Fetching Inventory For Category: ",
-            selectedCategory
+            `%cError Occured While Fetching Inventory For Category: ${selectedCategory}`,
+            "color: red"
           );
         },
       }

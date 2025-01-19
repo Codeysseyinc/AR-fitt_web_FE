@@ -11,6 +11,13 @@ class AIService extends HTTPService {
       image: blob,
     });
   };
+  tryOn = (category_type: string, selected_item_id: string, blob: string) => {
+    return this.post(`${process.env.REACT_APP_FLASK_BE_URL}/try_on`, {
+      selected_item_id: selected_item_id,
+      category_type: category_type,
+      image: blob,
+    });
+  };
 }
 const AI_Service = new AIService();
 export default AI_Service;

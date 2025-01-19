@@ -6,6 +6,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Camera } from "react-camera-pro";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/rootReducer";
+import { useMutation } from "react-query";
+import AI_Service from "../services/ai.service";
 
 const CameraPopUp = ({
   open,
@@ -20,21 +22,46 @@ const CameraPopUp = ({
   onClose: () => void;
   handleSelectedColor: (payload: any) => void;
 }) => {
+  // State variables
   let countdownInterval: string | number | NodeJS.Timer | undefined;
   const camera = useRef(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
+  const [ai_Image, setAIImage] = useState("");
   const [countdown, setCountdown] = useState<number>(0);
   const [triggerCountDown, setTriggerCountDown] = useState<boolean>(false);
-
+  // Redux Variables
+  const selectedCategory = useSelector(
+    (state: RootState) => state.main.selectedCategory
+  );
   const selectedItem = useSelector(
     (state: RootState) => state.main.selectedItem
   );
-
+  // API Call
+  const { mutate: tryOnCall } = useMutation(
+    async () =>
+      AI_Service.tryOn(selectedCategory?.type, selectedItem?.id, image),
+    {
+      onSuccess: (res) => {
+        setAIImage(`data:image/png;base64,${res.data.response}`);
+      },
+      onError: (err: any) => {
+        console.log(
+          `%c Try On Api Response: ${err?.data.response}`,
+          "color: red;"
+        );
+      },
+    }
+  );
+  // Camera Functions
   const handleCapturePhoto = () => {
-    setImage((camera.current as any).takePhoto("imgData"));
+    const _img = (camera.current as any).takePhoto();
+    if (_img && typeof _img === "string") {
+      setImage(_img);
+    }
   };
   const handleCancelClick = () => {
-    setImage(null);
+    setImage("");
+    setAIImage("");
     setTriggerCountDown(false);
     setCountdown(0);
   };
@@ -43,16 +70,18 @@ const CameraPopUp = ({
     setImage((camera.current as any).takePhoto("imgData"));
   };
   const handleTimerClick = () => {
-    setImage(null);
+    setImage("");
+    setAIImage("");
     setCountdown(5);
     setTriggerCountDown(true);
   };
   const handleClose = () => {
     setCountdown(0);
-    setImage(null);
+    setImage("");
+    setAIImage("");
     onClose();
   };
-
+  // Side Effects
   useEffect(() => {
     if (triggerCountDown && countdown > 0) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,7 +97,12 @@ const CameraPopUp = ({
       clearInterval(countdownInterval);
     };
   }, [countdown, triggerCountDown]);
-
+  useEffect(() => {
+    if (image && typeof image === "string") {
+      tryOnCall();
+    }
+  }, [image]);
+  // JSX
   return (
     <Modal
       open={open}
@@ -88,14 +122,7 @@ const CameraPopUp = ({
           "
         >
           {/* Camera */}
-          {image ? (
-            // eslint-disable-next-line jsx-a11y/img-redundant-alt
-            <img
-              src={image}
-              alt="Taken photo"
-              style={{ transform: "scaleX(-1)" }}
-            />
-          ) : open === true ? (
+          {open === true ? (
             <>
               <Camera
                 ref={camera}
@@ -107,6 +134,14 @@ const CameraPopUp = ({
                 }}
                 facingMode="user"
               />
+              {/* The Image Overlay Ensuring Camera Pop Up Remains Open */}
+              {ai_Image && (
+                <img
+                  src={ai_Image}
+                  style={{ transform: "scaleX(-1)" }}
+                  className=""
+                />
+              )}
             </>
           ) : (
             <></>
@@ -211,7 +246,10 @@ const CameraPopUp = ({
               </button>
               {/* Retake */}
               <button
-                onClick={() => setImage(null)}
+                onClick={() => {
+                  setImage("");
+                  setAIImage("");
+                }}
                 className="bg-transparent border-none p-0 m-0 cursor-pointer"
               >
                 <div className="w-8 h-8 rounded-full">
@@ -220,7 +258,7 @@ const CameraPopUp = ({
               </button>
               {/* Capture */}
               <button
-                onClick={() => handleCapturePhoto()}
+                onClick={() => (image ? "" : handleCapturePhoto())}
                 className="bg-transparent border-none p-0 m-0 cursor-pointer"
               >
                 <div className="border-4 border-solid border-white bg-red-500 p-3 rounded-full flex justify-center items-center"></div>
