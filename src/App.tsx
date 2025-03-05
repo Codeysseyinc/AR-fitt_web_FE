@@ -40,6 +40,7 @@ const App = () => {
         <PersistGate loading={null} persistor={persistor}>
           <ARfittProvider>
             <Router>
+              {/* // TODO: Add a better loader component for suspense  */}
               <Suspense fallback={<div>Loading...</div>}>
                 <Routes>
                   <Route path="/" element={<LandingPage />} />

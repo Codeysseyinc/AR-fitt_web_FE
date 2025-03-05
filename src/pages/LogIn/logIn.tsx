@@ -90,6 +90,7 @@ const LogIn: React.FC = () => {
   useEffect(() => {
     dispatch(setErrorMsg(null));
     localStorage.clear();
+    sessionStorage.clear();
   }, [dispatch]);
   return (
     <Grid

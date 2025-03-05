@@ -29,6 +29,7 @@ export default class HTTPService {
           window.location.href = "/";
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
           localStorage.clear();
+          sessionStorage.clear();
         }
         dispatch(setErrorMsg(err?.response.data.message));
         throw err;

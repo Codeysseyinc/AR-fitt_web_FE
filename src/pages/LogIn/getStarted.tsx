@@ -21,6 +21,7 @@ const GetStarted: React.FC = () => {
       dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
     }
     localStorage.clear();
+    sessionStorage.clear();
   }, [dispatch, session_id]);
   return (
     <Grid

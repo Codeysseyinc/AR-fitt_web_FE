@@ -2,13 +2,12 @@ import { createStore, applyMiddleware } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import { thunk } from "redux-thunk";
 import rootReducer from "./rootReducer";
-import storage from "redux-persist/lib/storage";
+import storageSession from "redux-persist/lib/storage/session";
 
 // Configuration object for Redux Persist
 const persistConfig = {
-  key: "root", // Key for the persisted state
-  storage, // Storage method (default is localStorage)
-  // You can add other configurations here, like whitelist, blacklist, etc.
+  key: "root",
+  storage: storageSession,
 };
 
 // Create a persisted reducer

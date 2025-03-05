@@ -1,6 +1,8 @@
-import { Grid } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Grid } from "@mui/material";
+import { Camera, CameraType } from "react-camera-pro";
+import CameraTools from "./cameraTools";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setBodyScanSuccess,
@@ -10,12 +12,10 @@ import {
   setGuestBodyScanSuccess,
   setGuestFaceScanSuccess,
 } from "../redux/signup/SignupActions";
-import CONSTANTS from "../utils/constants/CONSTANTS";
-import { Camera, CameraType } from "react-camera-pro";
-import CameraTools from "./cameraTools";
-import signupService from "../services/signup.service";
 import { useMutation } from "react-query";
 import AI_Service from "../services/ai.service";
+import signupService from "../services/signup.service";
+import CONSTANTS from "../utils/constants/CONSTANTS";
 interface SignUpCameraProps {
   type: string;
 }
@@ -64,6 +64,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
           navigate("/");
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
           localStorage.clear();
+          sessionStorage.clear();
         }
         dispatch(setErrorMsg(err?.response.data.message));
       },
@@ -92,14 +93,17 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     if (!confirmation) {
       setConfirmation(true);
     } else {
-      if (type === "face") {
-        verifyFaceScan();
-      } else {
-        verifyBodyScan();
-      }
+      // ! Discarded Workflow
+      // TODO: Add AI Calls Here to validate face and body scans
+      // if (type === "face") {
+      //   verifyFaceScan();
+      // } else {
+      //   verifyBodyScan();
+      // }
       const image = camera.current?.takePhoto();
       if (image && typeof image === "string") {
         setImgSrc(image);
+        setIsImageSuitable(true);
       }
     }
   };
@@ -133,6 +137,8 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
     setCountdown(5);
     setTriggerCountDown(true);
   };
+  // ! Discarded workflow
+  // ? Apis for AI Flask server to validate body and face scan
   const { mutate: verifyBodyScan } = useMutation(
     async () => AI_Service.bodyScan(imgSrc),
     {
@@ -146,6 +152,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
           navigate("/");
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
           localStorage.clear();
+          sessionStorage.clear();
         }
         dispatch(setErrorMsg(err?.data.error_message));
         setIsImageSuitable(err?.data.response);
@@ -165,6 +172,7 @@ const SignUpCamera: React.FC<SignUpCameraProps> = ({ type }) => {
           navigate("/");
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
           localStorage.clear();
+          sessionStorage.clear();
         }
         dispatch(setErrorMsg(err?.data.error_message));
         setIsImageSuitable(err?.data.response);

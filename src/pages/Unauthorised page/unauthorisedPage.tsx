@@ -25,6 +25,7 @@ const UnauthorisedPage = () => {
       <ArrowBackRoundedIcon
         onClick={() => {
           localStorage.clear();
+          sessionStorage.clear();
           navigate("/");
         }}
         sx={{ color: "white" }}

@@ -49,6 +49,7 @@ const HomeNavbar = () => {
   const handleLogout = () => {
     dispatch(initializeSignUpState());
     localStorage.clear();
+    sessionStorage.clear();
     navigate("/");
     handleClose();
   };

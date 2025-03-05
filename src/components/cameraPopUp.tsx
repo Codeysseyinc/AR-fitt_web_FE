@@ -36,7 +36,8 @@ const CameraPopUp = ({
   const selectedItem = useSelector(
     (state: RootState) => state.main.selectedItem
   );
-  // API Call
+  // ! Discard Workflow
+  // ? AI API Call for try on
   const { mutate: tryOnCall } = useMutation(
     async () =>
       AI_Service.tryOn(selectedCategory?.type, selectedItem?.id, image),
@@ -97,11 +98,6 @@ const CameraPopUp = ({
       clearInterval(countdownInterval);
     };
   }, [countdown, triggerCountDown]);
-  useEffect(() => {
-    if (image && typeof image === "string") {
-      tryOnCall();
-    }
-  }, [image]);
   // JSX
   return (
     <Modal

@@ -2,7 +2,7 @@ import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { SetStateAction, useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Dispatch } from "redux";
-import "../styles/signupStyles";
+import "../styles/signupStyles.css";
 
 interface InputFieldProps {
   placeholder: string;

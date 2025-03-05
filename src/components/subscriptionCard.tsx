@@ -7,7 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import signupService from "../services/signup.service";
-import "../styles/signupStyles";
+import "../styles/signupStyles.css";
 
 interface SubscriptionCard {
   title: string;
@@ -64,6 +64,7 @@ const SubscriptionCard: React.FC<SubscriptionCard> = ({
           navigate("/");
           dispatch(setCurrentForm(CONSTANTS.SIGN_UP_BASIC_INFO));
           localStorage.clear();
+          sessionStorage.clear();
         }
         dispatch(setErrorMsg(err?.response.data.message));
       },
