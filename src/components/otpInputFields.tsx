@@ -1,5 +1,4 @@
 import { Grid, Link } from "@mui/material";
-import "./index.css";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -9,6 +8,7 @@ import {
 } from "../redux/signup/SignupActions";
 import { useMutation, useQuery } from "react-query";
 import signupService from "../services/signup.service";
+import "../styles/signupStyles";
 
 const OtpInputField: React.FC = () => {
   const secondsCountDown = 30 * 1; // time in seconds

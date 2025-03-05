@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
 import { Button, Grid } from "@mui/material";
 import CONSTANTS from "../utils/constants/CONSTANTS";
-import "./index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentForm, setErrorMsg } from "../redux/signup/SignupActions";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import signupService from "../services/signup.service";
+import "../styles/signupStyles";
+
 interface SubscriptionCard {
   title: string;
   color: string;

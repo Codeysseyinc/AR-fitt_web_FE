@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { setCurrentForm } from "../redux/signup/SignupActions";
-import "./index.css";
+import "../styles/signupStyles";
 
 interface ContentAreaProps {
   children: ReactNode;

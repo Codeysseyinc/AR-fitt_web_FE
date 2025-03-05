@@ -1,10 +1,11 @@
-import "./index.css";
 import { SetStateAction, useEffect, useState } from "react";
 import { Dispatch } from "redux";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
+import "../styles/signupStyles";
+
 interface InputFieldProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;

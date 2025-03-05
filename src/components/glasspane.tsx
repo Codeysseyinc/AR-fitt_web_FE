@@ -1,4 +1,4 @@
-import "./index.css";
+import "../styles/signupStyles";
 
 const GlassPane = () => {
   return <div className="glass-pane"></div>;
